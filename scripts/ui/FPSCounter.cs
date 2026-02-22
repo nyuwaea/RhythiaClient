@@ -9,7 +9,11 @@ public partial class FPSCounter : Label
 
     public override void _Ready()
     {
-        SettingsManager.Instance.Settings.DisplayFPS.Updated += value => { Visible = (bool)value; };
+        var settings = SettingsManager.Instance.Settings;
+
+        Visible = settings.DisplayFPS.Value;
+
+        settings.DisplayFPS.Updated += value => { Visible = (bool)value; };
     }
 
     public override void _Process(double delta)

@@ -498,8 +498,20 @@ z_as_relative = false
 anchors_preset = -1
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
+offset_left = 6.0
 offset_bottom = -4.0
 grow_vertical = 0
 text = "0 FPS"
 script = ExtResource("10_choun")
+
+[node name="ColorRect" type="ColorRect" parent="FPSCounter" unique_id=117183639]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_right = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.76862746)

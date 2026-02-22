@@ -427,11 +427,11 @@ theme_override_constants/line_separation = 2
 theme_override_constants/paragraph_separation = 6
 theme_override_fonts/normal_font = ExtResource("7_6h3lr")
 bbcode_enabled = true
-text = "[font_size=28][b]FEATURES[/b][font_size=20]
-+ Support for image files other than PNG & JPG[br]+ Reset to defaults setting[br]+ Parallax setting now applies to Spin mode[br]* Non-PHXM maps are now imported on startup (SSPM & TXT)
-[font_size=28][b]FIXES[/b][font_size=20]
+text = "[font_size=28][b]FEATURES[/b][font_size=18]
++ Support for image files other than PNG & JPG[br]+ Reset to defaults setting[br]+ Display FPS setting[br]+ Parallax setting now applies to Spin mode[br]* Non-PHXM maps are now imported on startup (SSPM & TXT)
+[font_size=28][b]FIXES[/b][font_size=18]
 * Gameplay performance improvements (~25-35% increase)[br]* Improved map importing (faster and more reliable)[br]* Waves space coloring is more consistent[br]* Pressing ESC to close settings is more reliable[br]* Absolute input made more accurate[br]* Map preview no longer inverted[br]* Spin no longer displays a placeholder mod icon in gameplay
-[font_size=28][b]MISC[/b][font_size=20]
+[font_size=28][b]MISC[/b][font_size=18]
 * Set default window size to 1280x720"
 shortcut_keys_enabled = false
 
