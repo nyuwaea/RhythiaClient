@@ -76,15 +76,30 @@ shader_parameter/opaqueness = 1.0
 shader = ExtResource("4_1a85y")
 shader_parameter/brightness = 0.5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c87ec"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mb34c"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l7ueg"]
+shader = ExtResource("4_1a85y")
+shader_parameter/brightness = 0.5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wadof"]
 bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_0uejd"]
 font = ExtResource("5_hl5e0")
-font_size = 42
+font_size = 36
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5gt56"]
-bg_color = Color(1, 1, 1, 0.0156863)
+bg_color = Color(0, 0, 0, 0.0627451)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wc1go"]
 content_margin_left = 8.0
@@ -123,7 +138,7 @@ content_margin_left = 8.0
 content_margin_top = 8.0
 content_margin_right = 8.0
 content_margin_bottom = 8.0
-bg_color = Color(0, 0, 0, 0.3137255)
+bg_color = Color(0, 0, 0, 0.47058824)
 corner_radius_top_left = 2
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -266,17 +281,6 @@ content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_l7ueg"]
-shader = ExtResource("4_1a85y")
-shader_parameter/brightness = 0.5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wadof"]
-bg_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h3j6r"]
 shader = ExtResource("4_1a85y")
 shader_parameter/brightness = 0.5
@@ -385,57 +389,62 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_tkeab")
 
-[node name="News" type="Panel" parent="Menus/Home" unique_id=785063220]
-visible = false
+[node name="News" type="PanelContainer" parent="Menus/Home" unique_id=1879796237]
 material = SubResource("ShaderMaterial_dr6yk")
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.6
-anchor_top = 0.2
+anchor_left = 1.0
+anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 0.8
-offset_top = 96.0
-offset_right = -96.0
-offset_bottom = -96.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_c87ec")
+anchor_bottom = 0.5
+offset_left = -600.0
+offset_top = 80.0
+offset_right = -64.0
+offset_bottom = -80.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mb34c")
 
-[node name="Header" type="Label" parent="Menus/Home/News" unique_id=1350479761]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-offset_left = 24.0
-offset_top = 8.0
-offset_right = -24.0
-offset_bottom = 32.0
-text = "1.0.2"
+[node name="Background" type="Panel" parent="Menus/Home/News" unique_id=2058881163]
+material = SubResource("ShaderMaterial_l7ueg")
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wadof")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menus/Home/News" unique_id=408198992]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="Menus/Home/News/VBoxContainer" unique_id=1350479761]
+layout_mode = 2
+text = "0.1.1 (early-26feb22)"
 label_settings = SubResource("LabelSettings_0uejd")
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Panel" type="Panel" parent="Menus/Home/News" unique_id=1035549202]
+[node name="RichTextLabel" type="RichTextLabel" parent="Menus/Home/News/VBoxContainer" unique_id=473981233]
+custom_minimum_size = Vector2(0, 400)
+layout_mode = 2
+theme = ExtResource("6_engjn")
+theme_override_constants/line_separation = 2
+theme_override_constants/paragraph_separation = 6
+theme_override_fonts/normal_font = ExtResource("7_6h3lr")
+bbcode_enabled = true
+text = "[font_size=28][b]FEATURES[/b][font_size=20]
++ Support for image files other than PNG & JPG[br]+ Reset to defaults setting[br]+ Parallax setting now applies to Spin mode[br]* Non-PHXM maps are now imported on startup (SSPM & TXT)
+[font_size=28][b]FIXES[/b][font_size=20]
+* Gameplay performance improvements (~25-35% increase)[br]* Improved map importing (faster and more reliable)[br]* Waves space coloring is more consistent[br]* Pressing ESC to close settings is more reliable[br]* Absolute input made more accurate[br]* Map preview no longer inverted[br]* Spin no longer displays a placeholder mod icon in gameplay
+[font_size=28][b]MISC[/b][font_size=20]
+* Set default window size to 1280x720"
+shortcut_keys_enabled = false
+
+[node name="Panel" type="Panel" parent="Menus/Home/News/VBoxContainer/RichTextLabel" unique_id=1035549202]
+show_behind_parent = true
 layout_mode = 1
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = 60.0
-offset_right = -24.0
-offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_5gt56")
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Menus/Home/News/Panel" unique_id=473981233]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = -8.0
-offset_bottom = -8.0
-theme = ExtResource("6_engjn")
-theme_override_fonts/normal_font = ExtResource("7_6h3lr")
-bbcode_enabled = true
-shortcut_keys_enabled = false
 
 [node name="Buttons" type="VBoxContainer" parent="Menus/Home" unique_id=695816730]
 layout_mode = 1
@@ -1613,11 +1622,8 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_eku7s")
 
 [node name="TopBar" type="Panel" parent="." unique_id=560351556]
-anchors_preset = 10
+anchors_preset = -1
 anchor_right = 1.0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = -8.0
 offset_bottom = 72.0
 mouse_filter = 2
 theme = ExtResource("6_engjn")
@@ -1638,9 +1644,8 @@ layout_mode = 1
 anchors_preset = -1
 anchor_bottom = 1.0
 offset_left = 6.0
-offset_top = 6.0
-offset_right = 50.0
-offset_bottom = -6.0
+offset_top = 8.0
+offset_bottom = -8.0
 texture = ExtResource("18_eku7s")
 expand_mode = 2
 stretch_mode = 5
@@ -1753,14 +1758,11 @@ Link = "https://discord.gg/kaFPWkfZeS"
 
 [node name="JukeboxPanel" type="Panel" parent="." unique_id=1253575]
 clip_contents = true
-anchors_preset = 12
+anchors_preset = -1
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 8.0
 offset_top = -72.0
-offset_right = -8.0
-offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
