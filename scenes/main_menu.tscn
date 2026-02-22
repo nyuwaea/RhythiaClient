@@ -1583,6 +1583,15 @@ text = "[font_size=20]cake
 fit_content = true
 horizontal_alignment = 1
 
+[node name="snuz" type="RichTextLabel" parent="Menus/Extras/Credits/ScrollContainer/VBoxContainer" unique_id=1573219614]
+modulate = Color(0.59607846, 0.9843137, 0.59607846, 1)
+layout_mode = 2
+bbcode_enabled = true
+text = "[font_size=20]snuz
+[color=ffffffbb][font_size=16]Contributor"
+fit_content = true
+horizontal_alignment = 1
+
 [node name="allusionist" type="RichTextLabel" parent="Menus/Extras/Credits/ScrollContainer/VBoxContainer" unique_id=2118833467]
 modulate = Color(0.9814784, 0.7174443, 0.6400969, 1)
 layout_mode = 2
