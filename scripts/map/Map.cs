@@ -92,7 +92,7 @@ public partial class Map : RefCounted
             return [];
         }
     }
-
+    
     private Texture2D getCover()
     {
         string path = $"{MapUtil.MapsCacheFolder}/{Name}";
