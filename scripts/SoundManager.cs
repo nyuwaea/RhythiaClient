@@ -41,11 +41,11 @@ public partial class SoundManager : Node, ISkinnable
     {
         Instance = this;
 
-        HitSound = new();
-        MissSound = new();
-        FailSound = new();
-        Song = new();
-        MenuMusic = new();
+        HitSound = new() { Name = "Hit" };
+        MissSound = new() { Name = "Miss" };
+        FailSound = new() { Name = "Fail" };
+        Song = new() { Name = "Song" };
+        MenuMusic = new() { Name = "Menu" };
 
         HitSound.MaxPolyphony = 16;
         MissSound.MaxPolyphony = 16;
@@ -329,6 +329,7 @@ public partial class SoundManager : Node, ISkinnable
         if (Song != null && (Song.Playing || Song.StreamPaused))
         {
             Song.StreamPaused = !Song.StreamPaused;
+            JukeboxPanel.Instance.UpdateMap(Map);
             return Song.StreamPaused;
         }
 
@@ -426,6 +427,8 @@ public partial class SoundManager : Node, ISkinnable
         {
             return;
         }
+
+        JukeboxPanel.Instance?.UpdateMap(Map);
 
         if (menuMusicPausedByUser)
         {

@@ -757,7 +757,7 @@ public partial class LegacyRunner : BaseScene
             float cursorTransparency = 1f - cursorOpacity;
 
             cursor.Transparency = cursorTransparency;
-            cursorMaterial?.AlbedoTexture = SkinManager.Instance.Skin.CursorImage;
+            cursorMaterial.AlbedoTexture = SkinManager.Instance.Skin.CursorImage;
 
             (cursorTrailMultimesh.MaterialOverride as StandardMaterial3D).AlbedoTexture = SkinManager.Instance.Skin.CursorImage;
             (grid.GetActiveMaterial(0) as StandardMaterial3D).AlbedoTexture = SkinManager.Instance.Skin.GridImage;
@@ -794,11 +794,7 @@ public partial class LegacyRunner : BaseScene
 
         musicStarted = false;
 
-        if (CurrentAttempt.Map.Notes != null && CurrentAttempt.Map.Notes.Length > 0)
-        {
-            MapLength = CurrentAttempt.Map.Notes[^1].Millisecond;
-        }
-        else if (CurrentAttempt.Map.AudioBuffer != null)
+        if (CurrentAttempt.Map.AudioBuffer != null)
         {
             MapLength = (float)SoundManager.Song.Stream.GetLength() * 1000;
         }
@@ -807,7 +803,7 @@ public partial class LegacyRunner : BaseScene
             MapLength = CurrentAttempt.Map.Length + 1000;
         }
 
-        MapLength += Constants.HIT_WINDOW + 1000;
+        MapLength += Constants.HIT_WINDOW;
 
         // TODO: Fix videos
 
@@ -922,18 +918,18 @@ public partial class LegacyRunner : BaseScene
         {
             return;
         }
-
+        
         if (isPauseRampActive())
         {
             updatePauseStateEachFrame(delta);
         }
-        else
+        else if (CurrentAttempt.Progress > 0 && CurrentAttempt.Progress < MapLength && !CurrentAttempt.Stopped)
         {
             double audioDelay = CurrentAttempt.Progress - 1000 * (SoundManager.Song.GetPlaybackPosition() + AudioServer.GetTimeSinceLastMix());
-
-            if (Math.Abs(audioDelay) > 25 && CurrentAttempt.Progress > 0)
+        
+            if (Math.Abs(audioDelay / CurrentAttempt.Speed) > Math.Max(40, delta))
             {
-                SoundManager.Song.PitchScale = Math.Max(Mathf.Epsilon, (float)CurrentAttempt.Speed + (float)audioDelay / 1000);
+                SoundManager.Song.PitchScale = (float)Math.Clamp(CurrentAttempt.Speed + audioDelay / 1000, Math.Max(0.01, CurrentAttempt.Speed - 0.5), CurrentAttempt.Speed + 0.5);
             }
             else if (Math.Abs(SoundManager.Song.PitchScale - CurrentAttempt.Speed) > Mathf.Epsilon)
             {
@@ -1312,7 +1308,8 @@ public partial class LegacyRunner : BaseScene
                         if (CurrentAttempt.IsReplay)
                         {
                             Playing = !Playing;
-                            SoundManager.Song.PitchScale = Playing ? (float)CurrentAttempt.Speed : 0.00000000000001f;   // ooohh my goood
+                            // SoundManager.Song.PitchScale = Playing ? (float)CurrentAttempt.Speed : 0.00000000000001f;   // ooohh my goood
+                            SoundManager.Song.StreamPaused = !Playing;
                             replayViewerPause.TextureNormal = GD.Load<Texture2D>(Playing ? "res://textures/ui/pause.png" : "res://textures/ui/play.png");
                         }
                         else
@@ -1638,8 +1635,8 @@ public partial class LegacyRunner : BaseScene
         pauseHoldTime += (float)delta;
         pauseState = Math.Max(0, pauseState - (float)(delta / pauseHoldDuration));
         pauseHudControl.SetProgress(Math.Clamp(1f - pauseState, 0f, 1f));
-
-        if (CurrentAttempt.Map.AudioBuffer != null && musicStarted && SoundManager.Song.Playing)
+        
+        if (CurrentAttempt.Map.AudioBuffer != null && musicStarted && SoundManager.Song.Playing && getTargetMusicVolumeDb() > float.NegativeInfinity)
         {
             SoundManager.Song.VolumeDb = Mathf.Lerp(getTargetMusicVolumeDb() - 60, getTargetMusicVolumeDb(), 1 - pauseState);
         }

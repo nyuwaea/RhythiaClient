@@ -109,7 +109,7 @@ public partial class MainMenu : BaseScene
 
     public override void _Process(double delta)
     {
-        if (Rhythia.Quitting)
+        if (Rhythia.Quitting && SoundManager.Song.VolumeDb > float.NegativeInfinity)
         {
             SoundManager.Song.VolumeDb = Mathf.Lerp(SoundManager.Song.VolumeDb, -80f, (float)delta * 2);
         }
