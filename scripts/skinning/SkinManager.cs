@@ -218,7 +218,7 @@ public partial class SkinManager : Node
     private static ArrayMesh loadMesh(string path)
     {
         bool exists = ResourceLoader.Exists(path) || Godot.FileAccess.FileExists(path);
-        
+
         return exists ? Util.Misc.OBJParser.Call("load_obj", path).As<ArrayMesh>() : GD.Load<ArrayMesh>("res://user/meshes/squircle.obj");
     }
 

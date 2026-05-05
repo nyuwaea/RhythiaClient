@@ -13,13 +13,13 @@ public partial class FileInitializer : Node
         objExporter = new Node();
         AddChild(objExporter);
         objExporter.SetScript(script);
-        
+
         // Temporary for 0.1.2 as the mesh's faces were fixed
         if (File.Exists($"{Constants.USER_FOLDER}/meshes/squircle.obj"))
         {
             File.Delete($"{Constants.USER_FOLDER}/meshes/squircle.obj");
         }
-        
+
         deepCopy();
     }
 
