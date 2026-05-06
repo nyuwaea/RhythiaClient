@@ -7,6 +7,7 @@
 [ext_resource type="FontFile" uid="uid://dotb3skhwouha" path="res://fonts/Roboto-Bold.ttf" id="5_hl5e0"]
 [ext_resource type="Theme" uid="uid://dhuhu3mmaew1a" path="res://themes/theme.tres" id="6_engjn"]
 [ext_resource type="FontFile" uid="uid://bopde8iqsld1o" path="res://fonts/Ubuntu-Regular.ttf" id="7_6h3lr"]
+[ext_resource type="Script" uid="uid://oib2tmpnbp85" path="res://scripts/ui/menu/SkinEditorButton.cs" id="7_71lbq"]
 [ext_resource type="Script" uid="uid://bnead3awk7yr4" path="res://scripts/ui/menu/SettingsMenuButton.cs" id="8_yxnar"]
 [ext_resource type="Script" uid="uid://byighsqkmf2c4" path="res://scripts/ui/menu/QuitButton.cs" id="9_yxnar"]
 [ext_resource type="Script" uid="uid://cqprxe41p0qov" path="res://scripts/ui/menu/Background.cs" id="10_eku7s"]
@@ -482,6 +483,18 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_vanrq")
 text = "SETTINGS"
 alignment = 0
 script = ExtResource("8_yxnar")
+
+[node name="Skin Editor" type="Button" parent="Menus/Home/Buttons" unique_id=1576645758]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme = SubResource("Theme_m671i")
+theme_override_styles/normal = SubResource("StyleBoxFlat_764ux")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_b4jiv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_vanrq")
+text = "SKIN EDITOR"
+alignment = 0
+script = ExtResource("7_71lbq")
 
 [node name="Extras" type="Button" parent="Menus/Home/Buttons" unique_id=728550159]
 layout_mode = 2
