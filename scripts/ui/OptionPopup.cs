@@ -17,7 +17,7 @@ public partial class OptionPopup : Control
     [Signal]
     public delegate void CanceledEventHandler();
 
-    private readonly PackedScene template = GD.Load<PackedScene>("res://prefabs/option_popup.tscn");
+    private readonly PackedScene template = ResourceLoader.Load<PackedScene>("res://prefabs/ui/option_popup.tscn");
 
     [Export]
     private Label headerLabel;

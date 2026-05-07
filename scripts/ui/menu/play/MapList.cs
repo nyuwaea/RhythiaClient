@@ -78,9 +78,9 @@ public partial class MapList : Panel, ISkinnable
     private TextureRect scrollBarBackgroundMiddle;
     private TextureRect scrollBarBackgroundBottom;
 
-    private readonly PackedScene mapButtonContainerTemplate = ResourceLoader.Load<PackedScene>("res://prefabs/map_button_container.tscn");
-    private readonly PackedScene mapButtonWideTemplate = ResourceLoader.Load<PackedScene>("res://prefabs/map_button_wide.tscn");
-    private readonly PackedScene mapButtonSquareTemplate = ResourceLoader.Load<PackedScene>("res://prefabs/map_button_square.tscn");
+    private readonly PackedScene mapButtonContainerTemplate = ResourceLoader.Load<PackedScene>("res://prefabs/ui/menu/map_button_container.tscn");
+    private readonly PackedScene mapButtonWideTemplate = ResourceLoader.Load<PackedScene>("res://prefabs/ui/menu/map_button_wide.tscn");
+    private readonly PackedScene mapButtonSquareTemplate = ResourceLoader.Load<PackedScene>("res://prefabs/ui/menu/map_button_square.tscn");
 
     private Dictionary<int, HBoxContainer> containers = [];
     private Stack<HBoxContainer> containerCache = [];

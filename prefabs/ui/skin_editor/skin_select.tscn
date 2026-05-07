@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://dn16lhoc3fngd"]
+
+[ext_resource type="Theme" uid="uid://cghiovcujtcmd" path="res://themes/tools.tres" id="1_0618t"]
+
+[node name="default" type="HBoxContainer" unique_id=776764616]
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = -888.0
+offset_bottom = 27.0
+grow_horizontal = 2
+theme = ExtResource("1_0618t")
+
+[node name="Label" type="Label" parent="." unique_id=312779579]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_0618t")
+text = "default"
+autowrap_mode = 3
+
+[node name="Use" type="Button" parent="." unique_id=1360435786]
+layout_mode = 2
+text = "Use"
+
+[node name="Edit" type="Button" parent="." unique_id=164345246]
+layout_mode = 2
+disabled = true
+text = "Edit"
+
+[node name="Copy" type="Button" parent="." unique_id=1984821599]
+layout_mode = 2
+text = "Copy"
+
+[node name="Delete" type="Button" parent="." unique_id=2081735335]
+layout_mode = 2
+disabled = true
+text = "Delete"

@@ -6,7 +6,7 @@ public partial class ToastNotification : Node
 {
     public static ToastNotification Instance;
 
-    private static readonly PackedScene template = GD.Load<PackedScene>("res://prefabs/notification.tscn");
+    private static readonly PackedScene template = ResourceLoader.Load<PackedScene>("res://prefabs/ui/notification.tscn");
 
     private static int activeNotifications = 0;
 

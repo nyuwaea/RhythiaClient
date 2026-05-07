@@ -14,7 +14,7 @@ public partial class MapInfo : AspectRatioContainer
 
     private Map pendingSelection;
 
-    private readonly PackedScene infoContainerTemplate = ResourceLoader.Load<PackedScene>("res://prefabs/map_info_container.tscn");
+    private readonly PackedScene infoContainerTemplate = ResourceLoader.Load<PackedScene>("res://prefabs/ui/menu/map_info_container.tscn");
     private Stack<MapInfoContainer> infoContainerCache = [];
 
     public override void _Ready()
