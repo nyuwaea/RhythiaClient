@@ -2,28 +2,56 @@
 
 [ext_resource type="Theme" uid="uid://cghiovcujtcmd" path="res://themes/tools.tres" id="1_8e7i7"]
 [ext_resource type="Script" uid="uid://31ifsk7c81fo" path="res://scripts/scenes/SkinEditor.cs" id="1_rshsi"]
+[ext_resource type="PackedScene" uid="uid://vp1nmsiqt5yv" path="res://scenes/game.tscn" id="3_qpw8j"]
+[ext_resource type="Texture2D" uid="uid://men3chmi3esy" path="res://textures/ui/add.png" id="4_8fc04"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8fc04"]
-bg_color = Color(0, 0, 0, 1)
+bg_color = Color(0.0806, 0.08471666, 0.13, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rshsi"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rshsi"]
-bg_color = Color(0, 0, 0, 0.6117647)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m0an3"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0, 0, 0, 0.09411765)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qpw8j"]
-bg_color = Color(1, 1, 1, 0.5019608)
-border_width_left = 4
-border_width_top = 2
-border_width_right = 4
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 0)
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0, 0, 0, 0.2509804)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 4
 
-[node name="SceneSkinEditor" type="Node" unique_id=1136685041 node_paths=PackedStringArray("backButton", "skinPath", "skinName")]
+[node name="SceneSkinEditor" type="Node" unique_id=1136685041 node_paths=PackedStringArray("backButton", "selectButton", "saveButton", "shareButton", "skinPath", "skinName", "categories", "selectionHolder", "selectionNewButton", "selectionImportButton", "importDialog", "selectionSkins", "dockSplit", "objectsSplit")]
 script = ExtResource("1_rshsi")
-backButton = NodePath("Container/Actions/Back")
+backButton = NodePath("Container/Header/Back")
+selectButton = NodePath("Container/Header/Select")
+saveButton = NodePath("Container/Header/Save")
+shareButton = NodePath("Container/Header/Share")
 skinPath = NodePath("Container/Header/SkinPath")
 skinName = NodePath("Container/Header/SkinName")
+categories = NodePath("Container/Categories")
+selectionHolder = NodePath("Container/Editor/Selection")
+selectionNewButton = NodePath("Container/Editor/Selection/Panel/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/New")
+selectionImportButton = NodePath("Container/Editor/Selection/Panel/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/Import")
+importDialog = NodePath("ImportDialog")
+selectionSkins = NodePath("Container/Editor/Selection/Panel/MarginContainer/VBoxContainer/Skins")
+dockSplit = NodePath("Container/Editor/Docks")
+objectsSplit = NodePath("Container/Editor/Docks/Objects")
+
+[node name="ImportDialog" type="FileDialog" parent="." unique_id=1418351421]
+title = "Open a File"
+initial_position = 2
+file_mode = 0
+access = 2
+use_native_dialog = true
 
 [node name="Background" type="Panel" parent="." unique_id=1100448185]
 anchors_preset = 15
@@ -32,15 +60,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_8fc04")
-
-[node name="Label" type="Label" parent="." unique_id=408048237]
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 1272.0
-offset_bottom = 34.0
-theme = ExtResource("1_8e7i7")
-theme_override_font_sizes/font_size = 18
-text = "Skin Editor"
 
 [node name="Container" type="VBoxContainer" parent="." unique_id=1821395427]
 anchors_preset = -1
@@ -56,42 +75,103 @@ theme = ExtResource("1_8e7i7")
 
 [node name="Header" type="HBoxContainer" parent="Container" unique_id=984291994]
 layout_mode = 2
+mouse_filter = 2
 theme = ExtResource("1_8e7i7")
-theme_override_constants/separation = 0
 alignment = 1
+
+[node name="Label" type="Label" parent="Container/Header" unique_id=408048237]
+layout_mode = 2
+theme = ExtResource("1_8e7i7")
+theme_type_variation = &"HeaderSmall"
+text = "Skin Editor"
+uppercase = true
+
+[node name="Back" type="Button" parent="Container/Header" unique_id=1139698043]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+theme_override_font_sizes/font_size = 14
+text = "Return to Menu"
+
+[node name="Select" type="Button" parent="Container/Header" unique_id=1134404612]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+theme_override_font_sizes/font_size = 14
+text = "Select Skin"
+
+[node name="Save" type="Button" parent="Container/Header" unique_id=202139637]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+theme_override_font_sizes/font_size = 14
+text = "Save"
+
+[node name="Share" type="Button" parent="Container/Header" unique_id=479641034]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+theme_override_font_sizes/font_size = 14
+text = "Share"
 
 [node name="SkinPath" type="Label" parent="Container/Header" unique_id=317077724]
 layout_mode = 2
+size_flags_horizontal = 10
 theme = ExtResource("1_8e7i7")
 theme_override_colors/font_color = Color(1, 1, 1, 0.5019608)
 theme_override_styles/normal = SubResource("StyleBoxEmpty_rshsi")
-text = "{0}/"
+text = "{0}/skins/"
 
 [node name="SkinName" type="LineEdit" parent="Container/Header" unique_id=2088951253]
+custom_minimum_size = Vector2(137, 0)
 layout_mode = 2
 focus_mode = 1
 theme = ExtResource("1_8e7i7")
 placeholder_text = "(no skin selected)"
+alignment = 1
+max_length = 50
 editable = false
 expand_to_text_length = true
 emoji_menu_enabled = false
+caret_blink = true
 
 [node name="SkinSuffix" type="Label" parent="Container/Header" unique_id=2091777065]
 layout_mode = 2
 theme = ExtResource("1_8e7i7")
 theme_override_colors/font_color = Color(1, 1, 1, 0.5019608)
 theme_override_styles/normal = SubResource("StyleBoxEmpty_rshsi")
+text = ".rhys"
 
-[node name="Actions" type="HBoxContainer" parent="Container" unique_id=400927899]
+[node name="Categories" type="HBoxContainer" parent="Container" unique_id=400927899]
 layout_mode = 2
+mouse_filter = 2
 theme = ExtResource("1_8e7i7")
+alignment = 1
 
-[node name="Back" type="Button" parent="Container/Actions" unique_id=1139698043]
+[node name="HUD" type="Button" parent="Container/Categories" unique_id=1208224941]
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 theme = ExtResource("1_8e7i7")
 theme_override_font_sizes/font_size = 14
-text = "< Return to Menu"
+disabled = true
+text = "Game HUD"
+
+[node name="Menu" type="Button" parent="Container/Categories" unique_id=1899623228]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+theme_override_font_sizes/font_size = 14
+text = "Main Menu"
+
+[node name="Themes" type="Button" parent="Container/Categories" unique_id=1470091563]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+theme_override_font_sizes/font_size = 14
+text = "Themes"
 
 [node name="Editor" type="Panel" parent="Container" unique_id=294310997]
 layout_mode = 2
@@ -107,33 +187,39 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 theme = ExtResource("1_8e7i7")
-split_offsets = PackedInt32Array(400)
-split_offset = 400
+split_offsets = PackedInt32Array(320)
+split_offset = 320
 
 [node name="Objects" type="VSplitContainer" parent="Container/Editor/Docks" unique_id=1085796380]
 layout_mode = 2
 theme = ExtResource("1_8e7i7")
-split_offsets = PackedInt32Array(400)
-split_offset = 400
+split_offsets = PackedInt32Array(360)
+split_offset = 360
 
 [node name="Explorer" type="Panel" parent="Container/Editor/Docks/Objects" unique_id=2139878915]
 layout_mode = 2
 theme = ExtResource("1_8e7i7")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Explorer" unique_id=1419776183]
+[node name="MarginContainer" type="MarginContainer" parent="Container/Editor/Docks/Objects/Explorer" unique_id=2072819575]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_8e7i7")
 
-[node name="Header" type="Label" parent="Container/Editor/Docks/Objects/Explorer/VBoxContainer" unique_id=1101954016]
+[node name="VBoxContainer" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer" unique_id=1419776183]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer" unique_id=1101954016]
 layout_mode = 2
 theme = ExtResource("1_8e7i7")
+theme_override_colors/font_color = Color(1, 1, 1, 0.5019608)
+theme_override_styles/normal = SubResource("StyleBoxFlat_m0an3")
 text = "Explorer"
 
-[node name="Panel" type="Panel" parent="Container/Editor/Docks/Objects/Explorer/VBoxContainer" unique_id=1433520048]
+[node name="Panel" type="Panel" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer" unique_id=1433520048]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_8e7i7")
@@ -142,20 +228,26 @@ theme = ExtResource("1_8e7i7")
 layout_mode = 2
 theme = ExtResource("1_8e7i7")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties" unique_id=80786515]
+[node name="MarginContainer" type="MarginContainer" parent="Container/Editor/Docks/Objects/Properties" unique_id=1345634376]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_8e7i7")
 
-[node name="Header" type="Label" parent="Container/Editor/Docks/Objects/Properties/VBoxContainer" unique_id=506587999]
+[node name="VBoxContainer" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer" unique_id=80786515]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer" unique_id=506587999]
 layout_mode = 2
 theme = ExtResource("1_8e7i7")
+theme_override_colors/font_color = Color(1, 1, 1, 0.5019608)
+theme_override_styles/normal = SubResource("StyleBoxFlat_m0an3")
 text = "Properties"
 
-[node name="Panel" type="Panel" parent="Container/Editor/Docks/Objects/Properties/VBoxContainer" unique_id=1618420143]
+[node name="Panel" type="Panel" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer" unique_id=1618420143]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_8e7i7")
@@ -164,32 +256,59 @@ theme = ExtResource("1_8e7i7")
 layout_mode = 2
 theme = ExtResource("1_8e7i7")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Container/Editor/Docks/Preview" unique_id=613513314]
+[node name="MarginContainer" type="MarginContainer" parent="Container/Editor/Docks/Preview" unique_id=534381434]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_8e7i7")
 
-[node name="Header" type="Label" parent="Container/Editor/Docks/Preview/VBoxContainer" unique_id=628448765]
+[node name="VBoxContainer" type="VBoxContainer" parent="Container/Editor/Docks/Preview/MarginContainer" unique_id=613513314]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="Container/Editor/Docks/Preview/MarginContainer/VBoxContainer" unique_id=628448765]
 layout_mode = 2
 theme = ExtResource("1_8e7i7")
+theme_override_colors/font_color = Color(1, 1, 1, 0.5019608)
+theme_override_styles/normal = SubResource("StyleBoxFlat_m0an3")
 text = "Preview"
 
-[node name="Panel" type="Panel" parent="Container/Editor/Docks/Preview/VBoxContainer" unique_id=1182442624]
+[node name="Panel" type="Panel" parent="Container/Editor/Docks/Preview/MarginContainer/VBoxContainer" unique_id=1182442624]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_8e7i7")
 
-[node name="Selection" type="Panel" parent="Container/Editor" unique_id=1220884649]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Container/Editor/Docks/Preview/MarginContainer/VBoxContainer/Panel" unique_id=1412365548]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_rshsi")
+theme = ExtResource("1_8e7i7")
+stretch = true
+mouse_target = true
+
+[node name="SubViewport" type="SubViewport" parent="Container/Editor/Docks/Preview/MarginContainer/VBoxContainer/Panel/SubViewportContainer" unique_id=864137372]
+handle_input_locally = false
+gui_disable_input = true
+size = Vector2i(924, 609)
+render_target_update_mode = 4
+
+[node name="SceneGame" parent="Container/Editor/Docks/Preview/MarginContainer/VBoxContainer/Panel/SubViewportContainer/SubViewport" unique_id=909809067 instance=ExtResource("3_qpw8j")]
+script = null
+
+[node name="Selection" type="ColorRect" parent="Container/Editor" unique_id=654134356]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6117647)
 
 [node name="Panel" type="Panel" parent="Container/Editor/Selection" unique_id=1203966249]
 layout_mode = 1
@@ -198,15 +317,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -200.0
-offset_right = 200.0
-offset_bottom = 200.0
+offset_left = -250.0
+offset_top = -300.0
+offset_right = 250.0
+offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_8e7i7")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Container/Editor/Selection/Panel" unique_id=537905983]
+[node name="MarginContainer" type="MarginContainer" parent="Container/Editor/Selection/Panel" unique_id=957734312]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -215,33 +334,41 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_8e7i7")
 
-[node name="Header" type="Label" parent="Container/Editor/Selection/Panel/VBoxContainer" unique_id=1145766938]
+[node name="VBoxContainer" type="VBoxContainer" parent="Container/Editor/Selection/Panel/MarginContainer" unique_id=537905983]
 layout_mode = 2
 theme = ExtResource("1_8e7i7")
-text = "Skins"
 
-[node name="Create" type="Button" parent="Container/Editor/Selection/Panel/VBoxContainer" unique_id=1837412551]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme = ExtResource("1_8e7i7")
-theme_override_font_sizes/font_size = 22
-text = "CREATE NEW"
-
-[node name="Separator" type="Panel" parent="Container/Editor/Selection/Panel/VBoxContainer" unique_id=1627713491]
-custom_minimum_size = Vector2(0, 5)
+[node name="PanelContainer" type="PanelContainer" parent="Container/Editor/Selection/Panel/MarginContainer/VBoxContainer" unique_id=1620249329]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qpw8j")
 
-[node name="Skins" type="VBoxContainer" parent="Container/Editor/Selection/Panel/VBoxContainer" unique_id=416019857]
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/Editor/Selection/Panel/MarginContainer/VBoxContainer/PanelContainer" unique_id=1394822597]
 layout_mode = 2
-size_flags_vertical = 3
 
-[node name="default" type="Button" parent="Container/Editor/Selection/Panel/VBoxContainer/Skins" unique_id=1533086320]
+[node name="Header" type="Label" parent="Container/Editor/Selection/Panel/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer" unique_id=1145766938]
+layout_mode = 2
+size_flags_horizontal = 2
+theme = ExtResource("1_8e7i7")
+theme_type_variation = &"HeaderSmall"
+text = "Select Skin"
+uppercase = true
+
+[node name="New" type="Button" parent="Container/Editor/Selection/Panel/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer" unique_id=1837412551]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("1_8e7i7")
-theme_override_font_sizes/font_size = 22
-text = "default"
+text = "New"
+icon = ExtResource("4_8fc04")
+
+[node name="Import" type="Button" parent="Container/Editor/Selection/Panel/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer" unique_id=624037123]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+text = "Import"
+
+[node name="Skins" type="VBoxContainer" parent="Container/Editor/Selection/Panel/MarginContainer/VBoxContainer" unique_id=416019857]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Transition" type="ColorRect" parent="." unique_id=257357972]
 self_modulate = Color(1, 1, 1, 0)

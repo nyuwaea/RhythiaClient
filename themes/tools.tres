@@ -2,12 +2,36 @@
 
 [ext_resource type="FontFile" uid="uid://dvb6fvy008bhv" path="res://fonts/Roboto-Medium.ttf" id="1_0yudv"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bw8wx"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.15273258, 0.16006324, 0.19666487, 0.6)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ubu3n"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.07, 0.07399999, 0.1, 0.6)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 4
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0yudv"]
 bg_color = Color(0, 0, 0, 0.09411765)
 border_width_left = 2
-border_width_top = 8
+border_width_top = 2
 border_width_right = 2
-border_width_bottom = 8
+border_width_bottom = 2
 border_color = Color(0.8, 0.8, 0.8, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v1mbv"]
@@ -25,6 +49,7 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
+border_color = Color(0.7764706, 0.627451, 0.9647059, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -35,29 +60,69 @@ expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vaco1"]
-bg_color = Color(0.11119685, 0.11119685, 0.11119681, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_egfk3"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 corner_detail = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qg588"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_color = Color(0, 0, 0, 0.6)
+border_blend = true
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vaco1"]
+bg_color = Color(0.14117648, 0.15294118, 0.22745098, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0yudv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hkivc"]
 bg_color = Color(0, 0, 0, 0.09411765)
-border_width_left = 8
+border_width_left = 2
 border_width_top = 2
-border_width_right = 8
+border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.8, 0.8, 0.8, 0)
 
 [resource]
 Button/fonts/font = ExtResource("1_0yudv")
+Button/styles/hover = SubResource("StyleBoxFlat_bw8wx")
+Button/styles/normal = SubResource("StyleBoxFlat_ubu3n")
 HSplitContainer/constants/autohide = 0
 HSplitContainer/styles/split_bar_background = SubResource("StyleBoxFlat_0yudv")
 Label/fonts/font = ExtResource("1_0yudv")
 Label/styles/normal = SubResource("StyleBoxEmpty_v1mbv")
+LineEdit/fonts/font = ExtResource("1_0yudv")
 LineEdit/styles/focus = SubResource("StyleBoxFlat_v1mbv")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_egfk3")
+LineEdit/styles/read_only = SubResource("StyleBoxFlat_qg588")
+MarginContainer/constants/margin_bottom = 4
+MarginContainer/constants/margin_left = 4
+MarginContainer/constants/margin_right = 4
+MarginContainer/constants/margin_top = 4
 Panel/styles/panel = SubResource("StyleBoxFlat_vaco1")
+PanelContainer/styles/panel = SubResource("StyleBoxEmpty_0yudv")
 VSplitContainer/constants/autohide = 0
 VSplitContainer/styles/split_bar_background = SubResource("StyleBoxFlat_hkivc")
