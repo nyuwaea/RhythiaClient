@@ -3,7 +3,9 @@
 [ext_resource type="Theme" uid="uid://cghiovcujtcmd" path="res://themes/tools.tres" id="1_8e7i7"]
 [ext_resource type="Script" uid="uid://31ifsk7c81fo" path="res://scripts/scenes/SkinEditor.cs" id="1_rshsi"]
 [ext_resource type="PackedScene" uid="uid://vp1nmsiqt5yv" path="res://scenes/game.tscn" id="3_qpw8j"]
+[ext_resource type="PackedScene" uid="uid://cyjhvma0mtdbi" path="res://prefabs/ui/skin_editor/skin_explorer_item.tscn" id="3_w48di"]
 [ext_resource type="Texture2D" uid="uid://men3chmi3esy" path="res://textures/ui/add.png" id="4_8fc04"]
+[ext_resource type="FontFile" uid="uid://cy0j4j61g2dv6" path="res://fonts/Roboto-Regular.ttf" id="4_r1eba"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8fc04"]
 bg_color = Color(0.0806, 0.08471666, 0.13, 1)
@@ -29,9 +31,10 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 corner_detail = 4
 
-[node name="SceneSkinEditor" type="Node" unique_id=1136685041 node_paths=PackedStringArray("backButton", "selectButton", "saveButton", "shareButton", "skinPath", "skinName", "categories", "selectionHolder", "selectionNewButton", "selectionImportButton", "importDialog", "selectionSkins", "dockSplit", "objectsSplit")]
+[node name="SceneSkinEditor" type="Node" unique_id=1136685041 node_paths=PackedStringArray("backButton", "importAsset", "selectButton", "saveButton", "shareButton", "skinPath", "skinName", "categories", "selectionHolder", "selectionNewButton", "selectionImportButton", "importDialog", "selectionSkins", "dockSplit", "objectsSplit")]
 script = ExtResource("1_rshsi")
 backButton = NodePath("Container/Header/Back")
+importAsset = NodePath("Container/Header/ImportAsset")
 selectButton = NodePath("Container/Header/Select")
 saveButton = NodePath("Container/Header/Save")
 shareButton = NodePath("Container/Header/Share")
@@ -93,6 +96,24 @@ theme = ExtResource("1_8e7i7")
 theme_override_font_sizes/font_size = 14
 text = "Return to Menu"
 
+[node name="ImportAsset" type="MenuButton" parent="Container/Header" unique_id=2023266159]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+text = "Import Asset"
+icon = ExtResource("4_8fc04")
+flat = false
+item_count = 3
+popup/item_0/text = "Image"
+popup/item_0/icon = ExtResource("4_8fc04")
+popup/item_0/id = 0
+popup/item_1/text = "Font"
+popup/item_1/icon = ExtResource("4_8fc04")
+popup/item_1/id = 1
+popup/item_2/text = "Shader"
+popup/item_2/icon = ExtResource("4_8fc04")
+popup/item_2/id = 2
+
 [node name="Select" type="Button" parent="Container/Header" unique_id=1134404612]
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -135,7 +156,7 @@ expand_to_text_length = true
 emoji_menu_enabled = false
 caret_blink = true
 
-[node name="SkinSuffix" type="Label" parent="Container/Header" unique_id=2091777065]
+[node name="SkinExtension" type="Label" parent="Container/Header" unique_id=2091777065]
 layout_mode = 2
 theme = ExtResource("1_8e7i7")
 theme_override_colors/font_color = Color(1, 1, 1, 0.5019608)
@@ -187,8 +208,8 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 theme = ExtResource("1_8e7i7")
-split_offsets = PackedInt32Array(320)
-split_offset = 320
+split_offsets = PackedInt32Array(426)
+split_offset = 426
 
 [node name="Objects" type="VSplitContainer" parent="Container/Editor/Docks" unique_id=1085796380]
 layout_mode = 2
@@ -219,10 +240,154 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.5019608)
 theme_override_styles/normal = SubResource("StyleBoxFlat_m0an3")
 text = "Explorer"
 
-[node name="Panel" type="Panel" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer" unique_id=1433520048]
+[node name="ScrollContainer" type="ScrollContainer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer" unique_id=179776420]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_8e7i7")
+scroll_hint_mode = 1
+
+[node name="Items" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer" unique_id=2019206620]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_8e7i7")
+theme_override_constants/separation = 0
+
+[node name="2D" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=1625000282 instance=ExtResource("3_w48di")]
+layout_mode = 2
+
+[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/2D/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1625000282, 1600225457) index="1" unique_id=1997104683]
+text = "2D"
+
+[node name="Delete" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/2D/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1625000282, 1600225457) index="3" unique_id=1973118426]
+visible = false
+
+[node name="Children" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/2D/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1625000282, 496209689) index="0" unique_id=145360695]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="3D" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=1624944905 instance=ExtResource("3_w48di")]
+layout_mode = 2
+
+[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1624944905, 1600225457) index="1" unique_id=1997104683]
+text = "3D"
+
+[node name="Delete" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1624944905, 1600225457) index="3" unique_id=1973118426]
+visible = false
+
+[node name="SkinExplorerItemTemplate" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1624944905, 496209689) index="0" unique_id=1166269243 instance=ExtResource("3_w48di")]
+layout_mode = 2
+
+[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate/HBoxContainer" parent_id_path=PackedInt32Array(1166269243, 1607124994) index="0" unique_id=896498017]
+visible = true
+
+[node name="Bottom" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate/HBoxContainer/Spacer/VBoxContainer" parent_id_path=PackedInt32Array(1166269243, 1667011931) index="1" unique_id=1449745204]
+visible = true
+
+[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1166269243, 1600225457) index="1" unique_id=1997104683]
+text = "Grid"
+
+[node name="Delete" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1166269243, 1600225457) index="3" unique_id=1973118426]
+visible = false
+
+[node name="SkinExplorerItemTemplate2" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1624944905, 496209689) index="1" unique_id=2010728591 instance=ExtResource("3_w48di")]
+layout_mode = 2
+
+[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate2/HBoxContainer" parent_id_path=PackedInt32Array(2010728591, 1607124994) index="0" unique_id=896498017]
+visible = true
+
+[node name="Bottom" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate2/HBoxContainer/Spacer/VBoxContainer" parent_id_path=PackedInt32Array(2010728591, 1667011931) index="1" unique_id=1449745204]
+visible = true
+
+[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate2/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(2010728591, 1600225457) index="1" unique_id=1997104683]
+text = "Cursor"
+
+[node name="Delete" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate2/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(2010728591, 1600225457) index="3" unique_id=1973118426]
+visible = false
+
+[node name="SkinExplorerItemTemplate3" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1624944905, 496209689) index="2" unique_id=138017185 instance=ExtResource("3_w48di")]
+layout_mode = 2
+
+[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate3/HBoxContainer" parent_id_path=PackedInt32Array(138017185, 1607124994) index="0" unique_id=896498017]
+visible = true
+
+[node name="Bottom" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate3/HBoxContainer/Spacer/VBoxContainer" parent_id_path=PackedInt32Array(138017185, 1667011931) index="1" unique_id=1449745204]
+visible = true
+
+[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate3/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(138017185, 1600225457) index="1" unique_id=1997104683]
+text = "Notes"
+
+[node name="Add" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate3/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(138017185, 1600225457) index="2" unique_id=665523420]
+visible = false
+
+[node name="Delete" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate3/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(138017185, 1600225457) index="3" unique_id=1973118426]
+visible = false
+
+[node name="SkinExplorerItemTemplate4" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1624944905, 496209689) index="3" unique_id=1810353135 instance=ExtResource("3_w48di")]
+layout_mode = 2
+
+[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer" parent_id_path=PackedInt32Array(1810353135, 1607124994) index="0" unique_id=896498017]
+visible = true
+
+[node name="Bottom" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/Spacer/VBoxContainer" parent_id_path=PackedInt32Array(1810353135, 1667011931) index="1" unique_id=1449745204]
+visible = true
+
+[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1810353135, 1600225457) index="1" unique_id=1997104683]
+text = "Surface"
+
+[node name="SkinExplorerItemTemplate4" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1810353135, 496209689) index="0" unique_id=2040990467 instance=ExtResource("3_w48di")]
+layout_mode = 2
+
+[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer" parent_id_path=PackedInt32Array(2040990467, 1607124994) index="0" unique_id=896498017]
+visible = true
+
+[node name="Bottom" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/Spacer/VBoxContainer" parent_id_path=PackedInt32Array(2040990467, 1667011931) index="1" unique_id=1449745204]
+visible = true
+
+[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(2040990467, 1600225457) index="1" unique_id=1997104683]
+text = "Accuracy"
+
+[node name="SkinExplorerItemTemplate5" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1810353135, 496209689) index="1" unique_id=1012468498 instance=ExtResource("3_w48di")]
+layout_mode = 2
+
+[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate5/HBoxContainer" parent_id_path=PackedInt32Array(1012468498, 1607124994) index="0" unique_id=896498017]
+visible = true
+
+[node name="Bottom" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate5/HBoxContainer/Spacer/VBoxContainer" parent_id_path=PackedInt32Array(1012468498, 1667011931) index="1" unique_id=1449745204]
+visible = true
+
+[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate5/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1012468498, 1600225457) index="1" unique_id=1997104683]
+text = "Combo"
+
+[node name="SkinExplorerItemTemplate6" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1810353135, 496209689) index="2" unique_id=1863630244 instance=ExtResource("3_w48di")]
+layout_mode = 2
+
+[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer" parent_id_path=PackedInt32Array(1863630244, 1607124994) index="0" unique_id=896498017]
+visible = true
+
+[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1863630244, 1600225457) index="1" unique_id=1997104683]
+text = "Image"
+
+[node name="SkinExplorerItemTemplate6" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1863630244, 496209689) index="0" unique_id=750566575 instance=ExtResource("3_w48di")]
+layout_mode = 2
+
+[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer" parent_id_path=PackedInt32Array(750566575, 1607124994) index="0" unique_id=896498017]
+visible = true
+
+[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(750566575, 1600225457) index="1" unique_id=1997104683]
+text = "Shader"
+
+[node name="Add" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(750566575, 1600225457) index="2" unique_id=665523420]
+visible = false
+
+[node name="SkinExplorerItemTemplate5" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1624944905, 496209689) index="4" unique_id=1489783553 instance=ExtResource("3_w48di")]
+layout_mode = 2
+
+[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate5/HBoxContainer" parent_id_path=PackedInt32Array(1489783553, 1607124994) index="0" unique_id=896498017]
+visible = true
+
+[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate5/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1489783553, 1600225457) index="1" unique_id=1997104683]
+text = "Surface"
 
 [node name="Properties" type="Panel" parent="Container/Editor/Docks/Objects" unique_id=454820064]
 layout_mode = 2
@@ -247,10 +412,279 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.5019608)
 theme_override_styles/normal = SubResource("StyleBoxFlat_m0an3")
 text = "Properties"
 
-[node name="Panel" type="Panel" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer" unique_id=1618420143]
+[node name="ScrollContainer" type="ScrollContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer" unique_id=1575412499]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_8e7i7")
+scroll_hint_mode = 1
+
+[node name="Items" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer" unique_id=641130665]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_8e7i7")
+
+[node name="SkinPropertyItemTemplate" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=257158000]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_8e7i7")
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate" unique_id=1600225457]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_8e7i7")
+
+[node name="Label" type="Label" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate/HBoxContainer" unique_id=76024151]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_8e7i7")
+theme_override_fonts/font = ExtResource("4_r1eba")
+text = "Image"
+
+[node name="Highlight" type="ColorRect" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate/HBoxContainer/Label" unique_id=799021546]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.047058824)
+
+[node name="Browse" type="Button" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate/HBoxContainer" unique_id=1057943672]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+text = "Browse"
+expand_icon = true
+
+[node name="SkinPropertyItemTemplate2" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=2048938797]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_8e7i7")
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate2" unique_id=1486951641]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_8e7i7")
+
+[node name="Label" type="Label" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate2/HBoxContainer" unique_id=952727561]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_8e7i7")
+theme_override_fonts/font = ExtResource("4_r1eba")
+text = "Shader File"
+
+[node name="Highlight" type="ColorRect" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate2/HBoxContainer/Label" unique_id=1234763744]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.047058824)
+
+[node name="Browse" type="Button" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate2/HBoxContainer" unique_id=1478642975]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+text = "Browse"
+expand_icon = true
+
+[node name="SkinPropertyItemTemplate6" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=1628451101]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_8e7i7")
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate6" unique_id=1732526536]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_8e7i7")
+
+[node name="Label" type="Label" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate6/HBoxContainer" unique_id=1382238976]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_8e7i7")
+theme_override_fonts/font = ExtResource("4_r1eba")
+text = "Font"
+
+[node name="Highlight" type="ColorRect" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate6/HBoxContainer/Label" unique_id=1838510051]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.047058824)
+
+[node name="Browse" type="Button" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate6/HBoxContainer" unique_id=595988802]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+text = "Browse"
+expand_icon = true
+
+[node name="SkinPropertyItemTemplate3" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=1382544793]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_8e7i7")
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate3" unique_id=117453533]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_8e7i7")
+
+[node name="Label" type="Label" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate3/HBoxContainer" unique_id=821551817]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_8e7i7")
+theme_override_fonts/font = ExtResource("4_r1eba")
+text = "Position"
+
+[node name="Highlight" type="ColorRect" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate3/HBoxContainer/Label" unique_id=1143701338]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.047058824)
+
+[node name="X" type="LineEdit" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate3/HBoxContainer" unique_id=521883584]
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+text = "0"
+placeholder_text = "0"
+alignment = 1
+
+[node name="Y" type="LineEdit" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate3/HBoxContainer" unique_id=1177064775]
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+text = "0"
+placeholder_text = "0"
+alignment = 1
+
+[node name="Z" type="LineEdit" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate3/HBoxContainer" unique_id=1990917849]
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+text = "0"
+placeholder_text = "0"
+alignment = 1
+
+[node name="SkinPropertyItemTemplate4" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=1495747725]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_8e7i7")
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate4" unique_id=81951495]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_8e7i7")
+
+[node name="Label" type="Label" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate4/HBoxContainer" unique_id=516244528]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_8e7i7")
+theme_override_fonts/font = ExtResource("4_r1eba")
+text = "Rotation"
+
+[node name="Highlight" type="ColorRect" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate4/HBoxContainer/Label" unique_id=2144349322]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.047058824)
+
+[node name="X" type="LineEdit" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate4/HBoxContainer" unique_id=1981800243]
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+text = "0"
+placeholder_text = "0"
+alignment = 1
+expand_to_text_length = true
+
+[node name="Y" type="LineEdit" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate4/HBoxContainer" unique_id=349942509]
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+text = "0"
+placeholder_text = "0"
+alignment = 1
+expand_to_text_length = true
+
+[node name="Z" type="LineEdit" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate4/HBoxContainer" unique_id=2115944348]
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+text = "0"
+placeholder_text = "0"
+alignment = 1
+expand_to_text_length = true
+
+[node name="SkinPropertyItemTemplate5" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=1883165779]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_8e7i7")
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate5" unique_id=19256290]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_8e7i7")
+
+[node name="Label" type="Label" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate5/HBoxContainer" unique_id=215376604]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_8e7i7")
+theme_override_fonts/font = ExtResource("4_r1eba")
+text = "Text Color"
+
+[node name="Highlight" type="ColorRect" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate5/HBoxContainer/Label" unique_id=270917846]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.047058824)
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items/SkinPropertyItemTemplate5/HBoxContainer" unique_id=603537283]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_8e7i7")
+text = "Color"
+color = Color(1, 1, 1, 1)
 
 [node name="Preview" type="Panel" parent="Container/Editor/Docks" unique_id=630671082]
 layout_mode = 2
@@ -292,9 +726,10 @@ stretch = true
 mouse_target = true
 
 [node name="SubViewport" type="SubViewport" parent="Container/Editor/Docks/Preview/MarginContainer/VBoxContainer/Panel/SubViewportContainer" unique_id=864137372]
+own_world_3d = true
 handle_input_locally = false
 gui_disable_input = true
-size = Vector2i(924, 609)
+size = Vector2i(818, 609)
 render_target_update_mode = 4
 
 [node name="SceneGame" parent="Container/Editor/Docks/Preview/MarginContainer/VBoxContainer/Panel/SubViewportContainer/SubViewport" unique_id=909809067 instance=ExtResource("3_qpw8j")]
@@ -380,3 +815,15 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
+
+[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/2D"]
+[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D"]
+[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate"]
+[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate2"]
+[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate3"]
+[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4"]
+[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4"]
+[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate5"]
+[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6"]
+[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6"]
+[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate5"]

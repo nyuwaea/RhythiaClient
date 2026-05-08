@@ -1,6 +1,7 @@
 [gd_resource type="Theme" format=3 uid="uid://cghiovcujtcmd"]
 
 [ext_resource type="FontFile" uid="uid://dvb6fvy008bhv" path="res://fonts/Roboto-Medium.ttf" id="1_0yudv"]
+[ext_resource type="FontFile" uid="uid://cy0j4j61g2dv6" path="res://fonts/Roboto-Regular.ttf" id="2_v1mbv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bw8wx"]
 content_margin_left = 4.0
@@ -26,12 +27,37 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 corner_detail = 4
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vygtf"]
+bg_color = Color(0.21960784, 0.23137255, 0.31764707, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qlpxi"]
+bg_color = Color(0.27450982, 0.2901961, 0.4, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qt3jj"]
+bg_color = Color(0.7764706, 0.627451, 0.9647059, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x4s51"]
+content_margin_top = 3.0
+content_margin_bottom = 3.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0yudv"]
 bg_color = Color(0, 0, 0, 0.09411765)
 border_width_left = 2
-border_width_top = 2
+border_width_top = 4
 border_width_right = 2
-border_width_bottom = 2
+border_width_bottom = 4
 border_color = Color(0.8, 0.8, 0.8, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v1mbv"]
@@ -98,11 +124,26 @@ corner_detail = 4
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0yudv"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x4s51"]
+bg_color = Color(0.24705882, 0.2627451, 0.3647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8wr3a"]
+bg_color = Color(0.14117648, 0.15294118, 0.22745098, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hkivc"]
+content_margin_left = 3.0
+content_margin_right = 3.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hkivc"]
 bg_color = Color(0, 0, 0, 0.09411765)
-border_width_left = 2
+border_width_left = 4
 border_width_top = 2
-border_width_right = 2
+border_width_right = 4
 border_width_bottom = 2
 border_color = Color(0.8, 0.8, 0.8, 0)
 
@@ -110,11 +151,16 @@ border_color = Color(0.8, 0.8, 0.8, 0)
 Button/fonts/font = ExtResource("1_0yudv")
 Button/styles/hover = SubResource("StyleBoxFlat_bw8wx")
 Button/styles/normal = SubResource("StyleBoxFlat_ubu3n")
+HScrollBar/constants/padding_top = 2
+HScrollBar/styles/grabber = SubResource("StyleBoxFlat_vygtf")
+HScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_qlpxi")
+HScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_qt3jj")
+HScrollBar/styles/scroll = SubResource("StyleBoxEmpty_x4s51")
 HSplitContainer/constants/autohide = 0
 HSplitContainer/styles/split_bar_background = SubResource("StyleBoxFlat_0yudv")
-Label/fonts/font = ExtResource("1_0yudv")
+Label/fonts/font = ExtResource("2_v1mbv")
 Label/styles/normal = SubResource("StyleBoxEmpty_v1mbv")
-LineEdit/fonts/font = ExtResource("1_0yudv")
+LineEdit/fonts/font = ExtResource("2_v1mbv")
 LineEdit/styles/focus = SubResource("StyleBoxFlat_v1mbv")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_egfk3")
 LineEdit/styles/read_only = SubResource("StyleBoxFlat_qg588")
@@ -122,7 +168,20 @@ MarginContainer/constants/margin_bottom = 4
 MarginContainer/constants/margin_left = 4
 MarginContainer/constants/margin_right = 4
 MarginContainer/constants/margin_top = 4
+MenuButton/font_sizes/font_size = 14
+MenuButton/fonts/font = ExtResource("1_0yudv")
 Panel/styles/panel = SubResource("StyleBoxFlat_vaco1")
 PanelContainer/styles/panel = SubResource("StyleBoxEmpty_0yudv")
+PopupMenu/constants/item_end_padding = 4
+PopupMenu/constants/item_start_padding = 4
+PopupMenu/fonts/font = ExtResource("2_v1mbv")
+PopupMenu/fonts/title_font = ExtResource("1_0yudv")
+PopupMenu/styles/hover = SubResource("StyleBoxFlat_x4s51")
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_8wr3a")
+VScrollBar/constants/padding_left = 2
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_vygtf")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_qlpxi")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_qt3jj")
+VScrollBar/styles/scroll = SubResource("StyleBoxEmpty_hkivc")
 VSplitContainer/constants/autohide = 0
 VSplitContainer/styles/split_bar_background = SubResource("StyleBoxFlat_hkivc")

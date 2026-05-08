@@ -14,6 +14,8 @@ public partial class SkinEditor : BaseScene
 	[Export]
 	private Button backButton;
 	[Export]
+	private MenuButton importAsset;
+	[Export]
 	private Button selectButton;
 	[Export]
 	private Button saveButton;
@@ -52,6 +54,21 @@ public partial class SkinEditor : BaseScene
 			// TODO: Check and prompt unsaved changes
 			SceneManager.Load("res://scenes/main_menu.tscn");
 		};
+
+		var importAssetPopup = importAsset.GetPopup();
+
+		importAssetPopup.IndexPressed += i => {
+			switch (importAssetPopup.GetItemText((int)i).ToLower())
+			{
+				case "image":
+					break;
+				case "font":
+					break;
+				case "shader":
+					break;
+			}
+		};
+
 		selectButton.Pressed += () => { select(); };
 		saveButton.Pressed += save;
 		shareButton.Pressed += share;
@@ -91,7 +108,7 @@ public partial class SkinEditor : BaseScene
 
 		var viewportSize = (Vector2I)GetViewport().GetVisibleRect().Size;
 
-		dockSplit.SplitOffsets = [viewportSize.X / 4];
+		dockSplit.SplitOffsets = [viewportSize.X / 3];
 		objectsSplit.SplitOffsets = [viewportSize.Y / 2];
 
 		select();
@@ -175,6 +192,7 @@ public partial class SkinEditor : BaseScene
 
 			var skinSelect = skinSelectTemplate.Instantiate<SkinSelect>();
 
+			skinSelect.Name = skin;
 			skinSelect.Label.Text = skin;
 			// Disable Edit and Delete buttons if needed here
 
