@@ -126,6 +126,12 @@ public partial class SettingsProfile
     public SettingsItem<double> NoteOpacity { get; private set; }
 
     /// <summary>
+    /// Adjusts the note opacity curve, a higher value will make any sort of transparency appear more quickly
+    /// </summary>
+    [Order]
+    public SettingsItem<double> NoteOpacityExponent { get; private set; }
+
+    /// <summary>
     /// Overrides the skin's note mesh
     /// </summary>
     [Order]
@@ -586,6 +592,20 @@ public partial class SettingsProfile
                 Step = 0.05f,
                 MinValue = 0,
                 MaxValue = 1
+            }
+        };
+
+        NoteOpacityExponent = new(1.25)
+        {
+            Id = "NoteOpacityExponent",
+            Title = "Note Opacity Exponent",
+            Description = "Adjusts the note opacity curve, a higher value will make any sort of transparency appear more quickly",
+            Section = SettingsSection.Visual,
+            Slider = new()
+            {
+                Step = 0.05f,
+                MinValue = 1,
+                MaxValue = 2
             }
         };
 

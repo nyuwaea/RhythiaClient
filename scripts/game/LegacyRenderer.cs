@@ -32,6 +32,7 @@ public partial class LegacyRenderer : MultiMeshInstance3D
         bool pushback = LegacyRunner.CurrentAttempt.IsReplay ? LegacyRunner.CurrentAttempt.Replays[0].Pushback : settings.Pushback.Value;
         float hitWindowDepth = pushback ? (float)Constants.HIT_WINDOW * ar / 1000 : 0;
         float noteOpacity = (float)settings.NoteOpacity;
+        float noteOpacityExponent = (float)settings.NoteOpacityExponent;
 
         if (noteOpacity > 1)
         {
@@ -74,7 +75,7 @@ public partial class LegacyRenderer : MultiMeshInstance3D
             Color color = SkinManager.Instance.Skin.NoteColors[note.Index % SkinManager.Instance.Skin.NoteColors.Length];
 
             transform.Origin = new Vector3(note.X, note.Y, -depth);
-            color.A = Math.Clamp(alpha * noteOpacity, 0, 1);
+            color.A = Math.Clamp((float)Math.Pow(alpha * noteOpacity, noteOpacityExponent), 0, 1);
             Multimesh.SetInstanceTransform(j, transform);
             Multimesh.SetInstanceColor(j, color);
         }
