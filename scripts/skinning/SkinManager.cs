@@ -1,6 +1,7 @@
 using System.IO;
 using Godot;
 using Tomlyn;
+using Skinning;
 
 [GlobalClass]
 public partial class SkinManager : Node
@@ -18,6 +19,9 @@ public partial class SkinManager : Node
     public override void _Ready()
     {
         Instance = this;
+
+        SkinProfileNew skin = new();
+        
     }
 
     public static void Save()
