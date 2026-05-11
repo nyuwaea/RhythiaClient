@@ -8,7 +8,8 @@ public partial class Cursor : SkinObject
     {
         Persistent = true;
         Properties = new() {
-            ["Size"] = new(Vector2.One)
+            ["Size"] = new(Vector2.One),
+            ["Image"] = new(new Image())
         };
     }
 }

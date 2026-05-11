@@ -21,7 +21,7 @@ public partial class SkinManager : Node
         Instance = this;
 
         SkinProfileNew skin = new();
-        
+
     }
 
     public static void Save()
