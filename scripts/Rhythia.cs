@@ -133,14 +133,16 @@ public partial class Rhythia : Node
 
     public static void Quit()
     {
-        var settings = SettingsManager.Instance.Settings;
-
         if (Quitting)
         {
             return;
         }
 
         Quitting = true;
+
+        Logger.Log("Attempting to quit...");
+
+        var settings = SettingsManager.Instance.Settings;
 
         if (!LegacyRunner.CurrentAttempt.IsReplay)
         {
@@ -158,7 +160,10 @@ public partial class Rhythia : Node
         Discord.Client.Dispose();
 
         Tween quitTween = Instance.CreateTween();
-        quitTween.TweenCallback(Callable.From(() => { Instance.GetTree().Quit(); })).SetDelay(0.5);
+        quitTween.TweenCallback(Callable.From(() => {
+            Logger.Log("Quitting");
+            Instance.GetTree().Quit();
+        })).SetDelay(0.5);
     }
 
     public override void _Notification(int what)
