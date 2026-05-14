@@ -224,8 +224,8 @@ public partial class Runner : Node3D
 				Attempt.Health = Math.Min(100, Attempt.Health + Attempt.HealthStep / 1.75);
 				if (!Attempt.IsReplay)
 				{
-					Stats.NotesHit++;
-					if (Attempt.Combo > Stats.HighestCombo) Stats.HighestCombo = Attempt.Combo;
+					Stats.Instance.NotesHit++;
+					if (Attempt.Combo > Stats.Instance.HighestCombo) Stats.Instance.HighestCombo = Attempt.Combo;
 					Attempt.HitsInfo[noteIndex] = lateness;
 				}
 				if (Attempt.ComboMultiplierProgress == Attempt.ComboMultiplierIncrement)
@@ -249,7 +249,7 @@ public partial class Runner : Node3D
 				Attempt.HealthStep = Math.Min(Attempt.HealthStep * 1.2, 100);
 				if (!Attempt.IsReplay)
 				{
-					Stats.NotesMissed++;
+					Stats.Instance.NotesMissed++;
 					Attempt.HitsInfo[noteIndex] = -1;
 				}
 				if (!Attempt.IsReplay && Attempt.Health <= 0 && Attempt.Alive)
@@ -368,8 +368,8 @@ public partial class Runner : Node3D
 
 		if (!Attempt.IsReplay)
 		{
-			Stats.GamePlaytime += (Time.GetTicksUsec() - Attempt.TimeStarted) / 1000000;
-			Stats.TotalDistance += (ulong)Attempt.DistanceMM;
+			Stats.Instance.GamePlaytime += (Time.GetTicksUsec() - Attempt.TimeStarted) / 1000000;
+			Stats.Instance.TotalDistance += (ulong)Attempt.DistanceMM;
 
 			if (Attempt.StartFrom == 0)
 			{
@@ -387,20 +387,21 @@ public partial class Runner : Node3D
 
 				if (Attempt.Qualifies)
 				{
-					Stats.Passes++;
-					Stats.TotalScore += Attempt.Score;
+					Stats.Instance.Passes++;
+					Stats.Instance.TotalScore += Attempt.Score;
 
 					if (Attempt.Accuracy == 100)
 					{
-						Stats.FullCombos++;
+						Stats.Instance.FullCombos++;
 					}
 
-					if (Attempt.Score > Stats.HighestScore)
+					if (Attempt.Score > Stats.Instance.HighestScore)
 					{
-						Stats.HighestScore = Attempt.Score;
+						Stats.Instance.HighestScore = Attempt.Score;
 					}
-
-					Stats.PassAccuracies.Add(Attempt.Accuracy);
+					
+                    Stats.Instance.AverageAccuracy = (Stats.Instance.AverageAccuracy + Attempt.Accuracy) / Stats.Instance.Passes;
+					// Stats.Instance.PassAccuracies.Add(Attempt.Accuracy);
 				}
 			}
 		}

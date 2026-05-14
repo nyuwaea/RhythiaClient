@@ -39,7 +39,7 @@ public partial class TrailRenderer : Node
 
     private void processTrailSpawning(double delta, ulong now)
     {
-        float trailDetail = Mathf.Clamp(SettingsManager.Instance.Settings.TrailDetail.Value, trail_min_detail, trail_max_detail);
+        float trailDetail = (float)Mathf.Clamp(SettingsManager.Instance.Settings.TrailDetail.Value, trail_min_detail, trail_max_detail);
         float wantedEmission = trailDetail / trail_max_detail;
 
         float rate = wantedEmission * trail_spawn_rate;
@@ -104,7 +104,7 @@ public partial class TrailRenderer : Node
             //2. find amount of steps till it fades
             //3. lerp from 1 (fully opaque) to 0 (fully transparent) with interpolated steps
             float elapsed = (now - trail.Time) / 1_000_000f;
-            float step = Math.Clamp(elapsed / SettingsManager.Instance.Settings.TrailTime.Value, 0f, 1f);
+            float step = (float)Math.Clamp(elapsed / SettingsManager.Instance.Settings.TrailTime.Value, 0f, 1f);
             float alpha = Mathf.Lerp(1, 0, step);
             cursorTrail.Multimesh.SetInstanceTransform(j, transform);
             cursorTrail.Multimesh.SetInstanceColor(j, new Color(1, 1, 1, alpha));

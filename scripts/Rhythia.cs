@@ -171,7 +171,7 @@ public partial class Rhythia : Node
         if (what == NotificationWMCloseRequest)
         {
             if (SceneManager.Scene != null && SceneManager.Scene is GameScene)
-                Stats.RageQuits++;
+                Stats.Instance.RageQuits++;
             Quit();
         }
         else if (what == NotificationApplicationFocusOut)

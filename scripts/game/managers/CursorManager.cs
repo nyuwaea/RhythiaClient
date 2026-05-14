@@ -40,7 +40,7 @@ public partial class CursorManager : Node
         EmitSignalOnCursorUpdated(inputDelta);
 
         sensitivity = (float)(runner.Attempt.IsReplay ? runner.Attempt.Replays[0].Sensitivity : runner.Attempt.Settings.Sensitivity);
-        sensitivity *= runner.Attempt.Settings.FoV.Value / 70f;
+        sensitivity *= (float)runner.Attempt.Settings.FoV.Value / 70f;
 
         if (runner.Attempt.Settings.AbsoluteInput || runner.Attempt.IsReplay)
             repositionAbsolute();
@@ -120,5 +120,5 @@ public partial class CursorManager : Node
         runner.Attempt.RawCursorPosition = Vector2.Zero;
         runner.Attempt.CursorPosition = Vector2.Zero;
     }
-    private void updateCursorRotation(double delta) => cursorMesh.RotationDegrees += Vector3.Back * SettingsManager.Instance.Settings.CursorRotation * (float)delta;
+    private void updateCursorRotation(double delta) => cursorMesh.RotationDegrees += Vector3.Back * (float)SettingsManager.Instance.Settings.CursorRotation * (float)delta;
 }

@@ -70,7 +70,7 @@ public partial class GameScene : BaseScene
 
 			if (SettingsManager.Shown)
 			{
-				SettingsManager.HideMenu();
+				SettingsMenu.Instance.HideMenu();
 			}
 			else
 			{
@@ -108,7 +108,7 @@ public partial class GameScene : BaseScene
 			}
 		};
 
-		PlayerInputController.OnToggleFade += () => Attempt.Settings.FadeOut.Value = !Attempt.Settings.FadeOut;
+		PlayerInputController.OnToggleFade += () => Attempt.Settings.FadeOut.Value = Attempt.Settings.FadeOut.Value > 0 ? 0 : 100;
 		PlayerInputController.OnTogglePushback += () => Attempt.Settings.Pushback.Value = !Attempt.Settings.Pushback;
 		PlayerInputController.OnRestartPressed += Restart;
 
@@ -123,7 +123,7 @@ public partial class GameScene : BaseScene
 		menuButtonsHolder.GetNode<Button>("Resume").Pressed += HideMenu;
 		menuButtonsHolder.GetNode<Button>("Restart").Pressed += Restart;
 		menuButtonsHolder.GetNode<Button>("Settings").Pressed += () => {
-			SettingsManager.ShowMenu();
+			SettingsMenu.Instance.ShowMenu();
 		};
 		menuButtonsHolder.GetNode<Button>("Quit").Pressed += () => {
 			if (Attempt.Alive)

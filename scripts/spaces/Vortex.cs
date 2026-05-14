@@ -52,14 +52,14 @@ public partial class Vortex : BaseSpace
         base._Process(delta);
 
         // nasty temporary
-        if (LegacyRunner.CurrentAttempt.LastHitColour != lastHitColors[0])
+        if (GameScene.Instance.Runner.Attempt.LastHitColour != lastHitColors[0])
         {
             for (int i = lastHitColors.Length - 1; i > 0; i--)
             {
                 lastHitColors[i] = lastHitColors[i - 1];
             }
 
-            lastHitColors[0] = LegacyRunner.CurrentAttempt.LastHitColour;
+            lastHitColors[0] = GameScene.Instance.Runner.Attempt.LastHitColour;
         }
         //
 

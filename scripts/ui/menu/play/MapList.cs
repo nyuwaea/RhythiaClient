@@ -367,22 +367,22 @@ public partial class MapList : Panel, ISkinnable
 
     public bool Select(Map map, bool playIfPreSelected = true)
     {
-        if (map == null)
-        {
-            return false;
-        }
+        // if (map == null)
+        // {
+        //     return false;
+        // }
 
-        if (selectedMapID == map.Name)
-        {
-            if (playIfPreSelected)
-            {
-                LegacyRunner.Play(map, Lobby.Speed, Lobby.StartFrom, Lobby.Modifiers);
-            }
+        // if (selectedMapID == map.Name)
+        // {
+        //     if (playIfPreSelected)
+        //     {
+        //         LegacyRunner.Play(map, Lobby.Speed, Lobby.StartFrom, Lobby.Modifiers);
+        //     }
 
-            Focus(map);
-            SceneManager.Space?.UpdateMap(map);
-            return false;
-        }
+        //     Focus(map);
+        //     SceneManager.Space?.UpdateMap(map);
+        //     return false;
+        // }
 
         if (selectedMapID != null && selectedMapID != map.Name && mapButtons.TryGetValue(selectedMapID, out MapButton value))
         {

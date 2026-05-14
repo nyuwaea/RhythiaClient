@@ -47,7 +47,8 @@ public partial class ReplayManager : Node
 		_file.StoreDouble(settings.ApproachRate);
 		_file.StoreDouble(settings.ApproachDistance);
 		_file.StoreDouble(settings.FadeIn);
-		_file.Store8((byte)(settings.FadeOut ? 1 : 0));
+		// _file.Store8((byte)(settings.FadeOut ? 1 : 0));
+		_file.Store8((byte)(settings.FadeOut > 0 ? 1 : 0));
 		_file.Store8((byte)(settings.Pushback ? 1 : 0));
 		_file.StoreDouble(settings.CameraParallax);
 		_file.StoreDouble(settings.FoV.Value);
