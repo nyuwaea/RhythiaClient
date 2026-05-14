@@ -124,7 +124,7 @@ public partial class Rhythia : Node
                     }
                 }
 
-                LegacyRunner.Play(MapParser.Decode(matching[0].MapFilePath), matching[0].Speed, matching[0].StartFrom, matching[0].Modifiers, null, [.. matching]);
+                GameScene.Play(MapParser.Decode(matching[0].MapFilePath), matching[0].Speed, matching[0].StartFrom, matching[0].Modifiers, null, [.. matching]);
             }
         }));
 
@@ -139,14 +139,14 @@ public partial class Rhythia : Node
         }
 
         Quitting = true;
+        
+//         Logger.Log("Attempting to quit...");
 
-        Logger.Log("Attempting to quit...");
+//         var settings = SettingsManager.Instance.Settings;
 
-        var settings = SettingsManager.Instance.Settings;
-
-        if (!LegacyRunner.CurrentAttempt.IsReplay)
+        if (GameScene.Attempt != null && !GameScene.Attempt.IsReplay)
         {
-            LegacyRunner.CurrentAttempt.Stop();
+            GameScene.Instance.Runner.Stop();
         }
 
         Stats.Instance.TotalPlaytime += (Time.GetTicksUsec() - Constants.STARTED) / 1000000;
@@ -170,11 +170,8 @@ public partial class Rhythia : Node
     {
         if (what == NotificationWMCloseRequest)
         {
-            if (SceneManager.Scene != null && SceneManager.Scene is LegacyRunner)
-            {
-                Stats.Instance.RageQuits++;
-            }
-
+            if (SceneManager.Scene != null && SceneManager.Scene is GameScene)
+                Stats.RageQuits++;
             Quit();
         }
         else if (what == NotificationApplicationFocusOut)
