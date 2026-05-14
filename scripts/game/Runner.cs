@@ -159,7 +159,7 @@ public partial class Runner : Node3D
 			{
 				Attempt.Map.Notes[i].Hittable = true;
 
-				SoundManager.HitSound.Play();
+				SoundManager.PlayHitSound();
 			}
 
 			ToProcess++;
@@ -238,7 +238,7 @@ public partial class Runner : Node3D
 				}
 				break;
 			case HitResult.Miss:
-				SoundManager.MissSound.Play();
+				SoundManager.PlayMissSound();
 				Attempt.Misses++;
 				Attempt.Sum++;
 				Attempt.Accuracy = Mathf.Floor((float)Attempt.Hits / Attempt.Sum * 10000) / 100;
@@ -285,6 +285,7 @@ public partial class Runner : Node3D
 		SpinCamera = Attempt.Mods["Spin"];
 		Camera.Fov = (float)(Attempt.IsReplay ? Attempt.Replays[0].FoV : settings.FoV.Value);
 		Notes.Multimesh.Mesh = SkinManager.Instance.Skin.NoteMesh;
+		SoundManager.BeginGameplayScope(Attempt.Map);
 		Playing = true;
 
 		if (Attempt.Map.AudioBuffer != null)
