@@ -279,11 +279,11 @@ Button/styles/pressed = SubResource("StyleBoxFlat_y08lf")
 
 [node name="SceneGame" type="Node" unique_id=909809067 node_paths=PackedStringArray("Runner", "Menu", "ReplayManager")]
 script = ExtResource("1_bhx41")
-UseGameSpace = true
-AddSpaceAsChild = true
 Runner = NodePath("Runner")
 Menu = NodePath("Menu")
 ReplayManager = NodePath("ReplayManager")
+UseGameSpace = true
+AddSpaceAsChild = true
 
 [node name="CursorManager" type="Node" parent="." unique_id=862696440 node_paths=PackedStringArray("runner", "playerInputController", "replayManager", "cursorMesh", "camera")]
 script = ExtResource("2_nepv3")
@@ -726,6 +726,7 @@ expand = true
 
 [node name="PauseHud" type="Sprite3D" parent="Runner" unique_id=1594331476]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -6)
+visible = false
 pixel_size = 0.012
 no_depth_test = true
 render_priority = 104
