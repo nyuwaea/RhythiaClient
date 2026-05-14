@@ -8,6 +8,11 @@ public partial class Progress : UIComponent
 	public override void Init()
 	{
 		label = GetNode<Label3D>("Label");
+
+        if (Runner.Attempt.Settings.SuperSimpleHUD)
+        {
+            label.Visible = false;
+        }
 	}
 
     public override void Process(double delta, Attempt attempt)

@@ -14,6 +14,12 @@ public partial class Combo : UIComponent
 	public override void Init()
 	{
 		label = GetNode<Label3D>("Label");
+
+		if (Runner.Attempt.Settings.SuperSimpleHUD)
+		{
+			label.Visible = false;
+		}
+
 		Runner.AttemptStatsUpdated += OnStatsUpdated;
 	}
 

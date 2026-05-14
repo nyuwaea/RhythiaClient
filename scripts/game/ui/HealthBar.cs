@@ -25,6 +25,12 @@ public partial class HealthBar : UIComponent
 		healthBarTexture.Texture = SkinManager.Instance.Skin.HealthImage;
 		healthBarBGTexture.Texture = SkinManager.Instance.Skin.HealthBackgroundImage;
 
+		if (Runner.Attempt.Settings.SuperSimpleHUD)
+		{
+			healthBarTexture.Visible = false;
+			healthBarBGTexture.Visible = false;
+		}
+
 		Runner.AttemptStatsUpdated += OnStatsUpdated;
 	}
 

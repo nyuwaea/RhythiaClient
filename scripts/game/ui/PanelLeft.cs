@@ -33,7 +33,7 @@ public partial class PanelLeft : UIComponent
 
 		Runner.AttemptStatsUpdated += OnStatsUpdated;
 
-		if (Runner.Attempt.Settings.SimpleHUD)
+		if (Runner.Attempt.Settings.SimpleHUD || Runner.Attempt.Settings.SuperSimpleHUD)
 		{
 			Godot.Collections.Array<Node> widgets = viewport.GetChildren();
             foreach (Node widget in widgets)

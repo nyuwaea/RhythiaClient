@@ -36,7 +36,7 @@ public partial class PanelRight : UIComponent
 		Runner.AttemptStatsUpdated += OnStatsUpdated;
 		Runner.HitResultChanged += OnHitStateChanged;
 
-		if (Runner.Attempt.Settings.SimpleHUD)
+		if (Runner.Attempt.Settings.SimpleHUD || Runner.Attempt.Settings.SuperSimpleHUD)
 		{
 			Godot.Collections.Array<Node> widgets = viewport.GetChildren();
             foreach (Node widget in widgets)
