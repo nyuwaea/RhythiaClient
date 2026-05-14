@@ -26,8 +26,7 @@ public partial class LegacyRenderer : MultiMeshInstance3D
         float ar = (float)(Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].ApproachRate : settings.ApproachRate.Value);
         float ad = (float)(Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].ApproachDistance : settings.ApproachDistance.Value);
         float at = ad / ar;
-        // float fadeIn = (float)(Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].FadeIn : settings.FadeIn.Value) / 100;
-        float fadeIn = (float)(Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].FadeIn : settings.FadeIn.Value);
+        float fadeIn = (float)(Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].FadeIn : settings.FadeIn.Value) / 100;
         // bool fadeOut = Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].FadeOut : settings.FadeOut.Value;
         float fadeOut = (float)(Runner.Attempt.IsReplay ? (Runner.Attempt.Replays[0].FadeOut ? 100 : 0) : settings.FadeOut.Value) / 100;
         bool pushback = Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].Pushback : settings.Pushback.Value;
@@ -44,7 +43,7 @@ public partial class LegacyRenderer : MultiMeshInstance3D
 
         noteOpacity = Math.Clamp(noteOpacity, 0, 1);
 
-        float noteSize = (float)(Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].NoteSize : settings.NoteSize.Value) / 4;
+        float noteSize = (float)(Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].NoteSize : settings.NoteSize.Value) / 2;
         
         // will fix this after everything works and is merged
         
