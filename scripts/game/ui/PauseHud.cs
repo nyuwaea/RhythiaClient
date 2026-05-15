@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Reflection.Metadata.Ecma335;
 
 public partial class PauseHud : UIComponent
 {
@@ -14,7 +15,7 @@ public partial class PauseHud : UIComponent
 	// Time saved at time of initially pausing
 	private double timePausedAt = 0;
 	// Cooldown after pause ends, this exists to prevent pause spamming
-	private float pauseCooldown = 1000f;
+	private float pauseCooldown = 0;
 
 	/*
 	-1 = paused
@@ -92,6 +93,12 @@ public partial class PauseHud : UIComponent
 
 	public void OnStartTempPause(Attempt attempt)
 	{
+
+		if (!isPauseable())
+		{
+			return;
+		}
+
 		timePausedAt = attempt.Progress;
 		pauseState = -1;
 		Runner.Playing = false;
@@ -126,5 +133,26 @@ public partial class PauseHud : UIComponent
 	}
 
 	private bool isPaused() => pauseState < 0;
+
+	private bool isPauseable()
+	{
+		if (Runner.Attempt.IsReplay) return false;
+
+		if (GameScene.Instance.MenuShown) return false;
+
+		// if (pauseCooldown <= 0) return false;
+
+		if (!Runner.Attempt.Settings.SpaceToPause) return false;
+
+		// Only allow pausing after 1 second of the map has started playing
+		if (Runner.Attempt.Progress <= 1000f * Runner.Attempt.Speed) return false;
+
+		// Disallow pausing after map is done
+		if (Runner.Attempt.Progress >= Runner.Attempt.MapLength) return false;
+
+		return true;
+	}
+
+
 
 }
