@@ -7,6 +7,9 @@ public partial class GameScene : BaseScene
 	[Export] public Runner Runner;
 	[Export] public Panel Menu;
 	[Export] public ReplayManager ReplayManager;
+
+	[Signal] public delegate void StartTempPauseEventHandler(Attempt attempt);
+
 	public PlayerInputController PlayerInputController { get; private set; }
     public CursorManager CursorManager { get; private set; }
 	public static Attempt Attempt;
@@ -86,7 +89,7 @@ public partial class GameScene : BaseScene
 			}
 		};
 
-		PlayerInputController.OnPauseOrSkip += () =>
+		PlayerInputController.OnPauseOrSkipPressed += () =>
 		{
 			if (Attempt.IsReplay)
 			{
@@ -103,10 +106,20 @@ public partial class GameScene : BaseScene
 			else
 			{
 				if (Lobby.Players.Count > 1) return;
-
 				Runner.Skip();
+
+				// Space To Pause
+				if (!Attempt.CanSkip && Attempt.Settings.SpaceToPause)
+				{
+					EmitSignal(SignalName.StartTempPause, Attempt);
+				}
 			}
 		};
+
+		// PlayerInputController.OnPauseOrSkipReleased += () =>
+		// {
+			
+		// };
 
 		PlayerInputController.OnToggleFade += () => Attempt.Settings.FadeOut.Value = Attempt.Settings.FadeOut.Value > 0 ? 0 : 100;
 		PlayerInputController.OnTogglePushback += () => Attempt.Settings.Pushback.Value = !Attempt.Settings.Pushback;
