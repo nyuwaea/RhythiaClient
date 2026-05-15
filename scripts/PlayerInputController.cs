@@ -18,7 +18,8 @@ public partial class PlayerInputController : Node
     public event Action OnTogglePaused;
     public event Action OnRestartPressed;
     public event Action OnToggleReplayViewerVisibility;
-    public event Action OnPauseOrSkip;
+    public event Action OnPauseOrSkipPressed;
+    public event Action OnPauseOrSkipReleased;
     public event Action OnToggleFade;
     public event Action OnTogglePushback;
     public event Action<bool> OnLeftMouseButton;
@@ -67,6 +68,26 @@ public partial class PlayerInputController : Node
     {
         InputEventKey key = (InputEventKey)@event;
 
+        // Functionality with pressing and releasing
+
+        if (key.Echo) return;
+
+        switch (key)
+        {
+            case {Keycode: Key.Space}:
+                if (key.Pressed)
+                {
+                    OnPauseOrSkipPressed?.Invoke();
+                }
+                else if (!key.Pressed)
+                {
+                    OnPauseOrSkipReleased?.Invoke();
+                }
+                break;
+        }
+
+        // Functionality with only pressing
+
         if (!key.Pressed || key.Echo) return;
 
         switch (key)
@@ -79,9 +100,6 @@ public partial class PlayerInputController : Node
                 break;
             case {Keycode: Key.F1}:
                 OnToggleReplayViewerVisibility?.Invoke();
-                break;
-            case {Keycode: Key.Space}:
-                OnPauseOrSkip?.Invoke();
                 break;
             case {Keycode: Key.F}:
                 OnToggleFade?.Invoke();
