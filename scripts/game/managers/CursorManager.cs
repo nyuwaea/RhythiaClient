@@ -40,6 +40,12 @@ public partial class CursorManager : Node
         EmitSignalOnCursorUpdated(inputDelta);
 
         sensitivity = (float)(runner.Attempt.IsReplay ? runner.Attempt.Replays[0].Sensitivity : runner.Attempt.Settings.Sensitivity);
+
+        if (runner.Attempt.Settings.AbsoluteInput && !runner.Attempt.IsReplay) 
+        {
+            sensitivity = (float)runner.Attempt.Settings.AbsoluteSensitivity;
+        }
+
         sensitivity *= (float)runner.Attempt.Settings.FoV.Value / 70f;
 
         if (runner.Attempt.Settings.AbsoluteInput || runner.Attempt.IsReplay)

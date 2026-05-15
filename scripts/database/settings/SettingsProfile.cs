@@ -14,6 +14,12 @@ public partial class SettingsProfile
     public SettingsItem<double> Sensitivity { get; private set; }
 
     /// <summary>
+    /// Adjusts cursor sensitivity
+    /// </summary>
+    [Order]
+    public SettingsItem<double> AbsoluteSensitivity { get; private set; }
+
+    /// <summary>
     /// Toggles absolute input
     /// </summary>
     [Order]
@@ -368,6 +374,20 @@ public partial class SettingsProfile
                 Step = 0.01f,
                 MinValue = 0.01f,
                 MaxValue = 2.5f
+            },
+        };
+
+        AbsoluteSensitivity = new(1.0f)
+        {
+            Id = "AbsoluteSensitivity",
+            Title = "Absolute Sensitivity",
+            Description = "Adjusts absolute area scale",
+            Section = SettingsSection.Gameplay,
+            Slider = new()
+            {
+                Step = 0.01f,
+                MinValue = 0.01f,
+                MaxValue = 4.0f
             },
         };
 
