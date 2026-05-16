@@ -79,11 +79,11 @@ public partial class SettingsProfile
     [Order]
     public SettingsItem<double> HUDParallax { get; private set; }
 
-    /// <summary>
-    /// space to pause toggle
-    /// </summary>
-    [Order]
-    public SettingsItem<bool> SpaceToPause { get; private set; }
+    // /// <summary>
+    // /// space to pause toggle
+    // /// </summary>
+    // [Order]
+    // public SettingsItem<bool> SpaceToPause { get; private set; }
 
     /// <summary>
     /// Adjusts the Field of View
@@ -511,13 +511,13 @@ public partial class SettingsProfile
             }
         };
 
-        SpaceToPause = new(false)
-        {
-            Id = "SpaceToPause",
-            Title = "Space to Pause",
-            Description = "Toggles space to pause during gameplay",
-            Section = SettingsSection.Gameplay,
-        };
+        // SpaceToPause = new(false)
+        // {
+        //     Id = "SpaceToPause",
+        //     Title = "Space to Pause",
+        //     Description = "Toggles space to pause during gameplay",
+        //     Section = SettingsSection.Gameplay,
+        // };
 
         FoV = new(70)
         {
