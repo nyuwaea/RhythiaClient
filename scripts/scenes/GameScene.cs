@@ -165,7 +165,7 @@ public partial class GameScene : BaseScene
 		}
 		else if (Runner.Attempt.Settings.RecordReplays)
 		{
-			ReplayManager.NewReplay(Runner.Attempt);
+			// ReplayManager.NewReplay(Runner.Attempt);
 			GD.Print("Replay Mode: record");
 			ReplayManager.CurrentMode = ReplayManager.Mode.RECORD;
 		}
@@ -234,6 +234,20 @@ public partial class GameScene : BaseScene
 		}
 		else
 		{
+			// Re-sync the audio just in case
+			double currentTime = Math.Max(0, (Attempt.Progress - Attempt.Settings.LocalOffset) / 1000.0f);
+
+			if (Attempt.Map.AudioBuffer != null && SoundManager.Song.Playing)
+			{
+				double desyncOffsetTime = Math.Abs(currentTime - SoundManager.Song.GetPlaybackPosition());
+
+				if (desyncOffsetTime > 0.05f)
+				{
+					GD.PrintRich($"[color=yellow]Desync detected! Offset by [b]{desyncOffsetTime:F5} seconds![/b][/color]");
+					SoundManager.Song.Seek((float)currentTime);
+				}
+			}
+
 			Input.MouseMode = Attempt.Settings.AbsoluteInput || Attempt.IsReplay ? Input.MouseModeEnum.ConfinedHidden : Input.MouseModeEnum.Captured;
 		}
 
