@@ -65,18 +65,22 @@ public partial class Runner : Node3D
 
 		// De-sync corrector
 
-		double audioDelay = Attempt.Progress - Attempt.Settings.LocalOffset.Value - (1000 * (SoundManager.Song.GetPlaybackPosition() + AudioServer.GetTimeSinceLastMix()));
+		if (Attempt.Progress > 0 && Attempt.Progress < Attempt.MapLength && !Attempt.Stopped)
+		{
+			double audioDelay = Attempt.Progress - Attempt.Settings.LocalOffset.Value - (1000 * (SoundManager.Song.GetPlaybackPosition() + AudioServer.GetTimeSinceLastMix()));
 
-		// If de-sync is over 25 milliseconds, then speed up the song until under 25 milliseconds
-        if (Math.Abs(audioDelay) > 25 && Attempt.Progress > 0)
-        {
-            SoundManager.Song.PitchScale = Math.Max(Mathf.Epsilon, (float)Attempt.Speed + (float)audioDelay / 1000);
-        }
-        else if (Math.Abs(SoundManager.Song.PitchScale - Attempt.Speed) > Mathf.Epsilon)
-        {
-            SoundManager.Song.PitchScale = (float)Attempt.Speed;
-        }
-
+			// If de-sync is over 40 milliseconds, then slightly speed up the song until under 40 milliseconds
+			if (Math.Abs(audioDelay / Attempt.Speed) > Math.Max(40, delta))
+			{
+				// SoundManager.Song.PitchScale = Math.Max(Mathf.Epsilon, (float)Attempt.Speed + (float)audioDelay / 1000);
+				SoundManager.Song.PitchScale = (float)Math.Clamp(Attempt.Speed + audioDelay / 1000, Math.Max(0.01, Attempt.Speed - 0.5), Attempt.Speed + 0.5);
+			}
+			else if (Math.Abs(SoundManager.Song.PitchScale - Attempt.Speed) > Mathf.Epsilon)
+			{
+				SoundManager.Song.PitchScale = (float)Attempt.Speed;
+			}
+		}
+		
 		// if not paused & record replays on & not a temporary map & time from now and last replay frame was 60 frames apart
 		if (!Attempt.Stopped && settings.RecordReplays && !Attempt.Map.Ephemeral && now - Attempt.LastReplayFrame >= 1000000/60)
 		{
