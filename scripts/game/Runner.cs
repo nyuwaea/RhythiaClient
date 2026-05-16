@@ -63,6 +63,20 @@ public partial class Runner : Node3D
 		if (!Playing) return;
 		Attempt.Progress += delta * 1000 * Attempt.Speed;
 
+		// De-sync corrector
+
+		double audioDelay = Attempt.Progress - Attempt.Settings.LocalOffset.Value - (1000 * (SoundManager.Song.GetPlaybackPosition() + AudioServer.GetTimeSinceLastMix()));
+
+		// If de-sync is over 25 milliseconds, then speed up the song until under 25 milliseconds
+        if (Math.Abs(audioDelay) > 25 && Attempt.Progress > 0)
+        {
+            SoundManager.Song.PitchScale = Math.Max(Mathf.Epsilon, (float)Attempt.Speed + (float)audioDelay / 1000);
+        }
+        else if (SoundManager.Song.PitchScale - Attempt.Speed > Mathf.Epsilon)
+        {
+            SoundManager.Song.PitchScale = (float)Attempt.Speed;
+        }
+
 		// if not paused & record replays on & not a temporary map & time from now and last replay frame was 60 frames apart
 		if (!Attempt.Stopped && settings.RecordReplays && !Attempt.Map.Ephemeral && now - Attempt.LastReplayFrame >= 1000000/60)
 		{
