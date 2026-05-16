@@ -22,6 +22,12 @@ public partial class ProgressBar : UIComponent
         if (Mathf.IsEqualApprox(lastProgress, attempt.Progress)) return;
 
 		lastProgress = (float)attempt.Progress;
-		progressBarTexture.Size = new Vector2(32 + (float)(Runner.Attempt.Progress / Runner.Attempt.MapLength) * 1024, 80);
+
+		Vector2 progressSize = new Vector2(32 + (float)(Runner.Attempt.Progress / Runner.Attempt.MapLength) * 1024, 80);
+
+        if ((int)progressSize.X != (int)progressBarTexture.Size.X)
+        {
+            progressBarTexture.Size = progressSize;
+        }
     }
 }
