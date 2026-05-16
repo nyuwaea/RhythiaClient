@@ -869,52 +869,6 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Grid" type="MeshInstance3D" parent="." unique_id=1188154960]
-visible = false
-mesh = SubResource("QuadMesh_aih2q")
-
-[node name="CursorTrail" type="MultiMeshInstance3D" parent="." unique_id=2090030938]
-visible = false
-material_override = SubResource("StandardMaterial3D_ssr8x")
-multimesh = SubResource("MultiMesh_e28va")
-
-[node name="Cursor" type="MeshInstance3D" parent="." unique_id=1877613070]
-visible = false
-mesh = SubResource("QuadMesh_xij4d")
-
-[node name="Health" type="MeshInstance3D" parent="." unique_id=585116082]
-transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, -6.3, -10)
-visible = false
-cast_shadow = 0
-mesh = SubResource("QuadMesh_b1hbo")
-
-[node name="HealthViewport" type="SubViewport" parent="Health" unique_id=1032247276]
-disable_3d = true
-transparent_bg = true
-canvas_item_default_texture_filter = 2
-size = Vector2i(544, 40)
-size_2d_override = Vector2i(1088, 80)
-size_2d_override_stretch = true
-render_target_update_mode = 4
-
-[node name="Background" type="TextureRect" parent="Health/HealthViewport" unique_id=765455587]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("6_bbly8")
-
-[node name="Main" type="TextureRect" parent="Health/HealthViewport" unique_id=575848453]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("7_wjg6i")
-expand_mode = 1
-stretch_mode = 1
-
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1797381631]
 visible = false
 z_index = -1
@@ -993,12 +947,6 @@ grow_vertical = 2
 theme = ExtResource("4_rvp5o")
 max_value = 1.0
 step = 0.0
-
-[node name="PanelRight" type="MeshInstance3D" parent="." unique_id=1721734725]
-transform = Transform3D(0.984808, 0, -0.173648, 0, 1, 0, 0.173648, 0, 0.984808, 7.5, 0, -9)
-visible = false
-material_override = SubResource("StandardMaterial3D_ro5ir")
-mesh = SubResource("QuadMesh_ssyve")
 
 [node name="NotificationHolder" type="VBoxContainer" parent="." unique_id=1425635507]
 anchors_preset = 3
