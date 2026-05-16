@@ -109,10 +109,10 @@ public partial class GameScene : BaseScene
 				Runner.Skip();
 
 				// Space To Pause
-				if (!Attempt.CanSkip && Attempt.Settings.SpaceToPause)
-				{
-					EmitSignal(SignalName.StartTempPause, Attempt);
-				}
+				// if (!Attempt.CanSkip && Attempt.Settings.SpaceToPause)
+				// {
+				// 	EmitSignal(SignalName.StartTempPause, Attempt);
+				// }
 			}
 		};
 
