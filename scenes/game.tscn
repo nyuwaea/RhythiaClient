@@ -38,7 +38,6 @@
 [ext_resource type="Script" uid="uid://dhrqgv44b65ls" path="res://scripts/game/ui/Skip.cs" id="25_nepv3"]
 [ext_resource type="Script" uid="uid://ddtnij8m4eipl" path="res://scripts/game/ui/Grid.cs" id="27_js0lu"]
 [ext_resource type="Script" uid="uid://b7jvxorkr4xfi" path="res://scripts/game/ui/Speed.cs" id="28_gxtfn"]
-[ext_resource type="Script" uid="uid://btyrlqhys124" path="res://scripts/game/ui/PauseHud.cs" id="34_m4url"]
 [ext_resource type="Script" uid="uid://c8d872aoiqglo" path="res://scripts/PlayerInputController.cs" id="37_02fa5"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a6jk1"]
@@ -693,15 +692,13 @@ outline_modulate = Color(0, 0, 0, 0)
 text = "Press Space to skip"
 font = ExtResource("12_axsek")
 
-[node name="PauseHud" type="Sprite3D" parent="Runner/HUD" unique_id=1594331476 node_paths=PackedStringArray("pauseCount", "pauseTitle")]
+[node name="PauseHud" type="Sprite3D" parent="Runner/HUD" unique_id=1594331476]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -6)
+visible = false
 pixel_size = 0.012
 no_depth_test = true
 render_priority = 104
 texture = SubResource("ViewportTexture_pausehud")
-script = ExtResource("34_m4url")
-pauseCount = NodePath("../PanelLeft/PanelLeftViewport/PauseCount")
-pauseTitle = NodePath("../PanelLeft/PanelLeftViewport/PauseTitle")
 
 [node name="PauseVP" type="SubViewport" parent="Runner/HUD/PauseHud" unique_id=1841571202]
 disable_3d = true
