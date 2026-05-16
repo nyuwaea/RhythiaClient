@@ -31,6 +31,8 @@ public partial class Grid : MeshInstance3D, IUIComponent
 
         CursorTrail.Transparency = 1f - alpha;
 
+        (GetActiveMaterial(0) as StandardMaterial3D).AlbedoTexture = SkinManager.Instance.Skin.GridImage;
+
         Runner.HitResultChanged += onHitResultChanged;
     }
 
