@@ -72,7 +72,7 @@ public partial class Runner : Node3D
         {
             SoundManager.Song.PitchScale = Math.Max(Mathf.Epsilon, (float)Attempt.Speed + (float)audioDelay / 1000);
         }
-        else if (SoundManager.Song.PitchScale - Attempt.Speed > Mathf.Epsilon)
+        else if (Math.Abs(SoundManager.Song.PitchScale - Attempt.Speed) > Mathf.Epsilon)
         {
             SoundManager.Song.PitchScale = (float)Attempt.Speed;
         }
