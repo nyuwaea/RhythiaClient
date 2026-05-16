@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
 public partial class Runner : Node3D
@@ -85,10 +86,14 @@ public partial class Runner : Node3D
 					SoundManager.Song.Stop();
 				}
 			}
-			else if (!SoundManager.Song.Playing && Attempt.Progress >= 0)
+			// else if (!SoundManager.Song.Playing && Attempt.Progress >= 0)
+			// {
+			// 	SoundManager.Song.Play();
+			// 	SoundManager.Song.Seek((float)Attempt.Progress / 1000);
+			// }
+			else if (!SoundManager.Song.Playing && Attempt.Progress - Attempt.Settings.LocalOffset.Value >= 0)
 			{
-				SoundManager.Song.Play();
-				SoundManager.Song.Seek((float)Attempt.Progress / 1000);
+				SoundManager.Song.Play((float)(Attempt.Progress - Attempt.Settings.LocalOffset.Value) / 1000f);
 			}
 		}
 
@@ -111,6 +116,8 @@ public partial class Runner : Node3D
 		{
 			Attempt.CanSkip = false;
 		}
+
+		
 
 		ToProcess = 0;
 		ProcessNotes.Clear();
@@ -212,7 +219,7 @@ public partial class Runner : Node3D
 		switch (hitResult)
 		{
 			case HitResult.Hit:
-				SoundManager.HitSound.Play();
+				SoundManager.PlayHitSound();
 				Attempt.Hits++;
 				Attempt.Sum++;
 				Attempt.Accuracy = Math.Floor((float)Attempt.Hits / Attempt.Sum * 10000) / 100;
@@ -292,7 +299,7 @@ public partial class Runner : Node3D
 		{
 			SoundManager.Song.Stream = Util.Audio.LoadStream(Attempt.Map.AudioBuffer);
 			SoundManager.Song.PitchScale = (float)Attempt.Speed;
-			Attempt.MapLength = (float)SoundManager.Song.Stream.GetLength() * 1000;
+			Attempt.MapLength = (float)(SoundManager.Song.Stream.GetLength() * 1000);
 		}
 		else
 		{
@@ -332,7 +339,7 @@ public partial class Runner : Node3D
 						SoundManager.Song.Play();
 					}
 
-					SoundManager.Song.Seek((float)Attempt.Progress / 1000);
+					SoundManager.Song.Seek((float)(Attempt.Progress - Attempt.Settings.LocalOffset.Value) / 1000);
 					VideoStreamPlayer.StreamPosition = (float)Attempt.Progress / 1000;
 				}
 			}
@@ -363,7 +370,7 @@ public partial class Runner : Node3D
 		// dont want an infinite dependency loop so im just going to do this -fog
 		if (!Attempt.IsReplay && GameScene.Instance.ReplayManager.CurrentMode == ReplayManager.Mode.RECORD)
 		{
-			GameScene.Instance.ReplayManager.SaveReplay(Attempt);
+			// GameScene.Instance.ReplayManager.SaveReplay(Attempt);
 		}
 
 
