@@ -45,32 +45,7 @@ public partial class LegacyRenderer : MultiMeshInstance3D
 
         float noteSize = (float)(Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].NoteSize : settings.NoteSize.Value) / 2;
         
-        // will fix this after everything works and is merged
         
-        // if (LegacyRunner.ToProcess == 0)
-        // {
-        //     return;
-        // }
-
-        // float ar = (float)(LegacyRunner.CurrentAttempt.IsReplay ? LegacyRunner.CurrentAttempt.Replays[0].ApproachRate : settings.ApproachRate.Value);
-        // float ad = (float)(LegacyRunner.CurrentAttempt.IsReplay ? LegacyRunner.CurrentAttempt.Replays[0].ApproachDistance : settings.ApproachDistance.Value);
-        // float at = ad / ar;
-        // float fadeIn = (float)(LegacyRunner.CurrentAttempt.IsReplay ? LegacyRunner.CurrentAttempt.Replays[0].FadeIn : settings.FadeIn.Value) / 100;
-        // float fadeOut = (float)(LegacyRunner.CurrentAttempt.IsReplay ? (LegacyRunner.CurrentAttempt.Replays[0].FadeOut ? 100 : 0) : settings.FadeOut.Value) / 100;
-        // bool pushback = LegacyRunner.CurrentAttempt.IsReplay ? LegacyRunner.CurrentAttempt.Replays[0].Pushback : settings.Pushback.Value;
-        // float hitWindowDepth = pushback ? (float)Constants.HIT_WINDOW * ar / 1000 : 0;
-        // float noteOpacity = (float)settings.NoteOpacity;
-        // float noteOpacityExponent = (float)settings.NoteOpacityExponent;
-
-        // if (noteOpacity > 1)
-        // {
-        //     // Backward compatibility: older profiles may have stored opacity in a 0-100 range.
-        //     noteOpacity /= 100f;
-        // }
-
-        // noteOpacity = Math.Clamp(noteOpacity, 0, 1);
-
-        // float noteSize = (float)(LegacyRunner.CurrentAttempt.IsReplay ? LegacyRunner.CurrentAttempt.Replays[0].NoteSize : settings.NoteSize.Value) / 2;
         Transform3D transform = new(Vector3.Right * noteSize, Vector3.Up * noteSize, Vector3.Back * noteSize, Vector3.Zero);
 
         for (int i = 0; i < Runner.ToProcess; i++)
