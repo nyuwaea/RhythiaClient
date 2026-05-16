@@ -191,8 +191,15 @@ public partial class GameScene : BaseScene
 
 	public static void Play(Map map, double speed, double startFrom, Dictionary<string, bool> mods, string[] players = null, Replay[] replays = null)
 	{
-		map = MapParser.Decode(map.FilePath);
-		Attempt = new Attempt(map, speed, startFrom, mods ?? [], players, replays);
+		Map parsed_map = MapParser.Decode(map.FilePath);
+		Attempt = new Attempt(parsed_map, speed, startFrom, mods ?? [], players, replays);
+
+		if (!Attempt.IsReplay)
+		{
+			Stats.Instance.Attempts++;
+			map.PlayCount++;
+			MapManager.Update(map);
+		}
 
 		SceneManager.Load("res://scenes/game.tscn");
 	}

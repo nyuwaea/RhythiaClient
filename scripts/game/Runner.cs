@@ -326,7 +326,7 @@ public partial class Runner : Node3D
 
 		Attempt.MapLength += Constants.HIT_WINDOW;
 		SoundManager.UpdateVolume();
-
+		
 	}
 
 	public void Pause()
@@ -430,6 +430,8 @@ public partial class Runner : Node3D
 					// Stats.Instance.PassAccuracies.Add(Attempt.Accuracy);
 				}
 			}
+
+			Stats.Instance.ForceUpdate();
 		}
 
 		DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Adaptive);
