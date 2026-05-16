@@ -13,6 +13,6 @@ public abstract class SkinCategory
 
     public SkinCategory()
     {
-        Name = this.GetType().Name;
+        Name = GetType().Name;
     }
 }

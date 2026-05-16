@@ -2,13 +2,29 @@ using Godot;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using Skinning;
 
 public partial class SkinEditor : BaseScene
 {
-	public string Selected;
+	public static SkinEditor Instance;
+
+	/// <summary>
+	/// Currently selected skin for editing.
+	/// </summary>
+	public SkinProfileNew Skin;
+
+	[ExportGroup("Panels")]
+
+	[Export]
+	public SkinExplorer Explorer;
+
+	[Export]
+	public SkinProperties Properties;
 
 	// UI template scenes
 	private readonly PackedScene skinSelectTemplate = ResourceLoader.Load<PackedScene>("res://prefabs/ui/skin_editor/skin_select.tscn");
+
+	[ExportGroup("Header")]
 
 	// Header
 	[Export]
@@ -28,6 +44,8 @@ public partial class SkinEditor : BaseScene
 	[Export]
 	private HBoxContainer categories;
 
+	[ExportGroup("Selection")]
+
 	// Skin selection
 	[Export]
 	private ColorRect selectionHolder;
@@ -40,6 +58,8 @@ public partial class SkinEditor : BaseScene
 	[Export]
 	private VBoxContainer selectionSkins;
 
+	[ExportGroup("Docks")]
+
 	// Docks
 	[Export]
 	private HSplitContainer dockSplit;
@@ -50,10 +70,9 @@ public partial class SkinEditor : BaseScene
 	{
 		base._Ready();
 
-		backButton.Pressed += () => {
-			// TODO: Check and prompt unsaved changes
-			SceneManager.Load("res://scenes/main_menu.tscn");
-		};
+		Instance = this;
+
+		backButton.Pressed += () => exit();
 
 		var importAssetPopup = importAsset.GetPopup();
 
@@ -90,7 +109,7 @@ public partial class SkinEditor : BaseScene
 			}
 		};
 		skinName.TextSubmitted += _ => skinName.ReleaseFocus();
-		skinName.FocusExited += () => { renameSelected(skinName.Text == "" ? Selected : skinName.Text); };
+		skinName.FocusExited += () => { renameSelected(skinName.Text == "" ? Skin.Name : skinName.Text); };
 
 		foreach (Button category in categories.GetChildren())
 		{
@@ -124,17 +143,25 @@ public partial class SkinEditor : BaseScene
 	{
 		(int _, string name) = validateSkinName("new-skin");
 
-		select(name);
+		SkinProfileNew newSkin = new(name);
+
+		select(newSkin);
 	}
 
-	private void select(string skin = null)
+	private void select(SkinProfileNew skin = null)
 	{
-		Selected = skin;
+		Skin = skin;
 
-		skinName.Text = Selected ?? "";
-		skinName.PlaceholderText = Selected ?? "(no skin selected)";
+		skinName.Text = Skin?.Name ?? "";
+		skinName.PlaceholderText = Skin?.Name ?? "(no skin selected)";
 
-		toggleSelection(Selected == null);
+		toggleSelection(Skin == null);
+
+		if (Skin != null)
+		{
+			Explorer.BuildCategory(Skin.HUD);
+			Properties.ClearProperties();
+		}
 	}
 
 	private void save()
@@ -145,6 +172,15 @@ public partial class SkinEditor : BaseScene
 	private void share()
 	{
 		
+	}
+
+	private void exit()
+	{
+		Explorer.ClearCategory(false);
+		Properties.ClearProperties(false);
+
+		// TODO: Check and prompt unsaved changes
+		SceneManager.Load("res://scenes/main_menu.tscn");
 	}
 
 	private void toggleSelection(bool toggle)
@@ -202,14 +238,14 @@ public partial class SkinEditor : BaseScene
 
 	private void renameSelected(string newName)
 	{
-		if (Selected == null)
+		if (Skin == null)
 		{
 			return;
 		}
-
+		
 		(int _, string name) = validateSkinName(newName);
 
-		Selected = name;
+		Skin.Name = name;
 		skinName.Text = name;
 		skinName.PlaceholderText = name;
 		skinName.EmitSignal(LineEdit.SignalName.TextChanged, name);

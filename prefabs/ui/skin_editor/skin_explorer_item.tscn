@@ -1,95 +1,191 @@
 [gd_scene format=3 uid="uid://cyjhvma0mtdbi"]
 
 [ext_resource type="Theme" uid="uid://cghiovcujtcmd" path="res://themes/tools.tres" id="1_ap5n1"]
-[ext_resource type="Texture2D" uid="uid://dqr46iek4sfxo" path="res://textures/p.png" id="2_krp8k"]
+[ext_resource type="Script" uid="uid://cgcvmujpoinsq" path="res://scripts/ui/skin_editor/SkinExplorerItem.cs" id="2_d8ve5"]
 [ext_resource type="FontFile" uid="uid://cy0j4j61g2dv6" path="res://fonts/Roboto-Regular.ttf" id="3_d8ve5"]
+[ext_resource type="Texture2D" uid="uid://bwygmhmegsm4f" path="res://textures/icon.svg" id="3_db86q"]
+[ext_resource type="Texture2D" uid="uid://b5t5r8pdjwuiw" path="res://textures/ui/tools/unfold.png" id="3_xnqu4"]
 [ext_resource type="Texture2D" uid="uid://men3chmi3esy" path="res://textures/ui/add.png" id="4_db86q"]
-[ext_resource type="Texture2D" uid="uid://xd005fiv7qgg" path="res://user/skins/default/ui/buttons/delete.png" id="5_xnqu4"]
+[ext_resource type="Texture2D" uid="uid://0evhxpwd1bqb" path="res://textures/ui/tools/unfold3.png" id="4_iqtdp"]
+[ext_resource type="Texture2D" uid="uid://v455lni8hoj4" path="res://textures/ui/tools/trash.png" id="7_db86q"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kei0g"]
-content_margin_left = 12.0
-content_margin_right = 1.0
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kdftc"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r1eba"]
-draw_center = false
-border_width_left = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 0.2509804)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c8wqq"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kjm4b"]
-draw_center = false
-border_width_left = 1
-border_color = Color(1, 1, 1, 0.2509804)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0n3pe"]
 
-[node name="SkinExplorerItemTemplate" type="VBoxContainer" unique_id=1625000282]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0k66o"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sxrwm"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_p3oxp"]
+color = Color(1, 1, 1, 1)
+grow_begin = 0.0
+grow_end = 0.0
+vertical = true
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qfcql"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_sosur"]
+color = Color(1, 1, 1, 1)
+grow_begin = 0.0
+grow_end = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_db86q"]
+bg_color = Color(1, 1, 1, 0.047058824)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xnqu4"]
+bg_color = Color(1, 1, 1, 0.07058824)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="SkinExplorerItem" type="HBoxContainer" unique_id=647788912 node_paths=PackedStringArray("infoContainer", "select", "label", "icon", "add", "delete", "childrenContainer", "hoverHighlight", "selectHighlight", "hierarchyContainer", "collapse", "lineContainer", "lineVertical", "lineButton")]
+custom_minimum_size = Vector2(240, 24)
+offset_right = 193.0
+offset_bottom = 24.0
 size_flags_horizontal = 3
 theme = ExtResource("1_ap5n1")
+script = ExtResource("2_d8ve5")
+infoContainer = NodePath("ObjectInfo/Select/InfoContainer")
+select = NodePath("ObjectInfo/Select")
+label = NodePath("ObjectInfo/Select/InfoContainer/Label")
+icon = NodePath("ObjectInfo/Select/InfoContainer/Icon")
+add = NodePath("ObjectInfo/Select/InfoContainer/Add")
+delete = NodePath("ObjectInfo/Select/InfoContainer/Delete")
+childrenContainer = NodePath("ObjectInfo/Children")
+hoverHighlight = NodePath("ObjectInfo/Select/InfoContainer/Label/Highlight")
+selectHighlight = NodePath("ObjectInfo/Select/InfoContainer/Label/SelectedHighlight")
+hierarchyContainer = NodePath("Hierarchy")
+collapse = NodePath("Hierarchy/Collapse")
+lineContainer = NodePath("Hierarchy/LineContainer")
+lineVertical = NodePath("Hierarchy/LineContainer/VBoxContainer/Vertical")
+lineButton = NodePath("Hierarchy/LineContainer/VBoxContainer/Vertical/Button")
+foldIcon = ExtResource("3_xnqu4")
+unfoldIcon = ExtResource("4_iqtdp")
+
+[node name="Hierarchy" type="VBoxContainer" parent="." unique_id=1446644727]
+modulate = Color(1, 1, 1, 0.2509804)
+layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1607124994]
+[node name="Collapse" type="Button" parent="Hierarchy" unique_id=290158256]
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
-theme = ExtResource("1_ap5n1")
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_kdftc")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_c8wqq")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_0n3pe")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_0k66o")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sxrwm")
+icon = ExtResource("4_iqtdp")
+flat = true
 
-[node name="Spacer" type="PanelContainer" parent="HBoxContainer" unique_id=896498017]
+[node name="LineContainer" type="MarginContainer" parent="Hierarchy" unique_id=1203710032]
 visible = false
-custom_minimum_size = Vector2(24, 0)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_kei0g")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Spacer" unique_id=1667011931]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="Top" type="Panel" parent="HBoxContainer/Spacer/VBoxContainer" unique_id=1801090821]
-custom_minimum_size = Vector2(0, 12)
-layout_mode = 2
-size_flags_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_r1eba")
-
-[node name="Bottom" type="Panel" parent="HBoxContainer/Spacer/VBoxContainer" unique_id=1449745204]
-visible = false
-custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 1000.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_kjm4b")
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1584858330]
+[node name="VBoxContainer" type="VBoxContainer" parent="Hierarchy/LineContainer" unique_id=227634929]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="Vertical" type="Panel" parent="Hierarchy/LineContainer/VBoxContainer" unique_id=284569915]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxLine_p3oxp")
+
+[node name="Button" type="Button" parent="Hierarchy/LineContainer/VBoxContainer/Vertical" unique_id=335320615]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qfcql")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_qfcql")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_qfcql")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qfcql")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qfcql")
+flat = true
+
+[node name="Horizontal" type="Panel" parent="Hierarchy/LineContainer/VBoxContainer" unique_id=658519700]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxLine_sosur")
+
+[node name="ObjectInfo" type="VBoxContainer" parent="." unique_id=2135946098]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=1600225457]
+[node name="Select" type="Button" parent="ObjectInfo" unique_id=224053464]
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("1_ap5n1")
+mouse_filter = 1
+flat = true
 
-[node name="Icon" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=268881106]
-layout_mode = 2
-theme = ExtResource("1_ap5n1")
-texture = ExtResource("2_krp8k")
-expand_mode = 2
-
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1997104683]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_ap5n1")
-theme_override_fonts/font = ExtResource("3_d8ve5")
-text = "object name"
-
-[node name="Highlight" type="ColorRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/Label" unique_id=799021546]
-visible = false
+[node name="InfoContainer" type="HBoxContainer" parent="ObjectInfo/Select" unique_id=518788406]
+custom_minimum_size = Vector2(0, 24)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 1, 1, 0.047058824)
+size_flags_vertical = 3
+theme_override_constants/separation = 0
 
-[node name="Add" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=665523420]
+[node name="Icon" type="TextureRect" parent="ObjectInfo/Select/InfoContainer" unique_id=521084841]
+layout_mode = 2
+theme = ExtResource("1_ap5n1")
+texture = ExtResource("3_db86q")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="ObjectInfo/Select/InfoContainer" unique_id=591795494]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ap5n1")
+theme_override_fonts/font = ExtResource("3_d8ve5")
+text = "object name"
+vertical_alignment = 1
+
+[node name="Highlight" type="Panel" parent="ObjectInfo/Select/InfoContainer/Label" unique_id=1204867274]
+visible = false
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_db86q")
+
+[node name="SelectedHighlight" type="Panel" parent="ObjectInfo/Select/InfoContainer/Label" unique_id=302552790]
+visible = false
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xnqu4")
+
+[node name="Add" type="Button" parent="ObjectInfo/Select/InfoContainer" unique_id=1483837332]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -98,15 +194,16 @@ icon = ExtResource("4_db86q")
 flat = true
 expand_icon = true
 
-[node name="Delete" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1973118426]
+[node name="Delete" type="Button" parent="ObjectInfo/Select/InfoContainer" unique_id=574627425]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("1_ap5n1")
-icon = ExtResource("5_xnqu4")
+icon = ExtResource("7_db86q")
 flat = true
 expand_icon = true
 
-[node name="Children" type="VBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=496209689]
+[node name="Children" type="VBoxContainer" parent="ObjectInfo" unique_id=1094616505]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 0

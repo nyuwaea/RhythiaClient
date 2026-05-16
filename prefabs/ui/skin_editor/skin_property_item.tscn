@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://b8yhdtokf2ven"]
+
+[ext_resource type="Theme" uid="uid://cghiovcujtcmd" path="res://themes/tools.tres" id="1_hg2fl"]
+[ext_resource type="Script" uid="uid://vynhgx01lbsc" path="res://scripts/ui/skin_editor/SkinPropertyItem.cs" id="2_jxsle"]
+[ext_resource type="FontFile" uid="uid://cy0j4j61g2dv6" path="res://fonts/Roboto-Regular.ttf" id="2_og5wr"]
+
+[node name="SkinPropertyItem" type="VBoxContainer" unique_id=535300272 node_paths=PackedStringArray("label", "valueContainer")]
+size_flags_horizontal = 3
+theme = ExtResource("1_hg2fl")
+theme_override_constants/separation = 0
+script = ExtResource("2_jxsle")
+label = NodePath("HBoxContainer/Label")
+valueContainer = NodePath("HBoxContainer")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1416026885]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_hg2fl")
+
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=1045971007]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_hg2fl")
+theme_override_fonts/font = ExtResource("2_og5wr")
+text = "Property Name"
+
+[node name="Highlight" type="ColorRect" parent="HBoxContainer/Label" unique_id=559941955]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.047058824)
+
+[node name="Browse" type="Button" parent="HBoxContainer" unique_id=1544016915]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_hg2fl")
+text = "Browse"
+expand_icon = true

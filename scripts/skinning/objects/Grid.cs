@@ -6,8 +6,5 @@ public partial class Grid : SkinObject
     {
         Persistent = true;
         Decorability = DecorabilityType.Flat;
-        Properties = [
-
-        ];
     }
 }

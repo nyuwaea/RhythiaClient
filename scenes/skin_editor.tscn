@@ -2,10 +2,15 @@
 
 [ext_resource type="Theme" uid="uid://cghiovcujtcmd" path="res://themes/tools.tres" id="1_8e7i7"]
 [ext_resource type="Script" uid="uid://31ifsk7c81fo" path="res://scripts/scenes/SkinEditor.cs" id="1_rshsi"]
+[ext_resource type="Texture2D" uid="uid://bk7vw0sdy4nko" path="res://textures/ui/tools/return.png" id="3_75xqb"]
 [ext_resource type="PackedScene" uid="uid://vp1nmsiqt5yv" path="res://scenes/game.tscn" id="3_qpw8j"]
-[ext_resource type="PackedScene" uid="uid://cyjhvma0mtdbi" path="res://prefabs/ui/skin_editor/skin_explorer_item.tscn" id="3_w48di"]
 [ext_resource type="Texture2D" uid="uid://men3chmi3esy" path="res://textures/ui/add.png" id="4_8fc04"]
+[ext_resource type="Script" uid="uid://crmeh2sdr5yig" path="res://scripts/ui/skin_editor/SkinExplorer.cs" id="4_kei0g"]
 [ext_resource type="FontFile" uid="uid://cy0j4j61g2dv6" path="res://fonts/Roboto-Regular.ttf" id="4_r1eba"]
+[ext_resource type="Texture2D" uid="uid://ba2dtsddix6s0" path="res://textures/ui/tools/select.png" id="5_76cbd"]
+[ext_resource type="Script" uid="uid://ixkg51q7326u" path="res://scripts/ui/skin_editor/SkinProperties.cs" id="5_r1eba"]
+[ext_resource type="Texture2D" uid="uid://d1ogjbi2xrgc4" path="res://textures/ui/tools/save.png" id="6_0s4m7"]
+[ext_resource type="Texture2D" uid="uid://bh7iv447kko3p" path="res://textures/ui/tools/share.png" id="7_2d5bn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8fc04"]
 bg_color = Color(0.0806, 0.08471666, 0.13, 1)
@@ -31,8 +36,10 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 corner_detail = 4
 
-[node name="SceneSkinEditor" type="Node" unique_id=1136685041 node_paths=PackedStringArray("backButton", "importAsset", "selectButton", "saveButton", "shareButton", "skinPath", "skinName", "categories", "selectionHolder", "selectionNewButton", "selectionImportButton", "importDialog", "selectionSkins", "dockSplit", "objectsSplit")]
+[node name="SceneSkinEditor" type="Node" unique_id=1136685041 node_paths=PackedStringArray("Explorer", "Properties", "backButton", "importAsset", "selectButton", "saveButton", "shareButton", "skinPath", "skinName", "categories", "selectionHolder", "selectionNewButton", "selectionImportButton", "importDialog", "selectionSkins", "dockSplit", "objectsSplit")]
 script = ExtResource("1_rshsi")
+Explorer = NodePath("Container/Editor/Docks/Objects/Explorer")
+Properties = NodePath("Container/Editor/Docks/Objects/Properties")
 backButton = NodePath("Container/Header/Back")
 importAsset = NodePath("Container/Header/ImportAsset")
 selectButton = NodePath("Container/Header/Select")
@@ -95,6 +102,7 @@ mouse_default_cursor_shape = 2
 theme = ExtResource("1_8e7i7")
 theme_override_font_sizes/font_size = 14
 text = "Return to Menu"
+icon = ExtResource("3_75xqb")
 
 [node name="ImportAsset" type="MenuButton" parent="Container/Header" unique_id=2023266159]
 layout_mode = 2
@@ -120,6 +128,7 @@ mouse_default_cursor_shape = 2
 theme = ExtResource("1_8e7i7")
 theme_override_font_sizes/font_size = 14
 text = "Select Skin"
+icon = ExtResource("5_76cbd")
 
 [node name="Save" type="Button" parent="Container/Header" unique_id=202139637]
 layout_mode = 2
@@ -127,6 +136,7 @@ mouse_default_cursor_shape = 2
 theme = ExtResource("1_8e7i7")
 theme_override_font_sizes/font_size = 14
 text = "Save"
+icon = ExtResource("6_0s4m7")
 
 [node name="Share" type="Button" parent="Container/Header" unique_id=479641034]
 layout_mode = 2
@@ -134,6 +144,7 @@ mouse_default_cursor_shape = 2
 theme = ExtResource("1_8e7i7")
 theme_override_font_sizes/font_size = 14
 text = "Share"
+icon = ExtResource("7_2d5bn")
 
 [node name="SkinPath" type="Label" parent="Container/Header" unique_id=317077724]
 layout_mode = 2
@@ -217,9 +228,11 @@ theme = ExtResource("1_8e7i7")
 split_offsets = PackedInt32Array(360)
 split_offset = 360
 
-[node name="Explorer" type="Panel" parent="Container/Editor/Docks/Objects" unique_id=2139878915]
+[node name="Explorer" type="Panel" parent="Container/Editor/Docks/Objects" unique_id=2139878915 node_paths=PackedStringArray("itemContainer")]
 layout_mode = 2
 theme = ExtResource("1_8e7i7")
+script = ExtResource("4_kei0g")
+itemContainer = NodePath("MarginContainer/VBoxContainer/ScrollContainer/Items")
 
 [node name="MarginContainer" type="MarginContainer" parent="Container/Editor/Docks/Objects/Explorer" unique_id=2072819575]
 layout_mode = 1
@@ -253,145 +266,11 @@ size_flags_vertical = 3
 theme = ExtResource("1_8e7i7")
 theme_override_constants/separation = 0
 
-[node name="2D" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=1625000282 instance=ExtResource("3_w48di")]
-layout_mode = 2
-
-[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/2D/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1625000282, 1600225457) index="1" unique_id=1997104683]
-text = "2D"
-
-[node name="Delete" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/2D/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1625000282, 1600225457) index="3" unique_id=1973118426]
-visible = false
-
-[node name="Children" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/2D/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1625000282, 496209689) index="0" unique_id=145360695]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="3D" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=1624944905 instance=ExtResource("3_w48di")]
-layout_mode = 2
-
-[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1624944905, 1600225457) index="1" unique_id=1997104683]
-text = "3D"
-
-[node name="Delete" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1624944905, 1600225457) index="3" unique_id=1973118426]
-visible = false
-
-[node name="SkinExplorerItemTemplate" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1624944905, 496209689) index="0" unique_id=1166269243 instance=ExtResource("3_w48di")]
-layout_mode = 2
-
-[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate/HBoxContainer" parent_id_path=PackedInt32Array(1166269243, 1607124994) index="0" unique_id=896498017]
-visible = true
-
-[node name="Bottom" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate/HBoxContainer/Spacer/VBoxContainer" parent_id_path=PackedInt32Array(1166269243, 1667011931) index="1" unique_id=1449745204]
-visible = true
-
-[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1166269243, 1600225457) index="1" unique_id=1997104683]
-text = "Grid"
-
-[node name="Delete" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1166269243, 1600225457) index="3" unique_id=1973118426]
-visible = false
-
-[node name="SkinExplorerItemTemplate2" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1624944905, 496209689) index="1" unique_id=2010728591 instance=ExtResource("3_w48di")]
-layout_mode = 2
-
-[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate2/HBoxContainer" parent_id_path=PackedInt32Array(2010728591, 1607124994) index="0" unique_id=896498017]
-visible = true
-
-[node name="Bottom" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate2/HBoxContainer/Spacer/VBoxContainer" parent_id_path=PackedInt32Array(2010728591, 1667011931) index="1" unique_id=1449745204]
-visible = true
-
-[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate2/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(2010728591, 1600225457) index="1" unique_id=1997104683]
-text = "Cursor"
-
-[node name="Delete" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate2/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(2010728591, 1600225457) index="3" unique_id=1973118426]
-visible = false
-
-[node name="SkinExplorerItemTemplate3" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1624944905, 496209689) index="2" unique_id=138017185 instance=ExtResource("3_w48di")]
-layout_mode = 2
-
-[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate3/HBoxContainer" parent_id_path=PackedInt32Array(138017185, 1607124994) index="0" unique_id=896498017]
-visible = true
-
-[node name="Bottom" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate3/HBoxContainer/Spacer/VBoxContainer" parent_id_path=PackedInt32Array(138017185, 1667011931) index="1" unique_id=1449745204]
-visible = true
-
-[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate3/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(138017185, 1600225457) index="1" unique_id=1997104683]
-text = "Notes"
-
-[node name="Add" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate3/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(138017185, 1600225457) index="2" unique_id=665523420]
-visible = false
-
-[node name="Delete" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate3/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(138017185, 1600225457) index="3" unique_id=1973118426]
-visible = false
-
-[node name="SkinExplorerItemTemplate4" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1624944905, 496209689) index="3" unique_id=1810353135 instance=ExtResource("3_w48di")]
-layout_mode = 2
-
-[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer" parent_id_path=PackedInt32Array(1810353135, 1607124994) index="0" unique_id=896498017]
-visible = true
-
-[node name="Bottom" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/Spacer/VBoxContainer" parent_id_path=PackedInt32Array(1810353135, 1667011931) index="1" unique_id=1449745204]
-visible = true
-
-[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1810353135, 1600225457) index="1" unique_id=1997104683]
-text = "Surface"
-
-[node name="SkinExplorerItemTemplate4" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1810353135, 496209689) index="0" unique_id=2040990467 instance=ExtResource("3_w48di")]
-layout_mode = 2
-
-[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer" parent_id_path=PackedInt32Array(2040990467, 1607124994) index="0" unique_id=896498017]
-visible = true
-
-[node name="Bottom" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/Spacer/VBoxContainer" parent_id_path=PackedInt32Array(2040990467, 1667011931) index="1" unique_id=1449745204]
-visible = true
-
-[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(2040990467, 1600225457) index="1" unique_id=1997104683]
-text = "Accuracy"
-
-[node name="SkinExplorerItemTemplate5" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1810353135, 496209689) index="1" unique_id=1012468498 instance=ExtResource("3_w48di")]
-layout_mode = 2
-
-[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate5/HBoxContainer" parent_id_path=PackedInt32Array(1012468498, 1607124994) index="0" unique_id=896498017]
-visible = true
-
-[node name="Bottom" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate5/HBoxContainer/Spacer/VBoxContainer" parent_id_path=PackedInt32Array(1012468498, 1667011931) index="1" unique_id=1449745204]
-visible = true
-
-[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate5/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1012468498, 1600225457) index="1" unique_id=1997104683]
-text = "Combo"
-
-[node name="SkinExplorerItemTemplate6" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1810353135, 496209689) index="2" unique_id=1863630244 instance=ExtResource("3_w48di")]
-layout_mode = 2
-
-[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer" parent_id_path=PackedInt32Array(1863630244, 1607124994) index="0" unique_id=896498017]
-visible = true
-
-[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1863630244, 1600225457) index="1" unique_id=1997104683]
-text = "Image"
-
-[node name="SkinExplorerItemTemplate6" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1863630244, 496209689) index="0" unique_id=750566575 instance=ExtResource("3_w48di")]
-layout_mode = 2
-
-[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer" parent_id_path=PackedInt32Array(750566575, 1607124994) index="0" unique_id=896498017]
-visible = true
-
-[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(750566575, 1600225457) index="1" unique_id=1997104683]
-text = "Shader"
-
-[node name="Add" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(750566575, 1600225457) index="2" unique_id=665523420]
-visible = false
-
-[node name="SkinExplorerItemTemplate5" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children" parent_id_path=PackedInt32Array(1624944905, 496209689) index="4" unique_id=1489783553 instance=ExtResource("3_w48di")]
-layout_mode = 2
-
-[node name="Spacer" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate5/HBoxContainer" parent_id_path=PackedInt32Array(1489783553, 1607124994) index="0" unique_id=896498017]
-visible = true
-
-[node name="Label" parent="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate5/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1489783553, 1600225457) index="1" unique_id=1997104683]
-text = "Surface"
-
-[node name="Properties" type="Panel" parent="Container/Editor/Docks/Objects" unique_id=454820064]
+[node name="Properties" type="Panel" parent="Container/Editor/Docks/Objects" unique_id=454820064 node_paths=PackedStringArray("itemContainer")]
 layout_mode = 2
 theme = ExtResource("1_8e7i7")
+script = ExtResource("5_r1eba")
+itemContainer = NodePath("MarginContainer/VBoxContainer/ScrollContainer/Items")
 
 [node name="MarginContainer" type="MarginContainer" parent="Container/Editor/Docks/Objects/Properties" unique_id=1345634376]
 layout_mode = 1
@@ -425,6 +304,7 @@ size_flags_vertical = 3
 theme = ExtResource("1_8e7i7")
 
 [node name="SkinPropertyItemTemplate" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=257158000]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_8e7i7")
@@ -462,6 +342,7 @@ text = "Browse"
 expand_icon = true
 
 [node name="SkinPropertyItemTemplate2" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=2048938797]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_8e7i7")
@@ -499,6 +380,7 @@ text = "Browse"
 expand_icon = true
 
 [node name="SkinPropertyItemTemplate6" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=1628451101]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_8e7i7")
@@ -536,6 +418,7 @@ text = "Browse"
 expand_icon = true
 
 [node name="SkinPropertyItemTemplate3" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=1382544793]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_8e7i7")
@@ -592,6 +475,7 @@ placeholder_text = "0"
 alignment = 1
 
 [node name="SkinPropertyItemTemplate4" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=1495747725]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_8e7i7")
@@ -651,6 +535,7 @@ alignment = 1
 expand_to_text_length = true
 
 [node name="SkinPropertyItemTemplate5" type="VBoxContainer" parent="Container/Editor/Docks/Objects/Properties/MarginContainer/VBoxContainer/ScrollContainer/Items" unique_id=1883165779]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_8e7i7")
@@ -815,15 +700,3 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
-
-[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/2D"]
-[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D"]
-[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate"]
-[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate2"]
-[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate3"]
-[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4"]
-[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4"]
-[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate5"]
-[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6"]
-[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate4/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate6"]
-[editable path="Container/Editor/Docks/Objects/Explorer/MarginContainer/VBoxContainer/ScrollContainer/Items/3D/HBoxContainer/VBoxContainer/Children/SkinExplorerItemTemplate5"]
