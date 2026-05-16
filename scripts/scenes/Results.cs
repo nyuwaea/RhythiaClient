@@ -90,7 +90,8 @@ public partial class Results : BaseScene
 		
         if (!FileAccess.FileExists(GameScene.Attempt.ReplayPath) && !GameScene.Attempt.IsReplay)
         {
-            _ = ToastNotification.Notify("Replay desync detected! Sum didn't match notes hit", 2);
+            // This can be multiple reasons, so I am just going to disable the notification
+            // _ = ToastNotification.Notify("Replay desync detected! Sum didn't match notes hit", 2);
             replayButton.Visible = false;
         }
 
