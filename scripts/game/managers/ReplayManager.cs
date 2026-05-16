@@ -278,6 +278,6 @@ public partial class ReplayManager : Node
                 SoundManager.Song.Play();
             }
 
-            SoundManager.Song.Seek((float)att.Progress / 1000);
+            SoundManager.Song.Seek((float)(att.Progress - att.Settings.LocalOffset.Value) / 1000);
         }
 }
