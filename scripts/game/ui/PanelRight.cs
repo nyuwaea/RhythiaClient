@@ -30,8 +30,8 @@ public partial class PanelRight : UIComponent
 		SimpleMisses = viewport.GetNode<Label>("SimpleMisses");
 		Sum = viewport.GetNode<Label>("Sum");
 
-		Hits.LabelSettings.FontColor = Color.Color8(255, 255, 255, 140);
-		Misses.LabelSettings.FontColor = Color.Color8(255, 255, 255, 140);
+		// Hits.LabelSettings.FontColor = Color.Color8(255, 255, 255, 140);
+		// Misses.LabelSettings.FontColor = Color.Color8(255, 255, 255, 140);
 
 		Runner.AttemptStatsUpdated += OnStatsUpdated;
 		Runner.HitResultChanged += OnHitStateChanged;
