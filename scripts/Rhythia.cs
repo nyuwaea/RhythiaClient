@@ -142,7 +142,9 @@ public partial class Rhythia : Node
         
         Logger.Log("Attempting to quit...");
 
-        if (GameScene.Instance.Runner.Playing && GameScene.Attempt != null && !GameScene.Attempt.IsReplay)
+        bool playing = (GameScene.Instance?.Runner?.Playing ?? false) && (!GameScene.Attempt?.IsReplay ?? false);
+
+        if (playing)
         {
             GameScene.Instance.Runner.Stop(false);
         }
