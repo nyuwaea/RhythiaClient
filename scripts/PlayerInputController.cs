@@ -40,12 +40,12 @@ public partial class PlayerInputController : Node
             case InputEventMouseButton { ButtonIndex: MouseButton.Left }:
                 handleMouseInput(@event);
                 break;
-            case InputEventKey {Keycode: Key.Escape}:
-            case InputEventKey {Keycode: Key.F1}:
-            case InputEventKey {Keycode: Key.Space}:
-            case InputEventKey {Keycode: Key.F}:
-            case InputEventKey {Keycode: Key.P}:
-            case InputEventKey {Keycode: Key.Quoteleft}:
+            case InputEventKey {PhysicalKeycode: Key.Escape}:
+            case InputEventKey {PhysicalKeycode: Key.F1}:
+            case InputEventKey {PhysicalKeycode: Key.Space}:
+            case InputEventKey {PhysicalKeycode: Key.F}:
+            case InputEventKey {PhysicalKeycode: Key.P}:
+            case InputEventKey {PhysicalKeycode: Key.Quoteleft}:
                 handleKeyboardInput(@event);
                 break;
         }
@@ -66,15 +66,15 @@ public partial class PlayerInputController : Node
 
     private void handleKeyboardInput(InputEvent @event)
     {
-        InputEventKey key = (InputEventKey)@event;
-
+        var key = (InputEventKey)@event;
+        
         // Functionality with pressing and releasing
 
         if (key.Echo) return;
 
         switch (key)
         {
-            case {Keycode: Key.Space}:
+            case {PhysicalKeycode: Key.Space}:
                 if (key.Pressed)
                 {
                     OnPauseOrSkipPressed?.Invoke();
@@ -92,19 +92,19 @@ public partial class PlayerInputController : Node
 
         switch (key)
         {
-            case {Keycode: Key.Escape}:
+            case {PhysicalKeycode: Key.Escape}:
                 OnTogglePaused?.Invoke();
                 break;
-            case {Keycode: Key.Quoteleft}:
+            case {PhysicalKeycode: Key.Quoteleft}:
                 OnRestartPressed?.Invoke();
                 break;
-            case {Keycode: Key.F1}:
+            case {PhysicalKeycode: Key.F1}:
                 OnToggleReplayViewerVisibility?.Invoke();
                 break;
-            case {Keycode: Key.F}:
+            case {PhysicalKeycode: Key.F}:
                 OnToggleFade?.Invoke();
                 break;
-            case {Keycode: Key.P}:
+            case {PhysicalKeycode: Key.P}:
                 OnTogglePushback?.Invoke();
                 break;
         }
