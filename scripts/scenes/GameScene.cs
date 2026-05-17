@@ -13,6 +13,7 @@ public partial class GameScene : BaseScene
 	public PlayerInputController PlayerInputController { get; private set; }
     public CursorManager CursorManager { get; private set; }
 	public static Attempt Attempt;
+	public static bool StartQueued = false;
 
 	public bool MenuShown = false;
 
@@ -160,22 +161,22 @@ public partial class GameScene : BaseScene
 
 		if (Runner.Attempt.IsReplay)
 		{
-			Logger.Log("Replay Mode: playback");
 			ReplayManager.CurrentMode = ReplayManager.Mode.PLAYBACK;
 		}
 		else if (Runner.Attempt.Settings.RecordReplays)
 		{
 			// ReplayManager.NewReplay(Runner.Attempt);
-			Logger.Log("Replay Mode: record");
 			ReplayManager.CurrentMode = ReplayManager.Mode.RECORD;
 		}
 		else
 		{
-			Logger.Log("Replay Mode: none");
 			ReplayManager.CurrentMode = ReplayManager.Mode.NONE;
 		}
 
+		Logger.Log($"Replay Mode: {ReplayManager.CurrentMode}");
+
 		Runner.Play();
+		StartQueued = false;
 	}
 
 	public override void Load()
@@ -191,6 +192,10 @@ public partial class GameScene : BaseScene
 
 	public static void Play(Map map, double speed, double startFrom, Dictionary<string, bool> mods, string[] players = null, Replay[] replays = null)
 	{
+		if (StartQueued) return;
+
+		StartQueued = true;
+
 		var parsedMap = MapParser.Decode(map.FilePath);
 		Attempt = new Attempt(parsedMap, speed, startFrom, mods ?? [], players, replays);
 
@@ -200,7 +205,7 @@ public partial class GameScene : BaseScene
 			map.PlayCount++;
 			MapManager.Update(map);
 		}
-
+		
 		SceneManager.Load("res://scenes/game.tscn");
 	}
 
