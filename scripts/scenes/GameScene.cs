@@ -121,8 +121,8 @@ public partial class GameScene : BaseScene
 
 		Panel menuButtonsHolder = Menu.GetNode<Panel>("Holder");
 
-		Menu.GetNode<Button>("Button").Pressed += HideMenu;
-		menuButtonsHolder.GetNode<Button>("Resume").Pressed += HideMenu;
+		Menu.GetNode<Button>("Button").Pressed += () => HideMenu();
+		menuButtonsHolder.GetNode<Button>("Resume").Pressed += () => HideMenu();
 		menuButtonsHolder.GetNode<Button>("Restart").Pressed += Restart;
 		menuButtonsHolder.GetNode<Button>("Settings").Pressed += () => {
 			SettingsMenu.Instance.ShowMenu();
@@ -179,7 +179,7 @@ public partial class GameScene : BaseScene
 
 		Logger.Log($"Replay Mode: {ReplayManager.CurrentMode}");
 
-		HideMenu();
+		HideMenu(true);
 
 		Runner.Play();
 		StartQueued = false;
@@ -223,7 +223,7 @@ public partial class GameScene : BaseScene
 		SceneManager.ReloadCurrentScene();
 	}
 
-	public void ShowMenu(bool show = true)
+	public void ShowMenu(bool show = true, bool instant = false)
 	{
 		MenuShown = show;
 		Runner.Playing = !MenuShown;
@@ -261,15 +261,15 @@ public partial class GameScene : BaseScene
 		}
 
 		Tween tween = Menu.CreateTween();
-		tween.TweenProperty(Menu, "modulate", Color.Color8(255, 255, 255, (byte)(MenuShown ? 255 : 0)), 0.25).SetTrans(Tween.TransitionType.Quad);
+		tween.TweenProperty(Menu, "modulate", Color.Color8(255, 255, 255, (byte)(MenuShown ? 255 : 0)), instant ? 0 : 0.25).SetTrans(Tween.TransitionType.Quad);
 		tween.TweenCallback(Callable.From(() => {
 			Menu.Visible = MenuShown;
 		}));
 		tween.Play();
 	}
 
-	public void HideMenu()
+	public void HideMenu(bool instant = false)
 	{
-		ShowMenu(false);
+		ShowMenu(false, instant);
 	}
 }
