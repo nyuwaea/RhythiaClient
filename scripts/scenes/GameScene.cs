@@ -6,12 +6,12 @@ public partial class GameScene : BaseScene
 {
 	[Export] public Runner Runner;
 	[Export] public Panel Menu;
-	[Export] public ReplayManager ReplayManager;
+	[Export] public ReplayManager ReplayManager { get; private set; }
+	[Export] public PlayerInputController PlayerInputController { get; private set; }
+    [Export] public CursorManager CursorManager { get; private set; }
 
 	[Signal] public delegate void StartTempPauseEventHandler(Attempt attempt);
 
-	public PlayerInputController PlayerInputController { get; private set; }
-    public CursorManager CursorManager { get; private set; }
 	public static Attempt Attempt;
 	public static bool StartQueued = false;
 
@@ -25,6 +25,7 @@ public partial class GameScene : BaseScene
 
 		Instance = this;
 
+		ReplayManager ??= GetNode<ReplayManager>("ReplayManager");
         CursorManager ??= GetNode<CursorManager>("CursorManager");
         PlayerInputController ??= GetNode<PlayerInputController>("PlayerInputController");
 
@@ -118,11 +119,6 @@ public partial class GameScene : BaseScene
 		PlayerInputController.OnTogglePushback += () => Attempt.Settings.Pushback.Value = !Attempt.Settings.Pushback;
 		PlayerInputController.OnRestartPressed += Restart;
 
-		Control focused = SceneManager.Root.GetViewport().GuiGetFocusOwner();
-		focused?.ReleaseFocus();
-		Input.MouseMode = Attempt.Settings.AbsoluteInput.Value || Attempt.IsReplay ? Input.MouseModeEnum.ConfinedHidden : Input.MouseModeEnum.Captured;
-		Input.UseAccumulatedInput = false;
-
 		Panel menuButtonsHolder = Menu.GetNode<Panel>("Holder");
 
 		Menu.GetNode<Button>("Button").Pressed += HideMenu;
@@ -147,6 +143,22 @@ public partial class GameScene : BaseScene
 
 			Runner.Stop();
 		};
+	}
+
+	public override void Load()
+	{
+		base.Load();
+
+		DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Disabled);
+
+		MenuCursor.Instance.UpdateVisible(false, false);
+		SceneManager.Space.UpdateState(true);
+		SceneManager.Space.UpdateMap(Attempt.Map);
+
+		Control focused = SceneManager.Root.GetViewport().GuiGetFocusOwner();
+		focused?.ReleaseFocus();
+		Input.MouseMode = Attempt.Settings.AbsoluteInput.Value || Attempt.IsReplay ? Input.MouseModeEnum.ConfinedHidden : Input.MouseModeEnum.Captured;
+		Input.UseAccumulatedInput = false;
 
 		Runner.Attempt = Attempt;
 		ReplayManager.InitReplayLength();
@@ -167,19 +179,10 @@ public partial class GameScene : BaseScene
 
 		Logger.Log($"Replay Mode: {ReplayManager.CurrentMode}");
 
+		HideMenu();
+
 		Runner.Play();
 		StartQueued = false;
-	}
-
-	public override void Load()
-	{
-		base.Load();
-
-		DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Disabled);
-
-		MenuCursor.Instance.UpdateVisible(false, false);
-		SceneManager.Space.UpdateState(true);
-		SceneManager.Space.UpdateMap(Attempt.Map);
 	}
 
 	public static void Play(Map map, double speed, double startFrom, Dictionary<string, bool> mods, string[] players = null, Replay[] replays = null)
@@ -214,7 +217,7 @@ public partial class GameScene : BaseScene
 			_ = ToastNotification.Notify("Replay desync detected! Sum didn't match notes hit", 2);
 		}
 
-		Map map = MapParser.Decode(oldAttempt.Map.FilePath);
+		var map = MapParser.Decode(oldAttempt.Map.FilePath);
 		Attempt = new Attempt(map, oldAttempt.Speed, oldAttempt.StartFrom, oldAttempt.Mods, oldAttempt.Players, oldAttempt.Replays);
 
 		SceneManager.ReloadCurrentScene();
@@ -239,18 +242,20 @@ public partial class GameScene : BaseScene
 		else
 		{
 			// Re-sync the audio just in case
-			double currentTime = Math.Max(0, (Attempt.Progress - Attempt.Settings.LocalOffset) / 1000.0f);
+			// Already done when the map is running
 
-			if (Attempt.Map.AudioBuffer != null && SoundManager.Song.Playing)
-			{
-				double desyncOffsetTime = Math.Abs(currentTime - SoundManager.Song.GetPlaybackPosition());
+			// double currentTime = Math.Max(0, (Attempt.Progress - Attempt.Settings.LocalOffset) / 1000.0f);
 
-				if (desyncOffsetTime > 0.05f)
-				{
-					Logger.Log($"[color=yellow]Desync detected! Offset by [b]{desyncOffsetTime:F5} seconds![/b][/color]");
-					SoundManager.Song.Seek((float)currentTime);
-				}
-			}
+			// if (Attempt.Map.AudioBuffer != null && SoundManager.Song.Playing)
+			// {
+			// 	double desyncOffsetTime = Math.Abs(currentTime - SoundManager.Song.GetPlaybackPosition());
+
+			// 	if (desyncOffsetTime > 0.05f)
+			// 	{
+			// 		Logger.Log($"[color=yellow]Desync detected! Offset by [b]{desyncOffsetTime:F5} seconds![/b][/color]");
+			// 		SoundManager.Song.Seek((float)currentTime);
+			// 	}
+			// }
 
 			Input.MouseMode = Attempt.Settings.AbsoluteInput || Attempt.IsReplay ? Input.MouseModeEnum.ConfinedHidden : Input.MouseModeEnum.Captured;
 		}

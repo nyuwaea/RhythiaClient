@@ -430,7 +430,7 @@ public partial class MapList : Panel, ISkinnable
 
         List<Map> queried = [.. MapManager.Maps.Where(x => x.PrettyTitle.Contains(SearchQuery, StringComparison.CurrentCultureIgnoreCase) && x.PrettyMappers.Contains(AuthorQuery, StringComparison.CurrentCultureIgnoreCase))];
         List<Map> unfavorited = [];
-
+        
         foreach (Map map in queried)
         {
             (map.Favorite ? Maps : unfavorited).Add(map);

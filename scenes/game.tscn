@@ -149,12 +149,10 @@ texture_repeat = false
 [sub_resource type="LabelSettings" id="LabelSettings_5bid2"]
 font = ExtResource("12_axsek")
 font_size = 30
-font_color = Color(1, 1, 1, 0.627451)
 
 [sub_resource type="LabelSettings" id="LabelSettings_v63ri"]
 font = ExtResource("12_axsek")
 font_size = 30
-font_color = Color(1, 1, 1, 0.627451)
 
 [sub_resource type="LabelSettings" id="LabelSettings_g4ffu"]
 font = ExtResource("11_o37lt")
@@ -275,11 +273,13 @@ Button/styles/hover = SubResource("StyleBoxFlat_6kbgk")
 Button/styles/normal = SubResource("StyleBoxEmpty_jlnvv")
 Button/styles/pressed = SubResource("StyleBoxFlat_y08lf")
 
-[node name="SceneGame" type="Node" unique_id=909809067 node_paths=PackedStringArray("Runner", "Menu", "ReplayManager")]
+[node name="SceneGame" type="Node" unique_id=909809067 node_paths=PackedStringArray("Runner", "Menu", "ReplayManager", "PlayerInputController", "CursorManager")]
 script = ExtResource("1_bhx41")
 Runner = NodePath("Runner")
 Menu = NodePath("Menu")
 ReplayManager = NodePath("ReplayManager")
+PlayerInputController = NodePath("PlayerInputController")
+CursorManager = NodePath("CursorManager")
 UseGameSpace = true
 AddSpaceAsChild = true
 
@@ -501,6 +501,7 @@ label_settings = SubResource("LabelSettings_usmyc")
 horizontal_alignment = 1
 
 [node name="Hits" type="Label" parent="Runner/HUD/PanelRight/PanelRightViewport" unique_id=2096630009]
+modulate = Color(1, 1, 1, 0.627451)
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.625
@@ -516,6 +517,7 @@ label_settings = SubResource("LabelSettings_5bid2")
 horizontal_alignment = 2
 
 [node name="Misses" type="Label" parent="Runner/HUD/PanelRight/PanelRightViewport" unique_id=1379241442]
+modulate = Color(1, 1, 1, 0.627451)
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.625

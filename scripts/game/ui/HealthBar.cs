@@ -25,6 +25,8 @@ public partial class HealthBar : UIComponent
 		healthBarTexture.Texture = SkinManager.Instance.Skin.HealthImage;
 		healthBarBGTexture.Texture = SkinManager.Instance.Skin.HealthBackgroundImage;
 
+		healthBarTexture.Modulate = new(0xffffffff);
+
 		if (Runner.Attempt.Settings.SuperSimpleHUD)
 		{
 			healthBarTexture.Visible = false;
@@ -51,7 +53,7 @@ public partial class HealthBar : UIComponent
 
 		if (!attempt.IsReplay && attempt.Health <= 0)
 		{
-			healthBarTexture.Modulate = Color.Color8(255, 255, 255, 128);
+			healthBarTexture.Modulate = new(0xffffff80);
 			healthBarBGTexture.Modulate = healthBarTexture.Modulate;
 		}
 	}

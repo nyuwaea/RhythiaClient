@@ -24,6 +24,7 @@ public partial class Runner : Node3D
 	public int ToProcess = 0;
 	public List<Note> ProcessNotes = [];
 	private double lastFrame = Time.GetTicksUsec();
+	private bool firstFrame = true;
 
 	public bool SpinCamera = false;
 
@@ -57,6 +58,9 @@ public partial class Runner : Node3D
 		lastFrame = now;
 
 		if (!Playing) return;
+		// don't process through the first (slow) frame
+		if (firstFrame) { firstFrame = false; return; }
+
 		Attempt.Progress += delta * 1000 * Attempt.Speed;
 
 		// De-sync corrector
@@ -65,10 +69,9 @@ public partial class Runner : Node3D
 		{
 			double audioDelay = Attempt.Progress - Attempt.Settings.LocalOffset.Value - (1000 * (SoundManager.Song.GetPlaybackPosition() + AudioServer.GetTimeSinceLastMix()));
 
-			// If de-sync is over 40 milliseconds, then slightly speed up the song until under 40 milliseconds
+			// If de-sync is over 40 milliseconds, then slightly adjust the speed of the song until under 40 milliseconds
 			if (Math.Abs(audioDelay / Attempt.Speed) > Math.Max(40, delta))
 			{
-				// SoundManager.Song.PitchScale = Math.Max(Mathf.Epsilon, (float)Attempt.Speed + (float)audioDelay / 1000);
 				SoundManager.Song.PitchScale = (float)Math.Clamp(Attempt.Speed + audioDelay / 1000, Math.Max(0.01, Attempt.Speed - 0.5), Attempt.Speed + 0.5);
 			}
 			else if (Math.Abs(SoundManager.Song.PitchScale - Attempt.Speed) > Mathf.Epsilon)
@@ -136,7 +139,7 @@ public partial class Runner : Node3D
 
 		// note process check
 		double at = Attempt.IsReplay ? Attempt.Replays[0].ApproachTime : settings.ApproachTime;
-
+		
 		for (uint i = Attempt.PassedNotes; i < Attempt.Map.Notes.Length; i++)
 		{
 			Note note = Attempt.Map.Notes[i];
@@ -297,6 +300,8 @@ public partial class Runner : Node3D
 			HudManager.Init();
 			Attempt.TimeStarted = Time.GetTicksUsec();
 			HitResultChanged += OnHitResultChanged;
+
+			EmitSignal(SignalName.AttemptStatsUpdated, Attempt);
 		}
 
 		settings = SettingsManager.Instance.Settings;
@@ -304,9 +309,12 @@ public partial class Runner : Node3D
 		SpinCamera = Attempt.Mods["Spin"];
 		Camera.Fov = (float)(Attempt.IsReplay ? Attempt.Replays[0].FoV : settings.FoV.Value);
 		Notes.Multimesh.Mesh = SkinManager.Instance.Skin.NoteMesh;
-		SoundManager.BeginGameplayScope(Attempt.Map);
-		Playing = true;
 
+		SoundManager.BeginGameplayScope(Attempt.Map);
+
+		Playing = true;
+		firstFrame = true;
+		
 		if (Attempt.Map.AudioBuffer != null)
 		{
 			SoundManager.Song.Stream = Util.Audio.LoadStream(Attempt.Map.AudioBuffer);
@@ -319,8 +327,8 @@ public partial class Runner : Node3D
 		}
 
 		Attempt.MapLength += Constants.HIT_WINDOW;
+
 		SoundManager.UpdateVolume();
-		
 	}
 
 	public void Pause()
@@ -376,7 +384,10 @@ public partial class Runner : Node3D
 			return;
 		}
 
-		Attempt.HitsInfo = Attempt.HitsInfo[0 .. (int)Attempt.PassedNotes];
+		Attempt.Stopped = true;
+		Attempt.HitsInfo = Attempt.HitsInfo[0 .. (int)Attempt.Sum];
+
+		HitResultChanged -= OnHitResultChanged;
 
 		// dont want an infinite dependency loop so im just going to do this -fog
 		if (!Attempt.IsReplay && GameScene.Instance.ReplayManager.CurrentMode == ReplayManager.Mode.RECORD)

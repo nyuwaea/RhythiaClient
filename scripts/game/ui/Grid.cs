@@ -15,7 +15,7 @@ public partial class Grid : MeshInstance3D, IUIComponent
     {
         if (Runner.Attempt == null) return;
 		Runner.HitResultChanged -= onHitResultChanged;
-        QueueFree();
+        // QueueFree();
     }
 
     public void Init()

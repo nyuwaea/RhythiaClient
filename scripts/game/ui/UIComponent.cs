@@ -21,7 +21,7 @@ public abstract partial class UIComponent : Node3D, IUIComponent
     public override void _ExitTree()
     {
         OnExitTree();
-        QueueFree();
+        // QueueFree();
     }
 
     public virtual void Process(double delta, Attempt attempt) {}
