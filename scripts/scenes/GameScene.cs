@@ -19,20 +19,11 @@ public partial class GameScene : BaseScene
 
 	public static GameScene Instance;
 
-	public override void _EnterTree()
-	{
-		GD.Print("in tree");
-		Instance = this;
-	}
-
-	public override void _ExitTree()
-	{
-		// Instance.QueueFree();
-	}
-
 	public override void _Ready()
 	{
 		base._Ready();
+
+		Instance = this;
 
         CursorManager ??= GetNode<CursorManager>("CursorManager");
         PlayerInputController ??= GetNode<PlayerInputController>("PlayerInputController");

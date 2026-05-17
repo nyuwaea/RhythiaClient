@@ -140,13 +140,11 @@ public partial class Rhythia : Node
 
         Quitting = true;
         
-//         Logger.Log("Attempting to quit...");
+        Logger.Log("Attempting to quit...");
 
-//         var settings = SettingsManager.Instance.Settings;
-
-        if (GameScene.Attempt != null && !GameScene.Attempt.IsReplay)
+        if (GameScene.Instance.Runner.Playing && GameScene.Attempt != null && !GameScene.Attempt.IsReplay)
         {
-            GameScene.Instance.Runner.Stop();
+            GameScene.Instance.Runner.Stop(false);
         }
 
         Stats.Instance.TotalPlaytime += (Time.GetTicksUsec() - Constants.STARTED) / 1000000;
@@ -159,7 +157,7 @@ public partial class Rhythia : Node
 
         Discord.Client.Dispose();
 
-        Tween quitTween = Instance.CreateTween();
+        var quitTween = Instance.CreateTween();
         quitTween.TweenCallback(Callable.From(() => {
             Logger.Log("Quitting");
             Instance.GetTree().Quit();
