@@ -13,7 +13,7 @@ public class Logger
         }
         else
         {
-            GD.Print(message);
+            GD.PrintRich(message);
         }
     }
 

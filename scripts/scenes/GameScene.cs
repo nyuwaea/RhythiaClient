@@ -36,9 +36,9 @@ public partial class GameScene : BaseScene
         PlayerInputController ??= GetNode<PlayerInputController>("PlayerInputController");
 
         if (CursorManager == null)
-            GD.PrintErr("No CursorManager found!");
+            Logger.Error("No CursorManager found!");
         if (PlayerInputController == null)
-            GD.PrintErr("No PlayerInputController found!");
+            Logger.Error("No PlayerInputController found!");
 
         PlayerInputController.OnMouseMove += (relative, absolute) =>
         {
@@ -250,7 +250,7 @@ public partial class GameScene : BaseScene
 
 				if (desyncOffsetTime > 0.05f)
 				{
-					GD.PrintRich($"[color=yellow]Desync detected! Offset by [b]{desyncOffsetTime:F5} seconds![/b][/color]");
+					Logger.Log($"[color=yellow]Desync detected! Offset by [b]{desyncOffsetTime:F5} seconds![/b][/color]");
 					SoundManager.Song.Seek((float)currentTime);
 				}
 			}

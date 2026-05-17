@@ -94,9 +94,9 @@ public partial class ReplayManager : Node
 		_file.Seek(_file.GetLength());
 		_file.Store64(attempt.FirstNote);
 		_file.Store64(attempt.Sum);
-		// GD.Print(string.Join(", ", attempt.HitsInfo));
-		// GD.Print($"Sum: {attempt.FirstNote}+{attempt.Sum}={attempt.FirstNote + attempt.Sum}");
-		// GD.Print($"HitsInfoCount: {attempt.HitsInfo.Count()}");
+		// Logger.Log(string.Join(", ", attempt.HitsInfo));
+		// Logger.Log($"Sum: {attempt.FirstNote}+{attempt.Sum}={attempt.FirstNote + attempt.Sum}");
+		// Logger.Log($"HitsInfoCount: {attempt.HitsInfo.Count()}");
 
 		if (attempt.FirstNote + attempt.Sum != (uint)attempt.HitsInfo.Length)
 		{
