@@ -86,8 +86,7 @@ public partial class Results : BaseScene
         footer.GetNode<Button>("Back").Pressed += Stop;
         footer.GetNode<Button>("Play").Pressed += Replay;
         replayButton.Visible = !GameScene.Attempt.Map.Ephemeral;
-
-		
+        
         if (!FileAccess.FileExists(GameScene.Attempt.ReplayPath) && !GameScene.Attempt.IsReplay)
         {
             // This can be multiple reasons, so I am just going to disable the notification
@@ -116,9 +115,9 @@ public partial class Results : BaseScene
                 GameScene.Play(MapParser.Decode(replay.MapFilePath), replay.Speed, replay.StartFrom, replay.Modifiers, null, [replay]);
             }
         };
-	  }
+	}
 
-	  public override void _Process(double delta)
+	public override void _Process(double delta)
     {
         ulong now = Time.GetTicksUsec();
         delta = (now - LastFrame) / 1000000;

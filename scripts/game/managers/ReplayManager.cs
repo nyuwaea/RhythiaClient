@@ -35,8 +35,11 @@ public partial class ReplayManager : Node
 	public void NewReplay(Attempt attempt)
 	{
 		var settings = attempt.Settings;
+
 		if (!settings.RecordReplays) return;
+
 		ReplayPath = $"{Constants.USER_FOLDER}/replays/{attempt.ID}.phxr";
+		
 		_file = FileAccess.Open(ReplayPath, FileAccess.ModeFlags.Write);
 
 		_file.StoreString("phxr");	// sig
@@ -100,12 +103,10 @@ public partial class ReplayManager : Node
 
 		if (attempt.FirstNote + attempt.Sum != (uint)attempt.HitsInfo.Length)
 		{
-
 			_file.Close();
 
 			if (FileAccess.FileExists(ReplayPath))
 			{
-
                 string mismatch = $"Sum: {attempt.FirstNote}+{attempt.Sum}={attempt.FirstNote + attempt.Sum}";
 				string hitsInfoDebug = string.Join(", ", attempt.HitsInfo);
 				string passedNotesDebug = $"Passed Notes: {attempt.PassedNotes}";
@@ -122,6 +123,7 @@ public partial class ReplayManager : Node
 		}
 
 		_file.Store64((ulong)attempt.ReplaySkips.Count);
+
 		foreach (float skip in attempt.ReplaySkips)
 		{
 			_file.StoreFloat(skip);
@@ -184,7 +186,6 @@ public partial class ReplayManager : Node
 		seekerTimeline.FocusExited += () => {
 			seekerHovered = false;
 		};
-
 	}
 
 	public override void _Process(double delta)
@@ -230,54 +231,54 @@ public partial class ReplayManager : Node
     }
 
     public void ShowReplayViewer(Attempt attempt)
-        {
-            ViewerVisible = !ViewerVisible;
-            bool visible = ViewerVisible && attempt.IsReplay;
+	{
+		ViewerVisible = !ViewerVisible;
+		bool visible = ViewerVisible && attempt.IsReplay;
 
-            ReplayViewer.Visible = visible;
+		ReplayViewer.Visible = visible;
 
-            Input.MouseMode = visible
-                ? Input.MouseModeEnum.Visible
-                : Input.MouseModeEnum.Hidden;
-        }
+		Input.MouseMode = visible
+			? Input.MouseModeEnum.Visible
+			: Input.MouseModeEnum.Hidden;
+	}
 
-        private void resetToSeekedPosition(float seekedTime)
-        {
-            Attempt att = Runner.Attempt;
+	private void resetToSeekedPosition(float seekedTime)
+	{
+		var att = Runner.Attempt;
 
-            att.Hits = 0;
-            att.Misses = 0;
-            att.Sum = 0;
-            att.Accuracy = 100;
-            att.Score = 0;
-            att.PassedNotes = 0;
-            att.Combo = 0;
-            att.ComboMultiplier = 1;
-            att.ComboMultiplierProgress = 0;
-            att.Health = 100;
-            att.HealthStep = 15;
+		att.Hits = 0;
+		att.Misses = 0;
+		att.Sum = 0;
+		att.Accuracy = 100;
+		att.Score = 0;
+		att.PassedNotes = 0;
+		att.Combo = 0;
+		att.ComboMultiplier = 1;
+		att.ComboMultiplierProgress = 0;
+		att.Health = 100;
+		att.HealthStep = 15;
 
-            for (int i = 0; i < att.Map.Notes.Length; i++)
-            {
-                att.Map.Notes[i].Hittable = false;
-            }
+		for (int i = 0; i < att.Map.Notes.Length; i++)
+		{
+			att.Map.Notes[i].Hittable = false;
+		}
 
-            att.Progress = seekedTime * ReplayLength;
+		att.Progress = seekedTime * ReplayLength;
 
-            for (int i = 0; i < att.Replays[0].Frames.Length; i++)
-            {
-                if (att.Progress < att.Replays[0].Frames[i].Progress)
-                {
-                    att.Replays[0].FrameIndex = Math.Max(0, i - 1);
-                    break;
-                }
-            }
+		for (int i = 0; i < att.Replays[0].Frames.Length; i++)
+		{
+			if (att.Progress < att.Replays[0].Frames[i].Progress)
+			{
+				att.Replays[0].FrameIndex = Math.Max(0, i - 1);
+				break;
+			}
+		}
 
-            if (!SoundManager.Song.Playing)
-            {
-                SoundManager.Song.Play();
-            }
+		if (!SoundManager.Song.Playing)
+		{
+			SoundManager.Song.Play();
+		}
 
-            SoundManager.Song.Seek((float)(att.Progress - att.Settings.LocalOffset.Value) / 1000);
-        }
+		SoundManager.Song.Seek((float)(att.Progress - att.Settings.LocalOffset.Value) / 1000);
+	}
 }

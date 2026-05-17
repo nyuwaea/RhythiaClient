@@ -21,12 +21,13 @@ public partial class GameScene : BaseScene
 
 	public override void _EnterTree()
 	{
+		GD.Print("in tree");
 		Instance = this;
 	}
 
 	public override void _ExitTree()
 	{
-		Instance.QueueFree();
+		// Instance.QueueFree();
 	}
 
 	public override void _Ready()
@@ -165,7 +166,7 @@ public partial class GameScene : BaseScene
 		}
 		else if (Runner.Attempt.Settings.RecordReplays)
 		{
-			// ReplayManager.NewReplay(Runner.Attempt);
+			ReplayManager.NewReplay(Runner.Attempt);
 			ReplayManager.CurrentMode = ReplayManager.Mode.RECORD;
 		}
 		else

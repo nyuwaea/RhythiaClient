@@ -1,11 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
 public partial class Runner : Node3D
@@ -134,8 +130,6 @@ public partial class Runner : Node3D
 		{
 			Attempt.CanSkip = false;
 		}
-
-		
 
 		ToProcess = 0;
 		ProcessNotes.Clear();
@@ -375,7 +369,6 @@ public partial class Runner : Node3D
 		StopQueued = true;
 	}
 
-
 	public void Stop(bool results = true)
 	{
 		if (Attempt.Stopped)
@@ -388,9 +381,8 @@ public partial class Runner : Node3D
 		// dont want an infinite dependency loop so im just going to do this -fog
 		if (!Attempt.IsReplay && GameScene.Instance.ReplayManager.CurrentMode == ReplayManager.Mode.RECORD)
 		{
-			// GameScene.Instance.ReplayManager.SaveReplay(Attempt);
+			GameScene.Instance.ReplayManager.SaveReplay(Attempt);
 		}
-
 
 		if (!Attempt.IsReplay)
 		{
