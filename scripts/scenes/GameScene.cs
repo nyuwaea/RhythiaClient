@@ -191,8 +191,8 @@ public partial class GameScene : BaseScene
 
 	public static void Play(Map map, double speed, double startFrom, Dictionary<string, bool> mods, string[] players = null, Replay[] replays = null)
 	{
-		Map parsed_map = MapParser.Decode(map.FilePath);
-		Attempt = new Attempt(parsed_map, speed, startFrom, mods ?? [], players, replays);
+		var parsedMap = MapParser.Decode(map.FilePath);
+		Attempt = new Attempt(parsedMap, speed, startFrom, mods ?? [], players, replays);
 
 		if (!Attempt.IsReplay)
 		{
