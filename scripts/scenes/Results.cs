@@ -32,11 +32,11 @@ public partial class Results : BaseScene
         holder.GetNode<Label>("Title").Text = (GameScene.Attempt.IsReplay ? "[REPLAY] " : "") + GameScene.Attempt.Map.PrettyTitle;
         holder.GetNode<Label>("Difficulty").Text = GameScene.Attempt.Map.DifficultyName;
         holder.GetNode<Label>("Mappers").Text = $"by {GameScene.Attempt.Map.PrettyMappers}";
-        holder.GetNode<Label>("Accuracy").Text = $"{GameScene.Attempt.Accuracy.ToString():F2}%";
+        holder.GetNode<Label>("Accuracy").Text = $"{GameScene.Attempt.Accuracy:F2}%";
         holder.GetNode<Label>("Score").Text = $"{Util.String.PadMagnitude(GameScene.Attempt.Score.ToString())}";
         holder.GetNode<Label>("Hits").Text = $"{Util.String.PadMagnitude(GameScene.Attempt.Hits.ToString())} / {Util.String.PadMagnitude(GameScene.Attempt.Sum.ToString())}";
         holder.GetNode<Label>("Status").Text = GameScene.Attempt.IsReplay ? GameScene.Attempt.Replays[0].Status : GameScene.Attempt.Alive ? (GameScene.Attempt.Qualifies ? "PASSED" : "DISQUALIFIED") : "FAILED";
-        holder.GetNode<Label>("Speed").Text = $"{GameScene.Attempt.Speed.ToString():F2}x";
+        holder.GetNode<Label>("Speed").Text = $"{GameScene.Attempt.Speed:F2}x";
 
         HBoxContainer modifiersContainer = holder.GetNode("Modifiers").GetNode<HBoxContainer>("HBoxContainer");
         TextureRect modTemplate = modifiersContainer.GetNode<TextureRect>("ModifierTemplate");
