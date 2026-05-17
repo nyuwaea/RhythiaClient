@@ -47,7 +47,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [node name="SkinExplorerItem" type="HBoxContainer" unique_id=647788912 node_paths=PackedStringArray("infoContainer", "select", "label", "icon", "add", "delete", "childrenContainer", "hoverHighlight", "selectHighlight", "hierarchyContainer", "collapse", "lineContainer", "lineVertical", "lineButton")]
-custom_minimum_size = Vector2(240, 24)
+custom_minimum_size = Vector2(0, 24)
 offset_right = 193.0
 offset_bottom = 24.0
 size_flags_horizontal = 3

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Godot;
@@ -42,7 +43,7 @@ public partial class SkinProperties : Panel
 		{
 			foreach (var p in skinObject.GetProperties())
 			{
-				BuildProperty(p);
+				BuildProperty(p.Name, p.PropertyType.Name, p.GetValue(skinObject));
 			}
 		}
 	}
@@ -71,12 +72,11 @@ public partial class SkinProperties : Panel
 	/// <summary>
 	/// 
 	/// </summary>
-	public SkinPropertyItem BuildProperty(PropertyInfo property)
+	public SkinPropertyItem BuildProperty(string name, string type, object value)
 	{
-		string type = property.PropertyType.Name;
 		var item = createItem(type);
 
-		item.SetProperty(property.Name, type);
+		item.SetProperty(name, type, value);
 		items.Add(item);
 		itemContainer.AddChild(item);
 

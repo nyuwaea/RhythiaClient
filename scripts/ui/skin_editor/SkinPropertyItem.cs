@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class SkinPropertyItem : VBoxContainer
 {
@@ -16,9 +15,9 @@ public partial class SkinPropertyItem : VBoxContainer
 
 	}
 
-	public void SetProperty(string name, string type)
+	public void SetProperty(string name, string type, object value)
 	{
-		label.Text = name;
+		label.Text = Util.String.PascalToSpaces(name);
 		Type = type;
 	}
 }

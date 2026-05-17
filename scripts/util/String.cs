@@ -73,6 +73,13 @@ public class String
         return formatted.TrimSuffix(pad) + decimals;
     }
 
+    public static string PascalToSpaces(string input)
+    {
+        var pascalToSpacesRegex = new Regex("(?<=.)([A-Z])");
+
+        return pascalToSpacesRegex.Replace(input, " $1");
+    }
+
     public static string SanitizeZalgo(string input, int limit = 3)
     {
         var zalgoSpamRegex = new Regex("([\\p{M}]){" + (limit + 1) + ",}");
