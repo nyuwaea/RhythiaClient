@@ -160,18 +160,18 @@ public partial class GameScene : BaseScene
 
 		if (Runner.Attempt.IsReplay)
 		{
-			GD.Print("Replay Mode: playback");
+			Logger.Log("Replay Mode: playback");
 			ReplayManager.CurrentMode = ReplayManager.Mode.PLAYBACK;
 		}
 		else if (Runner.Attempt.Settings.RecordReplays)
 		{
 			// ReplayManager.NewReplay(Runner.Attempt);
-			GD.Print("Replay Mode: record");
+			Logger.Log("Replay Mode: record");
 			ReplayManager.CurrentMode = ReplayManager.Mode.RECORD;
 		}
 		else
 		{
-			GD.Print("Replay Mode: none");
+			Logger.Log("Replay Mode: none");
 			ReplayManager.CurrentMode = ReplayManager.Mode.NONE;
 		}
 
