@@ -202,7 +202,6 @@ font_size = 24
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_73q55"]
 transparency = 1
-cull_mode = 2
 shading_mode = 0
 specular_mode = 2
 disable_fog = true
@@ -785,12 +784,11 @@ current = true
 fov = 70.0
 size = 5.0
 
-[node name="Notes" type="MultiMeshInstance3D" parent="Runner" unique_id=77746100 node_paths=PackedStringArray("Runner")]
+[node name="Notes" type="MultiMeshInstance3D" parent="Runner" unique_id=77746100]
 material_override = SubResource("StandardMaterial3D_73q55")
 cast_shadow = 0
 multimesh = SubResource("MultiMesh_almyi")
 script = ExtResource("3_ew8wr")
-Runner = NodePath("..")
 
 [node name="Video" type="MeshInstance3D" parent="Runner" unique_id=1036410191]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.479675, -0.459572, -99.9929)
