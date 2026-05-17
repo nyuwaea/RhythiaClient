@@ -51,13 +51,13 @@ public partial class Note : IHitObject, IAnimatableObject<NoteAnimation>, ICompa
             attempt.CursorPosition.X - Constants.HIT_BOX_SIZE <= X + 0.5f &&
             attempt.CursorPosition.Y + Constants.HIT_BOX_SIZE >= Y - 0.5f &&
             attempt.CursorPosition.Y - Constants.HIT_BOX_SIZE <= Y + 0.5f)
-		{
-			return HitResult.Hit;
-		}
+        {
+            return HitResult.Hit;
+        }
 
         return HitResult.Miss;
     }
-    
+
     public int CompareTo(Note other)
     {
         return Millisecond.CompareTo(other.Millisecond);

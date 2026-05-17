@@ -119,17 +119,17 @@
 
 // 	public void OnStartUnpause()
 // 	{
-		
+
 // 	}
 
 // 	public void OnStopUnpause()
 // 	{
-		
+
 // 	}
 
 // 	public void OnCompleteTempPause()
 // 	{
-		
+
 // 	}
 
 // 	private bool isPaused() => pauseState < 0;

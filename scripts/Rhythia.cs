@@ -139,7 +139,7 @@ public partial class Rhythia : Node
         }
 
         Quitting = true;
-        
+
         Logger.Log("Attempting to quit...");
 
         bool playing = (GameScene.Instance?.Runner?.Playing ?? false) && (!GameScene.Attempt?.IsReplay ?? false);
@@ -160,7 +160,8 @@ public partial class Rhythia : Node
         Discord.Client.Dispose();
 
         var quitTween = Instance.CreateTween();
-        quitTween.TweenCallback(Callable.From(() => {
+        quitTween.TweenCallback(Callable.From(() =>
+        {
             Logger.Log("Quitting");
             Instance.GetTree().Quit();
         })).SetDelay(0.5);

@@ -15,7 +15,7 @@ public partial class LegacyRenderer : MultiMeshInstance3D
 
     public override void _Process(double delta)
     {
-//         if (!LegacyRunner.Playing || LegacyRunner.CurrentAttempt.Stopped)
+        //         if (!LegacyRunner.Playing || LegacyRunner.CurrentAttempt.Stopped)
         if (!Runner.Playing)
         {
             return;
@@ -44,8 +44,8 @@ public partial class LegacyRenderer : MultiMeshInstance3D
         noteOpacity = Math.Clamp(noteOpacity, 0, 1);
 
         float noteSize = (float)(Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].NoteSize : settings.NoteSize.Value) / 2;
-        
-        
+
+
         Transform3D transform = new(Vector3.Right * noteSize, Vector3.Up * noteSize, Vector3.Back * noteSize, Vector3.Zero);
 
         for (int i = 0; i < Runner.ToProcess; i++)
@@ -71,7 +71,7 @@ public partial class LegacyRenderer : MultiMeshInstance3D
 
                 // runner rewrite fork
                 // alpha *= Math.Min(1, (depth + hitWindowDepth) / (ad + hitWindowDepth));
-                
+
                 // indev \/ 
                 alpha -= 1 - Math.Min(1, (1 - progress) / fadeOut);
             }

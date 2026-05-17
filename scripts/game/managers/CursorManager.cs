@@ -41,7 +41,7 @@ public partial class CursorManager : Node
 
         sensitivity = (float)(runner.Attempt.IsReplay ? runner.Attempt.Replays[0].Sensitivity : runner.Attempt.Settings.Sensitivity);
 
-        if (runner.Attempt.Settings.AbsoluteInput && !runner.Attempt.IsReplay) 
+        if (runner.Attempt.Settings.AbsoluteInput && !runner.Attempt.IsReplay)
         {
             sensitivity = (float)runner.Attempt.Settings.AbsoluteSensitivity;
         }

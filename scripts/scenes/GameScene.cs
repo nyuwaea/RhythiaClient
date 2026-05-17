@@ -1,31 +1,31 @@
-using Godot;
 using System;
 using System.Collections.Generic;
+using Godot;
 
 public partial class GameScene : BaseScene
 {
-	[Export] public Runner Runner;
-	[Export] public Panel Menu;
-	[Export] public ReplayManager ReplayManager { get; private set; }
-	[Export] public PlayerInputController PlayerInputController { get; private set; }
+    [Export] public Runner Runner;
+    [Export] public Panel Menu;
+    [Export] public ReplayManager ReplayManager { get; private set; }
+    [Export] public PlayerInputController PlayerInputController { get; private set; }
     [Export] public CursorManager CursorManager { get; private set; }
 
-	[Signal] public delegate void StartTempPauseEventHandler(Attempt attempt);
+    [Signal] public delegate void StartTempPauseEventHandler(Attempt attempt);
 
-	public static Attempt Attempt;
-	public static bool StartQueued = false;
+    public static Attempt Attempt;
+    public static bool StartQueued = false;
 
-	public bool MenuShown = false;
+    public bool MenuShown = false;
 
-	public static GameScene Instance;
+    public static GameScene Instance;
 
-	public override void _Ready()
-	{
-		base._Ready();
+    public override void _Ready()
+    {
+        base._Ready();
 
-		Instance = this;
+        Instance = this;
 
-		ReplayManager ??= GetNode<ReplayManager>("ReplayManager");
+        ReplayManager ??= GetNode<ReplayManager>("ReplayManager");
         CursorManager ??= GetNode<CursorManager>("CursorManager");
         PlayerInputController ??= GetNode<PlayerInputController>("PlayerInputController");
 
@@ -54,222 +54,225 @@ public partial class GameScene : BaseScene
             Attempt.DistanceMM += relative.Length() / Attempt.Settings.Sensitivity / 57.5;
         };
 
-		PlayerInputController.OnLeftMouseButton += isPressed =>
-		{
-			if (!isPressed) return;
+        PlayerInputController.OnLeftMouseButton += isPressed =>
+        {
+            if (!isPressed) return;
 
-			ReplayManager.LMB = isPressed;
-		};
+            ReplayManager.LMB = isPressed;
+        };
 
-		PlayerInputController.OnTogglePaused += () =>
-		{
-			Attempt.Qualifies = false;
+        PlayerInputController.OnTogglePaused += () =>
+        {
+            Attempt.Qualifies = false;
 
-			if (SettingsManager.Shown)
-			{
-				SettingsMenu.Instance.HideMenu();
-			}
-			else
-			{
-				ShowMenu(!MenuShown);
-			}
-		};
+            if (SettingsManager.Shown)
+            {
+                SettingsMenu.Instance.HideMenu();
+            }
+            else
+            {
+                ShowMenu(!MenuShown);
+            }
+        };
 
-		PlayerInputController.OnToggleReplayViewerVisibility += () =>
-		{
-			if (Attempt.IsReplay)
-			{
-				ReplayManager.ShowReplayViewer(Attempt);
-			}
-		};
+        PlayerInputController.OnToggleReplayViewerVisibility += () =>
+        {
+            if (Attempt.IsReplay)
+            {
+                ReplayManager.ShowReplayViewer(Attempt);
+            }
+        };
 
-		PlayerInputController.OnPauseOrSkipPressed += () =>
-		{
-			if (Attempt.IsReplay)
-			{
-				Runner.Playing = !Runner.Playing;
-				SoundManager.Song.PitchScale = (float)Attempt.Speed;
-				SoundManager.Song.StreamPaused = !Runner.Playing;
+        PlayerInputController.OnPauseOrSkipPressed += () =>
+        {
+            if (Attempt.IsReplay)
+            {
+                Runner.Playing = !Runner.Playing;
+                SoundManager.Song.PitchScale = (float)Attempt.Speed;
+                SoundManager.Song.StreamPaused = !Runner.Playing;
 
-				string texturePath = Runner.Playing
+                string texturePath = Runner.Playing
                     ? "res://textures/ui/pause.png"
                     : "res://textures/ui/play.png";
 
-				ReplayManager.SeekerPause.TextureNormal = GD.Load<Texture2D>(texturePath);
-			}
-			else
-			{
-				if (Lobby.Players.Count > 1) return;
-				Runner.Skip();
+                ReplayManager.SeekerPause.TextureNormal = GD.Load<Texture2D>(texturePath);
+            }
+            else
+            {
+                if (Lobby.Players.Count > 1) return;
+                Runner.Skip();
 
-				// Space To Pause
-				// if (!Attempt.CanSkip && Attempt.Settings.SpaceToPause)
-				// {
-				// 	EmitSignal(SignalName.StartTempPause, Attempt);
-				// }
-			}
-		};
+                // Space To Pause
+                // if (!Attempt.CanSkip && Attempt.Settings.SpaceToPause)
+                // {
+                // 	EmitSignal(SignalName.StartTempPause, Attempt);
+                // }
+            }
+        };
 
-		// PlayerInputController.OnPauseOrSkipReleased += () =>
-		// {
-			
-		// };
+        // PlayerInputController.OnPauseOrSkipReleased += () =>
+        // {
 
-		PlayerInputController.OnToggleFade += () => Attempt.Settings.FadeOut.Value = Attempt.Settings.FadeOut.Value > 0 ? 0 : 100;
-		PlayerInputController.OnTogglePushback += () => Attempt.Settings.Pushback.Value = !Attempt.Settings.Pushback;
-		PlayerInputController.OnRestartPressed += Restart;
+        // };
 
-		Panel menuButtonsHolder = Menu.GetNode<Panel>("Holder");
+        PlayerInputController.OnToggleFade += () => Attempt.Settings.FadeOut.Value = Attempt.Settings.FadeOut.Value > 0 ? 0 : 100;
+        PlayerInputController.OnTogglePushback += () => Attempt.Settings.Pushback.Value = !Attempt.Settings.Pushback;
+        PlayerInputController.OnRestartPressed += Restart;
 
-		Menu.GetNode<Button>("Button").Pressed += () => HideMenu();
-		menuButtonsHolder.GetNode<Button>("Resume").Pressed += () => HideMenu();
-		menuButtonsHolder.GetNode<Button>("Restart").Pressed += Restart;
-		menuButtonsHolder.GetNode<Button>("Settings").Pressed += () => {
-			SettingsMenu.Instance.ShowMenu();
-		};
-		menuButtonsHolder.GetNode<Button>("Quit").Pressed += () => {
-			if (Attempt.Alive)
-			{
-				SoundManager.FailSound.Play();
-			}
+        Panel menuButtonsHolder = Menu.GetNode<Panel>("Holder");
 
-			Attempt.Alive = false;
-			Attempt.Qualifies = false;
+        Menu.GetNode<Button>("Button").Pressed += () => HideMenu();
+        menuButtonsHolder.GetNode<Button>("Resume").Pressed += () => HideMenu();
+        menuButtonsHolder.GetNode<Button>("Restart").Pressed += Restart;
+        menuButtonsHolder.GetNode<Button>("Settings").Pressed += () =>
+        {
+            SettingsMenu.Instance.ShowMenu();
+        };
+        menuButtonsHolder.GetNode<Button>("Quit").Pressed += () =>
+        {
+            if (Attempt.Alive)
+            {
+                SoundManager.FailSound.Play();
+            }
 
-			if (Attempt.DeathTime == -1)
-			{
-				Attempt.DeathTime = Math.Max(0, Attempt.Progress);
-			}
+            Attempt.Alive = false;
+            Attempt.Qualifies = false;
 
-			Runner.Stop();
-		};
-	}
+            if (Attempt.DeathTime == -1)
+            {
+                Attempt.DeathTime = Math.Max(0, Attempt.Progress);
+            }
 
-	public override void Load()
-	{
-		base.Load();
+            Runner.Stop();
+        };
+    }
 
-		DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Disabled);
+    public override void Load()
+    {
+        base.Load();
 
-		MenuCursor.Instance.UpdateVisible(false, false);
-		SceneManager.Space.UpdateState(true);
-		SceneManager.Space.UpdateMap(Attempt.Map);
+        DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Disabled);
 
-		Control focused = SceneManager.Root.GetViewport().GuiGetFocusOwner();
-		focused?.ReleaseFocus();
-		Input.MouseMode = Attempt.Settings.AbsoluteInput.Value || Attempt.IsReplay ? Input.MouseModeEnum.ConfinedHidden : Input.MouseModeEnum.Captured;
-		Input.UseAccumulatedInput = false;
+        MenuCursor.Instance.UpdateVisible(false, false);
+        SceneManager.Space.UpdateState(true);
+        SceneManager.Space.UpdateMap(Attempt.Map);
 
-		Runner.Attempt = Attempt;
-		ReplayManager.InitReplayLength();
+        Control focused = SceneManager.Root.GetViewport().GuiGetFocusOwner();
+        focused?.ReleaseFocus();
+        Input.MouseMode = Attempt.Settings.AbsoluteInput.Value || Attempt.IsReplay ? Input.MouseModeEnum.ConfinedHidden : Input.MouseModeEnum.Captured;
+        Input.UseAccumulatedInput = false;
 
-		if (Runner.Attempt.IsReplay)
-		{
-			ReplayManager.CurrentMode = ReplayManager.Mode.PLAYBACK;
-		}
-		else if (Runner.Attempt.Settings.RecordReplays)
-		{
-			ReplayManager.NewReplay(Runner.Attempt);
-			ReplayManager.CurrentMode = ReplayManager.Mode.RECORD;
-		}
-		else
-		{
-			ReplayManager.CurrentMode = ReplayManager.Mode.NONE;
-		}
+        Runner.Attempt = Attempt;
+        ReplayManager.InitReplayLength();
 
-		Logger.Log($"Replay Mode: {ReplayManager.CurrentMode}");
+        if (Runner.Attempt.IsReplay)
+        {
+            ReplayManager.CurrentMode = ReplayManager.Mode.PLAYBACK;
+        }
+        else if (Runner.Attempt.Settings.RecordReplays)
+        {
+            ReplayManager.NewReplay(Runner.Attempt);
+            ReplayManager.CurrentMode = ReplayManager.Mode.RECORD;
+        }
+        else
+        {
+            ReplayManager.CurrentMode = ReplayManager.Mode.NONE;
+        }
 
-		HideMenu(true);
+        Logger.Log($"Replay Mode: {ReplayManager.CurrentMode}");
 
-		Runner.Play();
-		StartQueued = false;
-	}
+        HideMenu(true);
 
-	public static void Play(Map map, double speed, double startFrom, Dictionary<string, bool> mods, string[] players = null, Replay[] replays = null)
-	{
-		if (StartQueued) return;
+        Runner.Play();
+        StartQueued = false;
+    }
 
-		StartQueued = true;
+    public static void Play(Map map, double speed, double startFrom, Dictionary<string, bool> mods, string[] players = null, Replay[] replays = null)
+    {
+        if (StartQueued) return;
 
-		var parsedMap = MapParser.Decode(map.FilePath);
-		Attempt = new Attempt(parsedMap, speed, startFrom, mods ?? [], players, replays);
+        StartQueued = true;
 
-		if (!Attempt.IsReplay)
-		{
-			Stats.Instance.Attempts++;
-			map.PlayCount++;
-			MapManager.Update(map);
-		}
-		
-		SceneManager.Load("res://scenes/game.tscn");
-	}
+        var parsedMap = MapParser.Decode(map.FilePath);
+        Attempt = new Attempt(parsedMap, speed, startFrom, mods ?? [], players, replays);
 
-	public void Restart()
-	{
-		Attempt.Alive = false;
-		Attempt.Qualifies = false;
-		Runner.Stop(false);
+        if (!Attempt.IsReplay)
+        {
+            Stats.Instance.Attempts++;
+            map.PlayCount++;
+            MapManager.Update(map);
+        }
 
-		Attempt oldAttempt = Attempt;
+        SceneManager.Load("res://scenes/game.tscn");
+    }
 
-		if (!FileAccess.FileExists(Attempt.ReplayPath) && !Attempt.IsReplay)
-		{
-			_ = ToastNotification.Notify("Replay desync detected! Sum didn't match notes hit", 2);
-		}
+    public void Restart()
+    {
+        Attempt.Alive = false;
+        Attempt.Qualifies = false;
+        Runner.Stop(false);
 
-		var map = MapParser.Decode(oldAttempt.Map.FilePath);
-		Attempt = new Attempt(map, oldAttempt.Speed, oldAttempt.StartFrom, oldAttempt.Mods, oldAttempt.Players, oldAttempt.Replays);
+        Attempt oldAttempt = Attempt;
 
-		SceneManager.ReloadCurrentScene();
-	}
+        if (!FileAccess.FileExists(Attempt.ReplayPath) && !Attempt.IsReplay)
+        {
+            _ = ToastNotification.Notify("Replay desync detected! Sum didn't match notes hit", 2);
+        }
 
-	public void ShowMenu(bool show = true, bool instant = false)
-	{
-		MenuShown = show;
-		Runner.Playing = !MenuShown;
+        var map = MapParser.Decode(oldAttempt.Map.FilePath);
+        Attempt = new Attempt(map, oldAttempt.Speed, oldAttempt.StartFrom, oldAttempt.Mods, oldAttempt.Players, oldAttempt.Replays);
 
-		// rest in peace 0.000000000000000001f pitch scale -fog
-		SoundManager.Song.PitchScale = (float)Attempt.Speed;
-		SoundManager.Song.StreamPaused = !Runner.Playing;
+        SceneManager.ReloadCurrentScene();
+    }
 
-		MenuCursor.Instance.UpdateVisible(MenuShown && SettingsManager.Instance.Settings.UseCursorInMenus.Value);
+    public void ShowMenu(bool show = true, bool instant = false)
+    {
+        MenuShown = show;
+        Runner.Playing = !MenuShown;
 
-		if (MenuShown)
-		{
-			Menu.Visible = true;
-			Input.WarpMouse(GetViewport().GetWindow().Size / 2);
-		}
-		else
-		{
-			// Re-sync the audio just in case
-			// Already done when the map is running
+        // rest in peace 0.000000000000000001f pitch scale -fog
+        SoundManager.Song.PitchScale = (float)Attempt.Speed;
+        SoundManager.Song.StreamPaused = !Runner.Playing;
 
-			// double currentTime = Math.Max(0, (Attempt.Progress - Attempt.Settings.LocalOffset) / 1000.0f);
+        MenuCursor.Instance.UpdateVisible(MenuShown && SettingsManager.Instance.Settings.UseCursorInMenus.Value);
 
-			// if (Attempt.Map.AudioBuffer != null && SoundManager.Song.Playing)
-			// {
-			// 	double desyncOffsetTime = Math.Abs(currentTime - SoundManager.Song.GetPlaybackPosition());
+        if (MenuShown)
+        {
+            Menu.Visible = true;
+            Input.WarpMouse(GetViewport().GetWindow().Size / 2);
+        }
+        else
+        {
+            // Re-sync the audio just in case
+            // Already done when the map is running
 
-			// 	if (desyncOffsetTime > 0.05f)
-			// 	{
-			// 		Logger.Log($"[color=yellow]Desync detected! Offset by [b]{desyncOffsetTime:F5} seconds![/b][/color]");
-			// 		SoundManager.Song.Seek((float)currentTime);
-			// 	}
-			// }
+            // double currentTime = Math.Max(0, (Attempt.Progress - Attempt.Settings.LocalOffset) / 1000.0f);
 
-			Input.MouseMode = Attempt.Settings.AbsoluteInput || Attempt.IsReplay ? Input.MouseModeEnum.ConfinedHidden : Input.MouseModeEnum.Captured;
-		}
+            // if (Attempt.Map.AudioBuffer != null && SoundManager.Song.Playing)
+            // {
+            // 	double desyncOffsetTime = Math.Abs(currentTime - SoundManager.Song.GetPlaybackPosition());
 
-		Tween tween = Menu.CreateTween();
-		tween.TweenProperty(Menu, "modulate", Color.Color8(255, 255, 255, (byte)(MenuShown ? 255 : 0)), instant ? 0 : 0.25).SetTrans(Tween.TransitionType.Quad);
-		tween.TweenCallback(Callable.From(() => {
-			Menu.Visible = MenuShown;
-		}));
-		tween.Play();
-	}
+            // 	if (desyncOffsetTime > 0.05f)
+            // 	{
+            // 		Logger.Log($"[color=yellow]Desync detected! Offset by [b]{desyncOffsetTime:F5} seconds![/b][/color]");
+            // 		SoundManager.Song.Seek((float)currentTime);
+            // 	}
+            // }
 
-	public void HideMenu(bool instant = false)
-	{
-		ShowMenu(false, instant);
-	}
+            Input.MouseMode = Attempt.Settings.AbsoluteInput || Attempt.IsReplay ? Input.MouseModeEnum.ConfinedHidden : Input.MouseModeEnum.Captured;
+        }
+
+        Tween tween = Menu.CreateTween();
+        tween.TweenProperty(Menu, "modulate", Color.Color8(255, 255, 255, (byte)(MenuShown ? 255 : 0)), instant ? 0 : 0.25).SetTrans(Tween.TransitionType.Quad);
+        tween.TweenCallback(Callable.From(() =>
+        {
+            Menu.Visible = MenuShown;
+        }));
+        tween.Play();
+    }
+
+    public void HideMenu(bool instant = false)
+    {
+        ShowMenu(false, instant);
+    }
 }

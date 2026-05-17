@@ -342,9 +342,9 @@ public partial class MapList : Panel, ISkinnable
                     if (Lobby.Map != null && IsVisibleInTree() && focused is not LineEdit)
                     {
                         GameScene.Play(Lobby.Map, Lobby.Speed, Lobby.StartFrom, Lobby.Modifiers);
-//                     if (Lobby.Map != null && IsVisibleInTree() && focused is not LineEdit)
-//                     {
-//                         LegacyRunner.Play(Lobby.Map, Lobby.Speed, Lobby.StartFrom, Lobby.Modifiers);
+                        //                     if (Lobby.Map != null && IsVisibleInTree() && focused is not LineEdit)
+                        //                     {
+                        //                         LegacyRunner.Play(Lobby.Map, Lobby.Speed, Lobby.StartFrom, Lobby.Modifiers);
                     }
                     break;
             }
@@ -391,7 +391,7 @@ public partial class MapList : Panel, ISkinnable
         }
 
         MapManager.Select(map);
-        
+
         // this was also in a merge conflict
         if (selectedMapID == map.Name && playIfPreSelected)
         {
@@ -430,7 +430,7 @@ public partial class MapList : Panel, ISkinnable
 
         List<Map> queried = [.. MapManager.Maps.Where(x => x.PrettyTitle.Contains(SearchQuery, StringComparison.CurrentCultureIgnoreCase) && x.PrettyMappers.Contains(AuthorQuery, StringComparison.CurrentCultureIgnoreCase))];
         List<Map> unfavorited = [];
-        
+
         foreach (Map map in queried)
         {
             (map.Favorite ? Maps : unfavorited).Add(map);

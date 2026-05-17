@@ -2,13 +2,13 @@ using Godot;
 
 public partial class Speed : UIComponent
 {
-	private Label3D label;
+    private Label3D label;
 
-	public override void Init()
-	{
-		label = GetNode<Label3D>("Label");
+    public override void Init()
+    {
+        label = GetNode<Label3D>("Label");
 
-		label.Modulate = Color.Color8(255, 255, 255, (byte)(Runner.Attempt.Speed == 1 ? 0 : 100));
-		label.Text = $"{Runner.Attempt.Speed:F2}x";
-	}
+        label.Modulate = Color.Color8(255, 255, 255, (byte)(Runner.Attempt.Speed == 1 ? 0 : 100));
+        label.Text = $"{Runner.Attempt.Speed:F2}x";
+    }
 }

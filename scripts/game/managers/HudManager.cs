@@ -1,46 +1,46 @@
-using Godot;
 using System.Collections.Generic;
+using Godot;
 
 public partial class HudManager : Node
 {
-	[Export] public Runner Runner;
-	
-	private List<IUIComponent> components = [];
+    [Export] public Runner Runner;
 
-	private List<IUIComponent> FindAllComponents(Node root)
-	{
-		List<IUIComponent> comps = new();
+    private List<IUIComponent> components = [];
 
-		foreach (Node child in root.GetChildren())
-		{
-			if (child is IUIComponent component)
-				comps.Add(component);
-			
-			comps.AddRange(FindAllComponents(child));
-		}
+    private List<IUIComponent> FindAllComponents(Node root)
+    {
+        List<IUIComponent> comps = new();
 
-		return comps;
-	}
+        foreach (Node child in root.GetChildren())
+        {
+            if (child is IUIComponent component)
+                comps.Add(component);
+
+            comps.AddRange(FindAllComponents(child));
+        }
+
+        return comps;
+    }
 
     public void Init()
     {
         Runner ??= GetParent<Runner>();
-		components = FindAllComponents(this);
+        components = FindAllComponents(this);
 
-		foreach (var component in components)
-		{
-			component.Runner = Runner;
-			component.Init();
-		}
+        foreach (var component in components)
+        {
+            component.Runner = Runner;
+            component.Init();
+        }
     }
 
-	public override void _Process(double delta)
-	{
-		if (Runner?.Attempt == null) return;
+    public override void _Process(double delta)
+    {
+        if (Runner?.Attempt == null) return;
 
-		foreach (var component in components)
-		{
-			component.Process(delta, Runner.Attempt);
-		}
-	}
+        foreach (var component in components)
+        {
+            component.Process(delta, Runner.Attempt);
+        }
+    }
 }

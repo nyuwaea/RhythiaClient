@@ -23,7 +23,7 @@ public partial class PlayerInputController : Node
     public event Action OnToggleFade;
     public event Action OnTogglePushback;
     public event Action<bool> OnLeftMouseButton;
-    public bool IsEnabled { get; private set;  } = true;
+    public bool IsEnabled { get; private set; } = true;
 
     public override void _Input(InputEvent @event)
     {
@@ -40,12 +40,12 @@ public partial class PlayerInputController : Node
             case InputEventMouseButton { ButtonIndex: MouseButton.Left }:
                 handleMouseInput(@event);
                 break;
-            case InputEventKey {PhysicalKeycode: Key.Escape}:
-            case InputEventKey {PhysicalKeycode: Key.F1}:
-            case InputEventKey {PhysicalKeycode: Key.Space}:
-            case InputEventKey {PhysicalKeycode: Key.F}:
-            case InputEventKey {PhysicalKeycode: Key.P}:
-            case InputEventKey {PhysicalKeycode: Key.Quoteleft}:
+            case InputEventKey { PhysicalKeycode: Key.Escape }:
+            case InputEventKey { PhysicalKeycode: Key.F1 }:
+            case InputEventKey { PhysicalKeycode: Key.Space }:
+            case InputEventKey { PhysicalKeycode: Key.F }:
+            case InputEventKey { PhysicalKeycode: Key.P }:
+            case InputEventKey { PhysicalKeycode: Key.Quoteleft }:
                 handleKeyboardInput(@event);
                 break;
         }
@@ -67,14 +67,14 @@ public partial class PlayerInputController : Node
     private void handleKeyboardInput(InputEvent @event)
     {
         var key = (InputEventKey)@event;
-        
+
         // Functionality with pressing and releasing
 
         if (key.Echo) return;
 
         switch (key)
         {
-            case {PhysicalKeycode: Key.Space}:
+            case { PhysicalKeycode: Key.Space }:
                 if (key.Pressed)
                 {
                     OnPauseOrSkipPressed?.Invoke();
@@ -92,19 +92,19 @@ public partial class PlayerInputController : Node
 
         switch (key)
         {
-            case {PhysicalKeycode: Key.Escape}:
+            case { PhysicalKeycode: Key.Escape }:
                 OnTogglePaused?.Invoke();
                 break;
-            case {PhysicalKeycode: Key.Quoteleft}:
+            case { PhysicalKeycode: Key.Quoteleft }:
                 OnRestartPressed?.Invoke();
                 break;
-            case {PhysicalKeycode: Key.F1}:
+            case { PhysicalKeycode: Key.F1 }:
                 OnToggleReplayViewerVisibility?.Invoke();
                 break;
-            case {PhysicalKeycode: Key.F}:
+            case { PhysicalKeycode: Key.F }:
                 OnToggleFade?.Invoke();
                 break;
-            case {PhysicalKeycode: Key.P}:
+            case { PhysicalKeycode: Key.P }:
                 OnTogglePushback?.Invoke();
                 break;
         }

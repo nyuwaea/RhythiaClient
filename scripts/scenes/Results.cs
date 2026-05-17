@@ -28,7 +28,7 @@ public partial class Results : BaseScene
 
         Input.MouseMode = settings.UseCursorInMenus ? Input.MouseModeEnum.Hidden : Input.MouseModeEnum.Visible;
         MenuCursor.Instance.Visible = settings.UseCursorInMenus;
-        
+
         holder.GetNode<Label>("Title").Text = (GameScene.Attempt.IsReplay ? "[REPLAY] " : "") + GameScene.Attempt.Map.PrettyTitle;
         holder.GetNode<Label>("Difficulty").Text = GameScene.Attempt.Map.DifficultyName;
         holder.GetNode<Label>("Mappers").Text = $"by {GameScene.Attempt.Map.PrettyMappers}";
@@ -63,7 +63,7 @@ public partial class Results : BaseScene
                 GetNode<TextureRect>("CoverBackground").Texture = cover.Texture;
             }
         }
-    
+
         // if (SettingsManager.Instance.Settings.AutoplayJukebox.Value && LegacyRunner.CurrentAttempt.Map.AudioBuffer != null)
 
         if (GameScene.Attempt.Map.AudioBuffer != null)
@@ -78,7 +78,7 @@ public partial class Results : BaseScene
 
         if (!GameScene.Attempt.Map.Ephemeral)
         {
-          // SoundManager.JukeboxIndex = SoundManager.JukeboxQueueInverse[GameScene.Attempt.Map.ID];
+            // SoundManager.JukeboxIndex = SoundManager.JukeboxQueueInverse[GameScene.Attempt.Map.ID];
         }
 
         Button replayButton = footer.GetNode<Button>("Replay");
@@ -86,7 +86,7 @@ public partial class Results : BaseScene
         footer.GetNode<Button>("Back").Pressed += Stop;
         footer.GetNode<Button>("Play").Pressed += Replay;
         replayButton.Visible = !GameScene.Attempt.Map.Ephemeral;
-        
+
         if (!FileAccess.FileExists(GameScene.Attempt.ReplayPath) && !GameScene.Attempt.IsReplay)
         {
             // This can be multiple reasons, so I am just going to disable the notification
@@ -115,9 +115,9 @@ public partial class Results : BaseScene
                 GameScene.Play(MapParser.Decode(replay.MapFilePath), replay.Speed, replay.StartFrom, replay.Modifiers, null, [replay]);
             }
         };
-	}
+    }
 
-	public override void _Process(double delta)
+    public override void _Process(double delta)
     {
         ulong now = Time.GetTicksUsec();
         delta = (now - LastFrame) / 1000000;
@@ -181,13 +181,13 @@ public partial class Results : BaseScene
 
     public void Stop()
     {
-  //     if (!SettingsManager.Instance.Settings.AutoplayJukebox.Value)
-  //     {
-  //         SoundManager.StopScopedSession();
-  //     }
+        //     if (!SettingsManager.Instance.Settings.AutoplayJukebox.Value)
+        //     {
+        //         SoundManager.StopScopedSession();
+        //     }
 
-  //     SoundManager.Song.PitchScale = (float)Lobby.Speed;
-  //     SoundManager.UpdateVolume();
+        //     SoundManager.Song.PitchScale = (float)Lobby.Speed;
+        //     SoundManager.UpdateVolume();
         SceneManager.Load("res://scenes/main_menu.tscn");
     }
 }

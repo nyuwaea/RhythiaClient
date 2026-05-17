@@ -1,19 +1,19 @@
-using Godot;
 using System;
+using Godot;
 
 public partial class Progress : UIComponent
 {
     private Label3D label;
 
-	public override void Init()
-	{
-		label = GetNode<Label3D>("Label");
+    public override void Init()
+    {
+        label = GetNode<Label3D>("Label");
 
         if (Runner.Attempt.Settings.SuperSimpleHUD)
         {
             label.Visible = false;
         }
-	}
+    }
 
     public override void Process(double delta, Attempt attempt)
     {

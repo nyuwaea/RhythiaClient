@@ -51,8 +51,8 @@ public partial class ScorePanel : Panel
         Score = score;
 
         playerLabel.Text = score.Player;
-//         accuracyLabel.Text = $"{score.Accuracy.ToString():F2}%";
-//         speedLabel.Text = $"{score.Speed.ToString():F2}x";
+        //         accuracyLabel.Text = $"{score.Accuracy.ToString():F2}%";
+        //         speedLabel.Text = $"{score.Speed.ToString():F2}x";
         accuracyLabel.Text = $"{score.Accuracy:F2}%";
         speedLabel.Text = $"{score.Speed:F2}x";
         timeLabel.Text = Util.String.FormatUnixTimePretty(Time.GetUnixTimeFromSystem(), score.Time);
@@ -88,7 +88,7 @@ public partial class ScorePanel : Panel
         {
             Replay replay = new(replayPath);
             Map map = MapParser.Decode(replay.MapFilePath);
-            
+
             GameScene.Play(map, replay.Speed, replay.StartFrom, replay.Modifiers, null, [replay]);
         }
     }
