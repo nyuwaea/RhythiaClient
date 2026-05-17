@@ -82,11 +82,13 @@ public partial class ReplayManager : Node
 
 	public void SaveReplay(Attempt attempt)
 	{
+		if (_file == null || !_file.IsOpen()) { return; }
+		
 		_file.Seek(statusOffset);
 		_file.Store8((byte)(attempt.Alive ? (attempt.Qualifies ? 0 : 1) : 2));
 		_file.Seek(frameCountOffset);
 		_file.Store64((ulong)attempt.ReplayFrames.Count);
-
+		
 		foreach (float[] frame in attempt.ReplayFrames)
 		{
 			_file.StoreFloat(frame[0]);
@@ -101,21 +103,21 @@ public partial class ReplayManager : Node
 		// Logger.Log($"Sum: {attempt.FirstNote}+{attempt.Sum}={attempt.FirstNote + attempt.Sum}");
 		// Logger.Log($"HitsInfoCount: {attempt.HitsInfo.Count()}");
 
-		if (attempt.FirstNote + attempt.Sum != (uint)attempt.HitsInfo.Length)
-		{
-			_file.Close();
+		// if (attempt.FirstNote + attempt.Sum != (uint)attempt.HitsInfo.Length)
+		// {
+		// 	_file.Close();
 
-			if (FileAccess.FileExists(ReplayPath))
-			{
-                string mismatch = $"Sum: {attempt.FirstNote}+{attempt.Sum}={attempt.FirstNote + attempt.Sum}";
-				string hitsInfoDebug = string.Join(", ", attempt.HitsInfo);
-				string passedNotesDebug = $"Passed Notes: {attempt.PassedNotes}";
-				DirAccess.RemoveAbsolute(ReplayPath);
-				GD.PushWarning($"Corrupted De-synced replay deleted!\nPath: {ReplayPath}\n{mismatch}\nHits Info: {hitsInfoDebug}\n{passedNotesDebug}");
-			}
+		// 	if (FileAccess.FileExists(ReplayPath))
+		// 	{
+        //         string mismatch = $"Sum: {attempt.FirstNote}+{attempt.Sum}={attempt.FirstNote + attempt.Sum}";
+		// 		string hitsInfoDebug = string.Join(", ", attempt.HitsInfo);
+		// 		string passedNotesDebug = $"Passed Notes: {attempt.PassedNotes}";
+		// 		DirAccess.RemoveAbsolute(ReplayPath);
+		// 		GD.PushWarning($"Corrupted De-synced replay deleted!\nPath: {ReplayPath}\n{mismatch}\nHits Info: {hitsInfoDebug}\n{passedNotesDebug}");
+		// 	}
 
-			return;
-		}
+		// 	return;
+		// }
 		
 		for (ulong i = attempt.FirstNote; i < attempt.FirstNote + attempt.Sum; i++)
         {
