@@ -17,7 +17,7 @@ public partial class Attempt : GodotObject
     public bool Paused = false;
     public bool Alive = true;
     public bool CanSkip = false;
-    public bool Qualifies = false;
+    public bool Qualifies = true;
 
     public string[] Players = [];
 
@@ -52,9 +52,8 @@ public partial class Attempt : GodotObject
     public Vector2 RawCursorPosition = Vector2.Zero;
     public double DistanceMM = 0;
 
-    public ulong FirstNote;
+    public ulong FirstNote = 0;
     public string ReplayPath;
-    public Replay? Replay { get; set; }
     public Replay[] Replays;
     public List<float[]> ReplayFrames = [];
     public List<float> ReplaySkips = [];
@@ -76,15 +75,18 @@ public partial class Attempt : GodotObject
         ComboMultiplierIncrement = Math.Max(2, (uint)Map.Notes.Length / 200);
         Mods = mods;
         HitsInfo = IsReplay ? Replays[0].Notes : new float[Map.Notes.Length];
-
+        
         if (StartFrom > 0)
         {
             Qualifies = false;
-            foreach (Note note in Map.Notes)
+
+            foreach (var note in Map.Notes)
             {
-                if (note.Millisecond < StartFrom)
+                FirstNote = (ulong)note.Index;
+
+                if (note.Millisecond >= StartFrom)
                 {
-                    FirstNote = (ulong)note.Index + 1;
+                    break;
                 }
             }
         }

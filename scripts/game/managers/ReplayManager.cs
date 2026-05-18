@@ -117,8 +117,8 @@ public partial class ReplayManager : Node
 
         // 	return;
         // }
-
-        for (ulong i = attempt.FirstNote; i < attempt.FirstNote + attempt.Sum; i++)
+        
+        for (ulong i = 0; i < attempt.Sum; i++)
         {
             _file.Store8((byte)(attempt.HitsInfo[i] == -1 ? 255 : Math.Min(254, attempt.HitsInfo[i] * (254 / 55))));
         }
