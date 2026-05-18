@@ -21,11 +21,14 @@ public partial class CursorManager : Node
 
     public override void _Ready()
     {
-        base._Ready();
-
         cursorMesh ??= GetNode<MeshInstance3D>("Cursor");
         playerInputController ??= GetNode<PlayerInputController>("/PlayerInputController");
         replayManager ??= GetNode<ReplayManager>("ReplayManager");
+    }
+
+    public override void _EnterTree()
+    {
+        cursorMesh.Position = Vector3.Zero;
     }
 
     public override void _Process(double delta)
@@ -71,20 +74,20 @@ public partial class CursorManager : Node
         }
         camera.Rotation = new Vector3((float)Math.Clamp(camera.Rotation.X, Mathf.DegToRad(-90), Mathf.DegToRad(90)), camera.Rotation.Y, camera.Rotation.Z);
 
-        Vector3 Origin = new Vector3(0, 0, 3.5f);
-        Vector3 CursorLock = new Vector3(attempt.CursorPosition.X, attempt.CursorPosition.Y, 0);
+        Vector3 origin = new Vector3(0, 0, 3.5f);
+        Vector3 cursorLock = new Vector3(attempt.CursorPosition.X, attempt.CursorPosition.Y, 0);
         // The pivot is to mimic ROBLOX's orbital camera
-        Vector3 Pivot = camera.Basis.Z / 4f;
+        Vector3 pivot = camera.Basis.Z / 4f;
 
         // Proper Parallax Support
-        camera.Position = Origin + CursorLock * (float)attempt.Settings.CameraParallax + Pivot;
+        camera.Position = origin + cursorLock * (float)attempt.Settings.CameraParallax + pivot;
 
-        Vector3 LookVector = camera.Basis.Z;
-        Vector2 CameraVector2 = new Vector2(camera.Position.X, camera.Position.Y);
-        Vector2 LookVector2 = new Vector2(LookVector.X, LookVector.Y);
+        Vector3 lookVector = camera.Basis.Z;
+        Vector2 cameraVector2 = new Vector2(camera.Position.X, camera.Position.Y);
+        Vector2 lookVector2 = new Vector2(lookVector.X, lookVector.Y);
 
         // Project Cursor from Camera's "ray cast"
-        attempt.RawCursorPosition = CameraVector2 - LookVector2 * Mathf.Abs(camera.Position.Z / LookVector.Z);
+        attempt.RawCursorPosition = cameraVector2 - lookVector2 * Mathf.Abs(camera.Position.Z / lookVector.Z);
         attempt.CursorPosition = attempt.RawCursorPosition.Clamp(-Constants.BOUNDS, Constants.BOUNDS);
 
         cursorMesh.Position = new Vector3(attempt.CursorPosition.X, attempt.CursorPosition.Y, 0);
