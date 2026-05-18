@@ -207,7 +207,7 @@ public partial class GameScene : BaseScene
     {
         Attempt.Alive = false;
         Attempt.Qualifies = false;
-        
+
         Runner.Stop(false);
 
         Attempt oldAttempt = Attempt;

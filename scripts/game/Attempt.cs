@@ -75,7 +75,7 @@ public partial class Attempt : GodotObject
         ComboMultiplierIncrement = Math.Max(2, (uint)Map.Notes.Length / 200);
         Mods = mods;
         HitsInfo = IsReplay ? Replays[0].Notes : new float[Map.Notes.Length];
-        
+
         if (StartFrom > 0)
         {
             Qualifies = false;
