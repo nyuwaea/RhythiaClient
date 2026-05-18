@@ -27,20 +27,24 @@ public partial class Note : IHitObject, IAnimatableObject<NoteAnimation>, ICompa
         Y = y;
     }
 
-    public void Hit(Runner runner)
+    public void Hit(Runner runner, bool playSound = true)
     {
         if (LastResult != HitResult.None) return;
+
         LastResult = HitResult.Hit;
         runner.EmitSignal(Runner.SignalName.HitResultChanged, Index, (int)LastResult);
-        SoundManager.HitSound.Play();
+        
+        if (playSound) SoundManager.PlayHitSound();
     }
 
-    public void Miss(Runner runner)
+    public void Miss(Runner runner, bool playSound = true)
     {
         if (LastResult != HitResult.None) return;
+
         LastResult = HitResult.Miss;
         runner.EmitSignal(Runner.SignalName.HitResultChanged, Index, (int)LastResult);
-        SoundManager.MissSound.Play();
+        
+        if (playSound) SoundManager.PlayMissSound();
     }
 
     public HitResult CheckHitResult(Attempt attempt)

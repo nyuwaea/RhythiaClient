@@ -24,7 +24,6 @@ public partial class ReplayManager : Node
     private static Label seekerTime;
     private static HSlider seekerTimeline;
     private static bool seekerHovered;
-    public static bool LMB; // fml
     public float ReplayLength;
     public string ReplayPath;
     public Vector2 CursorPosition { get; private set; }
@@ -160,26 +159,19 @@ public partial class ReplayManager : Node
         seekerTimeline = ReplayViewer.GetNode<HSlider>("Seek");
         CursorManager ??= GetNode<CursorManager>("CursorManager");
 
-        SeekerPause.Pressed += () =>
-        {
-            Runner.Playing = !Runner.Playing;
-            SoundManager.Song.PitchScale = (float)Runner.Attempt.Speed;
-            SoundManager.Song.StreamPaused = !Runner.Playing;
+        SeekerPause.Pressed += PauseReplay;
 
-            string texturePath = Runner.Playing ? "res://textures/ui/pause.png" : "res://textures/ui/play.png";
-            SeekerPause.TextureNormal = GD.Load<Texture2D>(texturePath);
-        };
-
-        seekerTimeline.ValueChanged += (double value) =>
+        seekerTimeline.ValueChanged += value =>
         {
             string current = $"{Util.String.FormatTime(value * ReplayLength / 1000)}";
             string end = $"{Util.String.FormatTime(ReplayLength / 1000)}";
             seekerTime.Text = $"{current} / {end}";
         };
 
-        seekerTimeline.DragEnded += (bool _) =>
+        seekerTimeline.DragEnded += _ =>
         {
             resetToSeekedPosition((float)seekerTimeline.Value);
+			seekerTimeline.ReleaseFocus();
         };
 
         seekerTimeline.FocusEntered += () =>
@@ -196,7 +188,7 @@ public partial class ReplayManager : Node
     {
         if (!Runner.Attempt.IsReplay || !Runner.Playing) return;
 
-        if (!seekerHovered || !LMB)
+        if (!seekerHovered)
         {
             seekerTimeline.Value = Runner.Attempt.Progress / Runner.Attempt.Replays[0].Length;
         }
@@ -246,8 +238,28 @@ public partial class ReplayManager : Node
             : Input.MouseModeEnum.Hidden;
     }
 
+    public void PauseReplay()
+    {
+        Runner.Playing = !Runner.Playing;
+        SoundManager.Song.PitchScale = (float)Runner.Attempt.Speed;
+        SoundManager.Song.StreamPaused = !Runner.Playing;
+
+        if (Runner.Playing)
+        {
+            SoundManager.Song.Seek((float)(Runner.Attempt.Progress - Runner.Attempt.Settings.LocalOffset.Value) / 1000);
+        }
+
+        string texturePath = Runner.Playing
+            ? "res://textures/ui/pause.png"
+            : "res://textures/ui/play.png";
+
+        SeekerPause.TextureNormal = GD.Load<Texture2D>(texturePath);
+    }
+
     private void resetToSeekedPosition(float seekedTime)
     {
+		seekedTime *= ReplayLength;
+
         var att = Runner.Attempt;
 
         att.Hits = 0;
@@ -264,10 +276,32 @@ public partial class ReplayManager : Node
 
         for (int i = 0; i < att.Map.Notes.Length; i++)
         {
-            att.Map.Notes[i].Hittable = false;
+			var note = att.Map.Notes[i];
+
+			note.LastResult = HitResult.None;
+
+			if (note.Millisecond > Math.Max(att.Progress, seekedTime))
+			{
+				break;
+			}
+            else if (note.Millisecond < seekedTime)
+            {
+                bool missed = att.Replays[0].Notes[i] == -1;
+                
+                if (missed)
+                {
+                    note.Miss(Runner, false);
+                }
+                else
+                {
+                    note.Hit(Runner, false);
+                }
+            }
         }
 
-        att.Progress = seekedTime * ReplayLength;
+        att.Progress = seekedTime;
+
+        Runner.EmitSignal(Runner.SignalName.AttemptStatsUpdated, att);
 
         for (int i = 0; i < att.Replays[0].Frames.Length; i++)
         {
@@ -278,11 +312,11 @@ public partial class ReplayManager : Node
             }
         }
 
-        if (!SoundManager.Song.Playing)
+        if (!SoundManager.Song.Playing && Runner.Playing)
         {
             SoundManager.Song.Play();
         }
-
+        
         SoundManager.Song.Seek((float)(att.Progress - att.Settings.LocalOffset.Value) / 1000);
     }
 }

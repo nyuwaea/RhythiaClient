@@ -56,9 +56,7 @@ public partial class GameScene : BaseScene
 
         PlayerInputController.OnLeftMouseButton += isPressed =>
         {
-            if (!isPressed) return;
-
-            ReplayManager.LMB = isPressed;
+            
         };
 
         PlayerInputController.OnTogglePaused += () =>
@@ -87,15 +85,7 @@ public partial class GameScene : BaseScene
         {
             if (Attempt.IsReplay)
             {
-                Runner.Playing = !Runner.Playing;
-                SoundManager.Song.PitchScale = (float)Attempt.Speed;
-                SoundManager.Song.StreamPaused = !Runner.Playing;
-
-                string texturePath = Runner.Playing
-                    ? "res://textures/ui/pause.png"
-                    : "res://textures/ui/play.png";
-
-                ReplayManager.SeekerPause.TextureNormal = GD.Load<Texture2D>(texturePath);
+                ReplayManager.PauseReplay();
             }
             else
             {
@@ -159,8 +149,10 @@ public partial class GameScene : BaseScene
 
         Control focused = SceneManager.Root.GetViewport().GuiGetFocusOwner();
         focused?.ReleaseFocus();
-        Input.MouseMode = Attempt.Settings.AbsoluteInput.Value || Attempt.IsReplay ? Input.MouseModeEnum.ConfinedHidden : Input.MouseModeEnum.Captured;
+        Input.MouseMode = Attempt.Settings.AbsoluteInput.Value || Attempt.IsReplay ? Input.MouseModeEnum.Visible : Input.MouseModeEnum.Captured;
         Input.UseAccumulatedInput = false;
+
+        HideMenu(true);
 
         Runner.Attempt = Attempt;
         ReplayManager.InitReplayLength();
@@ -168,6 +160,7 @@ public partial class GameScene : BaseScene
         if (Runner.Attempt.IsReplay)
         {
             ReplayManager.CurrentMode = ReplayManager.Mode.PLAYBACK;
+			ReplayManager.ShowReplayViewer(Runner.Attempt);
         }
         else if (Runner.Attempt.Settings.RecordReplays)
         {
@@ -180,8 +173,6 @@ public partial class GameScene : BaseScene
         }
 
         Logger.Log($"Replay Mode: {ReplayManager.CurrentMode}");
-
-        HideMenu(true);
 
         Runner.Play();
         StartQueued = false;
@@ -259,7 +250,9 @@ public partial class GameScene : BaseScene
             // 	}
             // }
 
-            Input.MouseMode = Attempt.Settings.AbsoluteInput || Attempt.IsReplay ? Input.MouseModeEnum.ConfinedHidden : Input.MouseModeEnum.Captured;
+            Input.MouseMode = Attempt.IsReplay && ReplayManager.ViewerVisible ? Input.MouseModeEnum.Visible
+				: Attempt.Settings.AbsoluteInput ? Input.MouseModeEnum.ConfinedHidden
+				: Input.MouseModeEnum.Captured;
         }
 
         Tween tween = Menu.CreateTween();

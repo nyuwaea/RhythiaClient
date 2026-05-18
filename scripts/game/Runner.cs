@@ -234,7 +234,6 @@ public partial class Runner : Node3D
         switch (hitResult)
         {
             case HitResult.Hit:
-                SoundManager.PlayHitSound();
                 Attempt.Hits++;
                 Attempt.Sum++;
                 Attempt.Accuracy = Math.Floor((float)Attempt.Hits / Attempt.Sum * 10000) / 100;
@@ -260,7 +259,6 @@ public partial class Runner : Node3D
                 }
                 break;
             case HitResult.Miss:
-                SoundManager.PlayMissSound();
                 Attempt.Misses++;
                 Attempt.Sum++;
                 Attempt.Accuracy = Mathf.Floor((float)Attempt.Hits / Attempt.Sum * 10000) / 100;
