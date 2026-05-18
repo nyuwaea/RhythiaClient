@@ -156,11 +156,11 @@ public partial class GameScene : BaseScene
 
         Runner.Attempt = Attempt;
         ReplayManager.InitReplayLength();
+		ReplayManager.ShowReplayViewer(Runner.Attempt, Runner.Attempt.IsReplay);
 
         if (Runner.Attempt.IsReplay)
         {
             ReplayManager.CurrentMode = ReplayManager.Mode.PLAYBACK;
-			ReplayManager.ShowReplayViewer(Runner.Attempt);
         }
         else if (Runner.Attempt.Settings.RecordReplays)
         {

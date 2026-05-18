@@ -187,10 +187,15 @@ public partial class ReplayManager : Node
     public override void _Process(double delta)
     {
         if (!Runner.Attempt.IsReplay || !Runner.Playing) return;
-
+        
         if (!seekerHovered)
         {
             seekerTimeline.Value = Runner.Attempt.Progress / Runner.Attempt.Replays[0].Length;
+
+            if (Runner.Attempt.Progress > ReplayLength && Runner.Playing)
+            {
+                PauseReplay();
+            }
         }
 
         for (int i = 0; i < Runner.Attempt.Replays.Length; i++)
@@ -226,16 +231,19 @@ public partial class ReplayManager : Node
         CursorManager.UpdateCursor(CursorPosition);
     }
 
-    public void ShowReplayViewer(Attempt attempt)
+    public void ShowReplayViewer(Attempt attempt, bool? show = null)
     {
-        ViewerVisible = !ViewerVisible;
+        ViewerVisible = show ?? !ViewerVisible;
         bool visible = ViewerVisible && attempt.IsReplay;
 
         ReplayViewer.Visible = visible;
 
-        Input.MouseMode = visible
-            ? Input.MouseModeEnum.Visible
-            : Input.MouseModeEnum.Hidden;
+        if (attempt.IsReplay)
+        {
+            Input.MouseMode = visible
+                ? Input.MouseModeEnum.Visible
+                : Input.MouseModeEnum.Hidden;
+        }
     }
 
     public void PauseReplay()
