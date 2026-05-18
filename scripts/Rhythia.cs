@@ -16,6 +16,9 @@ public partial class Rhythia : Node
     public static Rhythia Instance;
     public static bool Quitting { get; private set; } = false;
 
+    public string TextFilePath;
+    public string AudioFilePath;
+
     public override async void _Ready()
     {
         Instance = this;
@@ -66,6 +69,42 @@ public partial class Rhythia : Node
         foreach (string file in nonPhxmMaps)
         {
             File.Delete(file);
+        }
+
+        string[] cmdArgs = OS.GetCmdlineArgs();
+
+        foreach (string command in cmdArgs)
+        {
+            if (command.Contains("--t"))
+            {
+                TextFilePath = command.Split("=")[1];
+            }
+            else if (command.Contains("--a"))
+            {
+                AudioFilePath = command.Split("=")[1];
+            }
+        }
+
+        Dictionary<string, bool> TempMods = new Dictionary<string, bool>{
+            {"NoFail", false},
+            {"Ghost", false},
+            {"Spin", false},
+            {"Flashlight", false},
+            {"Chaos", false},
+            {"HardRock", false}
+        };
+
+        if (TextFilePath != null && AudioFilePath != null)
+        {
+            Map TempMap = MapParser.Decode(TextFilePath, AudioFilePath);
+            _ = ToastNotification.Notify("Temp map loaded", 1);
+
+            GameScene.Play(TempMap, 1.0, 0.0, TempMods);
+        }
+        else if (TextFilePath != null)
+        {
+            Map TempMap = MapParser.Decode(TextFilePath, AudioFilePath);
+            GameScene.Play(TempMap, 1.0, 0.0, TempMods);
         }
 
         GetViewport().Connect("files_dropped", Callable.From((string[] files) =>

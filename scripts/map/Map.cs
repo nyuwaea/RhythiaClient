@@ -125,8 +125,13 @@ public partial class Map : RefCounted
         PrettyTitle = Artist != "" ? $"{Artist} - {Title}" : Title;
         Rating = rating;
         Mappers = mappers ?? ["N/A"];
-        PrettyMappers = mappers.Join();
-        CachedMappers = mappers.Join("_");
+        PrettyMappers = "N/A";
+        CachedMappers = "N/A";
+        if (mappers != null)
+        {
+            PrettyMappers = mappers.Join();
+            CachedMappers = mappers.Join("_");
+        }
         Difficulty = Math.Clamp(difficulty, 0, Constants.DIFFICULTIES.Length - 1);
         DifficultyName = difficultyName?.StripEscapes() ?? Constants.DIFFICULTIES[Difficulty];
         AudioBuffer = audioBuffer;
