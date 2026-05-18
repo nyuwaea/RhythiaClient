@@ -1,4 +1,3 @@
-using System.Linq;
 using Godot;
 
 public partial class Graph : ColorRect
@@ -8,9 +7,11 @@ public partial class Graph : ColorRect
         Color hitColor = Color.FromHtml("00ff00ff");
         Color missColor = Color.FromHtml("ff000044");
 
-        for (ulong i = (ulong)GameScene.Attempt.HitsInfo.GetLowerBound(0); i < (ulong)GameScene.Attempt.HitsInfo.Length; i++)
+        float[] hitsInfo = GameScene.Attempt.IsReplay ? GameScene.Attempt.Replays[0].Notes : GameScene.Attempt.HitsInfo;
+
+        for (ulong i = (ulong)hitsInfo.GetLowerBound(0); i < (ulong)hitsInfo.Length; i++)
         {
-            float offset = GameScene.Attempt.HitsInfo[i];
+            float offset = hitsInfo[i];
 
             if (offset < 0)
             {
