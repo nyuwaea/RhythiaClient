@@ -128,12 +128,15 @@ public partial class GameScene : BaseScene
                 SoundManager.FailSound.Play();
             }
 
-            Attempt.Alive = false;
-            Attempt.Qualifies = false;
-
-            if (Attempt.DeathTime == -1)
+            if (!Attempt.IsReplay)
             {
-                Attempt.DeathTime = Math.Max(0, Attempt.Progress);
+                Attempt.Alive = false;
+                Attempt.Qualifies = false;
+
+                if (Attempt.DeathTime == -1)
+                {
+                    Attempt.DeathTime = Math.Max(0, Attempt.Progress);
+                }
             }
 
             Runner.Stop();
