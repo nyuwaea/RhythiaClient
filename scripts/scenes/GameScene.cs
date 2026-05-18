@@ -56,7 +56,7 @@ public partial class GameScene : BaseScene
 
         PlayerInputController.OnLeftMouseButton += isPressed =>
         {
-            
+
         };
 
         PlayerInputController.OnTogglePaused += () =>
@@ -156,7 +156,7 @@ public partial class GameScene : BaseScene
 
         Runner.Attempt = Attempt;
         ReplayManager.InitReplayLength();
-		ReplayManager.ShowReplayViewer(Runner.Attempt, Runner.Attempt.IsReplay);
+        ReplayManager.ShowReplayViewer(Runner.Attempt, Runner.Attempt.IsReplay);
 
         if (Runner.Attempt.IsReplay)
         {
@@ -251,8 +251,8 @@ public partial class GameScene : BaseScene
             // }
 
             Input.MouseMode = Attempt.IsReplay && ReplayManager.ViewerVisible ? Input.MouseModeEnum.Visible
-				: Attempt.Settings.AbsoluteInput ? Input.MouseModeEnum.ConfinedHidden
-				: Input.MouseModeEnum.Captured;
+                : Attempt.Settings.AbsoluteInput ? Input.MouseModeEnum.ConfinedHidden
+                : Input.MouseModeEnum.Captured;
         }
 
         Tween tween = Menu.CreateTween();

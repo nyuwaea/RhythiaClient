@@ -33,7 +33,7 @@ public partial class Note : IHitObject, IAnimatableObject<NoteAnimation>, ICompa
 
         LastResult = HitResult.Hit;
         runner.EmitSignal(Runner.SignalName.HitResultChanged, Index, (int)LastResult);
-        
+
         if (playSound) SoundManager.PlayHitSound();
     }
 
@@ -43,7 +43,7 @@ public partial class Note : IHitObject, IAnimatableObject<NoteAnimation>, ICompa
 
         LastResult = HitResult.Miss;
         runner.EmitSignal(Runner.SignalName.HitResultChanged, Index, (int)LastResult);
-        
+
         if (playSound) SoundManager.PlayMissSound();
     }
 

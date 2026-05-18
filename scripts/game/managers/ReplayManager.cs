@@ -171,7 +171,7 @@ public partial class ReplayManager : Node
         seekerTimeline.DragEnded += _ =>
         {
             resetToSeekedPosition((float)seekerTimeline.Value);
-			seekerTimeline.ReleaseFocus();
+            seekerTimeline.ReleaseFocus();
         };
 
         seekerTimeline.FocusEntered += () =>
@@ -187,7 +187,7 @@ public partial class ReplayManager : Node
     public override void _Process(double delta)
     {
         if (!Runner.Attempt.IsReplay || !Runner.Playing) return;
-        
+
         if (!seekerHovered)
         {
             seekerTimeline.Value = Runner.Attempt.Progress / Runner.Attempt.Replays[0].Length;
@@ -266,7 +266,7 @@ public partial class ReplayManager : Node
 
     private void resetToSeekedPosition(float seekedTime)
     {
-		seekedTime *= ReplayLength;
+        seekedTime *= ReplayLength;
 
         var att = Runner.Attempt;
 
@@ -284,18 +284,18 @@ public partial class ReplayManager : Node
 
         for (int i = 0; i < att.Map.Notes.Length; i++)
         {
-			var note = att.Map.Notes[i];
+            var note = att.Map.Notes[i];
 
-			note.LastResult = HitResult.None;
+            note.LastResult = HitResult.None;
 
-			if (note.Millisecond > Math.Max(att.Progress, seekedTime))
-			{
-				break;
-			}
+            if (note.Millisecond > Math.Max(att.Progress, seekedTime))
+            {
+                break;
+            }
             else if (note.Millisecond < seekedTime)
             {
                 bool missed = att.Replays[0].Notes[i] == -1;
-                
+
                 if (missed)
                 {
                     note.Miss(Runner, false);
@@ -324,7 +324,7 @@ public partial class ReplayManager : Node
         {
             SoundManager.Song.Play();
         }
-        
+
         SoundManager.Song.Seek((float)(att.Progress - att.Settings.LocalOffset.Value) / 1000);
     }
 }
