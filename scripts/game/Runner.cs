@@ -114,7 +114,7 @@ public partial class Runner : Node3D
             }
         }
 
-        int nextNoteMillisecond = Attempt.PassedNotes >= Attempt.Map.Notes.Length ? (int)Attempt.MapLength : Attempt.Map.Notes[Attempt.PassedNotes].Millisecond;
+        int nextNoteMillisecond = Attempt.PassedNotes >= Attempt.Map.Notes.Length ? int.MaxValue : Attempt.Map.Notes[Attempt.PassedNotes].Millisecond;
         if (nextNoteMillisecond - Attempt.Progress >= Constants.BREAK_TIME * Attempt.Speed)
         {
             int lastNoteMillisecond = Attempt.PassedNotes > 0 ? Attempt.Map.Notes[Attempt.PassedNotes - 1].Millisecond : 0;
@@ -211,13 +211,7 @@ public partial class Runner : Node3D
             }
         }
 
-        if (Attempt.Progress >= Attempt.MapLength)
-        {
-            Stop();
-            return;
-        }
-
-        if (StopQueued)
+        if (StopQueued || Attempt.Progress >= Attempt.MapLength)
         {
             StopQueued = false;
             Stop();
@@ -313,6 +307,8 @@ public partial class Runner : Node3D
         Playing = true;
         firstFrame = true;
 
+        Logger.Log($"Playing map {Attempt.Map.Name}");
+
         if (Attempt.Map.AudioBuffer != null)
         {
             SoundManager.Song.Stream = Util.Audio.LoadStream(Attempt.Map.AudioBuffer);
@@ -342,7 +338,7 @@ public partial class Runner : Node3D
 
             if (Attempt.PassedNotes >= Attempt.Map.Notes.Length)
             {
-                Attempt.Progress = SoundManager.Song.Stream.GetLength() * 1000;
+                Stop();
             }
             else
             {

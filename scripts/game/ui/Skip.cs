@@ -15,6 +15,7 @@ public partial class Skip : UIComponent
     public override void Init()
     {
         label = GetNode<Label3D>("Label");
+        label.Text = "Press Space to skip";
         Runner.SkipAvailable += OnSkipAvailable;
     }
 
@@ -30,11 +31,13 @@ public partial class Skip : UIComponent
 
     public void OnSkipAvailable(Attempt attempt)
     {
+        label.Text = "Press Space to complete";
+
         if (tween != null) return;
 
-        tween = CreateTween().SetLoops();
-        tween.TweenProperty(label, "modulate", new Color(label.Modulate, 0), 0.5f);
-        tween.TweenProperty(label, "modulate", new Color(label.Modulate, 1), 0.5f);
+        tween = CreateTween().SetLoops().SetTrans(Tween.TransitionType.Sine);
+        tween.TweenProperty(label, "modulate", new Color(label.Modulate, 0.25f), 0.75f);
+        tween.TweenProperty(label, "modulate", new Color(label.Modulate, 0.75f), 0.75f);
     }
 }
 
