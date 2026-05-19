@@ -16,10 +16,21 @@ public partial class Rhythia : Node
     public static Rhythia Instance;
     public static bool Quitting { get; private set; } = false;
 
+    // For Temporary Maps
+    public Dictionary<string, bool> TempMods = new Dictionary<string, bool>{
+        {"NoFail", true},
+        {"Ghost", false},
+        {"Spin", false},
+        {"Flashlight", false},
+        {"Chaos", false},
+        {"HardRock", false}
+    };
+
     public static bool TempMode = false;
     public static string TextFilePath = null;
     public static string AudioFilePath = null;
-    public static bool SpinBool = false;
+    public static string StartFromParameter = "";
+    public static string SpeedParameter = "";
 
     public override async void _Ready()
     {
@@ -88,8 +99,11 @@ public partial class Rhythia : Node
                 case "--a":
                     AudioFilePath = split[1];
                     break;
-                case "--spin":
-                    SpinBool = split[1].ToLower() == "true";
+                case "--sp":
+                    SpeedParameter = split[1];
+                    break;
+                case "--sf":
+                    StartFromParameter = split[1];
                     break;
                 default:
                     break;
@@ -100,18 +114,9 @@ public partial class Rhythia : Node
 
         if (TempMode)
         {
-            var tempMods = new Dictionary<string, bool>{
-                {"NoFail", true},
-                {"Ghost", false},
-                {"Spin", SpinBool},
-                {"Flashlight", false},
-                {"Chaos", false},
-                {"HardRock", false}
-            };
-
             var tempMap = MapParser.Decode(TextFilePath, AudioFilePath);
 
-            GameScene.Play(tempMap, 1.0, 0.0, tempMods);
+            GameScene.Play(tempMap, 1.0, 0.0, TempMods);
         }
 
         GetViewport().Connect("files_dropped", Callable.From((string[] files) =>
