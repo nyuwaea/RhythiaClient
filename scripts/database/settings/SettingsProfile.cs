@@ -349,6 +349,12 @@ public partial class SettingsProfile
 
     [Order]
     /// <summary>
+    /// When using external editors (for example SSQE), "Start From" and "Speed" will be used from the editor
+    /// </summary>
+    public SettingsItem<bool> OptionalParameters { get; private set; }
+
+    [Order]
+    /// <summary>
     /// Restarts settings to the game's defaults
     /// </summary>
     public SettingsItem<Variant> ResetToDefaults { get; private set; }
@@ -1028,6 +1034,14 @@ public partial class SettingsProfile
             Id = "RecordReplays",
             Title = "Record Replays",
             Description = "Toggles recording for replays",
+            Section = SettingsSection.Other
+        };
+
+        OptionalParameters = new(true)
+        {
+            Id = "OptionalParameters",
+            Title = "Optional Editor Settings",
+            Description = "Takes \"Start From\" and \"Speed\" from external editors like SSQE when using the \"Playtest\" button",
             Section = SettingsSection.Other
         };
 
