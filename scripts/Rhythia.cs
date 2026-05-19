@@ -15,9 +15,9 @@ public partial class Rhythia : Node
 
     public static Rhythia Instance;
     public static bool Quitting { get; private set; } = false;
-
-    public string TextFilePath;
-    public string AudioFilePath;
+    public string TextFilePath = null;
+    public string AudioFilePath = null;
+    public bool SpinBool = false;
 
     public override async void _Ready()
     {
@@ -71,6 +71,7 @@ public partial class Rhythia : Node
             File.Delete(file);
         }
 
+        // Temporary Map Testing Support
         string[] cmdArgs = OS.GetCmdlineArgs();
 
         foreach (string command in cmdArgs)
@@ -83,27 +84,36 @@ public partial class Rhythia : Node
             {
                 AudioFilePath = command.Split("=")[1];
             }
+            else if (command.Contains("--spin"))
+            {
+                SpinBool = command.Split("=")[1].ToLower() == "true";
+            }
         }
 
-        Dictionary<string, bool> TempMods = new Dictionary<string, bool>{
-            {"NoFail", false},
-            {"Ghost", false},
-            {"Spin", false},
-            {"Flashlight", false},
-            {"Chaos", false},
-            {"HardRock", false}
-        };
-
-        if (TextFilePath != null && AudioFilePath != null)
+        if (TextFilePath != null)
         {
-            Map TempMap = MapParser.Decode(TextFilePath, AudioFilePath);
-            _ = ToastNotification.Notify("Temp map loaded", 1);
+            Dictionary<string, bool> TempMods = new Dictionary<string, bool>{
+                {"NoFail", true},
+                {"Ghost", false},
+                {"Spin", SpinBool},
+                {"Flashlight", false},
+                {"Chaos", false},
+                {"HardRock", false}
+            };
 
-            GameScene.Play(TempMap, 1.0, 0.0, TempMods);
-        }
-        else if (TextFilePath != null)
-        {
             Map TempMap = MapParser.Decode(TextFilePath, AudioFilePath);
+
+            // GD.Print(TextFilePath);
+            // GD.Print(AudioFilePath);
+
+            // int index = 1;
+
+            // foreach (var note in TempMap.Notes)
+            // {
+            //     GD.Print($"[X: {note.X}, Y: {note.Y}, ms: {note.Millisecond}, i: {index}], ");
+            //     index++;
+            // }
+
             GameScene.Play(TempMap, 1.0, 0.0, TempMods);
         }
 
