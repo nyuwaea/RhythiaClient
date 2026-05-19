@@ -246,64 +246,6 @@ public partial class GameScene : BaseScene
         SceneManager.ReloadCurrentScene();
     }
 
-    public void UpdatePlaytestOverlay(bool show)
-    {
-        Runner.Playing = !show;
-
-        SoundManager.Song.PitchScale = (float)Attempt.Speed;
-        SoundManager.Song.StreamPaused = !Runner.Playing;
-        Attempt oldAttempt = Attempt;
-
-        PlaytestOverlay.Visible = show;
-
-        MenuCursor.Instance.UpdateVisible(PlaytestOverlay.Visible && SettingsManager.Instance.Settings.UseCursorInMenus.Value);
-
-        if (PlaytestOverlay.Visible)
-        {
-            Input.WarpMouse(GetViewport().GetWindow().Size / 2);
-        }
-        else
-        {
-            Input.MouseMode = Attempt.IsReplay && ReplayManager.ViewerVisible ? Input.MouseModeEnum.Visible
-                : Attempt.Settings.AbsoluteInput ? Input.MouseModeEnum.ConfinedHidden
-                : Input.MouseModeEnum.Captured;
-        }
-
-        VBoxContainer VBHolder = PlaytestOverlay.GetNode<VBoxContainer>("VB");
-
-        // bool Spin = VBHolder.GetNode<CheckButton>("SpinCheck").ButtonPressed;
-
-        Rhythia.Instance.TempMods["Spin"] = VBHolder.GetNode<CheckButton>("SpinCheck").ButtonPressed;
-
-        LineEdit StartFromEdit = VBHolder.GetNode<HBoxContainer>("StartFrom").GetNode<LineEdit>("LineEdit");
-        LineEdit SpeedEdit = VBHolder.GetNode<HBoxContainer>("Speed").GetNode<LineEdit>("LineEdit");
-
-        // start from init
-        double.TryParse(Rhythia.StartFromParameter, out double sfInit);
-        string sfSeconds = (sfInit /= 1000).ToString();
-        ApplyStartFrom(sfSeconds, Attempt.Map, StartFromEdit);
-
-        // speed init
-        double.TryParse(Rhythia.SpeedParameter, out double spInit);
-        SpeedEdit.Text = spInit.ToString();
-
-        if (!show)
-        {
-            Runner.Stop(false);
-
-            var map = MapParser.Decode(oldAttempt.Map.FilePath, Rhythia.AudioFilePath);
-
-            double SpeedValue = 1.0;
-            if (double.TryParse(SpeedEdit.Text, out double speeddouble)) SpeedValue = speeddouble;
-
-            PlaytestInit = true;
-            Attempt = new Attempt(map, SpeedValue, GetStartFrom(StartFromEdit), Rhythia.Instance.TempMods);
-            SceneManager.ReloadCurrentScene();
-        }
-        // menuButtonsHolder.GetNode<Button>("Resume").Pressed += () => HideMenu();
-        // menuButtonsHolder.GetNode<Button>("Restart").Pressed += Restart;
-    }
-
     public void ShowMenu(bool show = true, bool instant = false)
     {
         MenuShown = show;
@@ -355,6 +297,62 @@ public partial class GameScene : BaseScene
     public void HideMenu(bool instant = false)
     {
         ShowMenu(false, instant);
+    }
+    
+    public void UpdatePlaytestOverlay(bool show)
+    {
+        Runner.Playing = !show;
+
+        SoundManager.Song.PitchScale = (float)Attempt.Speed;
+        SoundManager.Song.StreamPaused = !Runner.Playing;
+        Attempt oldAttempt = Attempt;
+
+        PlaytestOverlay.Visible = show;
+
+        MenuCursor.Instance.UpdateVisible(PlaytestOverlay.Visible && SettingsManager.Instance.Settings.UseCursorInMenus.Value);
+
+        if (PlaytestOverlay.Visible)
+        {
+            Input.WarpMouse(GetViewport().GetWindow().Size / 2);
+        }
+        else
+        {
+            Input.MouseMode = Attempt.IsReplay && ReplayManager.ViewerVisible ? Input.MouseModeEnum.Visible
+                : Attempt.Settings.AbsoluteInput ? Input.MouseModeEnum.ConfinedHidden
+                : Input.MouseModeEnum.Captured;
+        }
+
+        VBoxContainer VBHolder = PlaytestOverlay.GetNode<VBoxContainer>("VB");
+
+        Rhythia.Instance.TempMods["Spin"] = VBHolder.GetNode<CheckButton>("SpinCheck").ButtonPressed;
+
+        LineEdit StartFromEdit = VBHolder.GetNode<HBoxContainer>("StartFrom").GetNode<LineEdit>("LineEdit");
+        LineEdit SpeedEdit = VBHolder.GetNode<HBoxContainer>("Speed").GetNode<LineEdit>("LineEdit");
+
+        // start from init
+        double.TryParse(Rhythia.StartFromParameter, out double sfInit);
+        string sfSeconds = (sfInit /= 1000).ToString();
+        ApplyStartFrom(sfSeconds, Attempt.Map, StartFromEdit);
+
+        // speed init
+        double.TryParse(Rhythia.SpeedParameter, out double spInit);
+        SpeedEdit.Text = spInit.ToString();
+
+        if (!show)
+        {
+            Runner.Stop(false);
+
+            var map = MapParser.Decode(oldAttempt.Map.FilePath, Rhythia.AudioFilePath);
+
+            double SpeedValue = 1.0;
+            if (double.TryParse(SpeedEdit.Text, out double speeddouble)) SpeedValue = speeddouble;
+
+            PlaytestInit = true;
+            Attempt = new Attempt(map, SpeedValue, GetStartFrom(StartFromEdit), Rhythia.Instance.TempMods);
+            SceneManager.ReloadCurrentScene();
+        }
+        // menuButtonsHolder.GetNode<Button>("Resume").Pressed += () => HideMenu();
+        // menuButtonsHolder.GetNode<Button>("Restart").Pressed += Restart;
     }
 
     public void ApplyStartFrom(string input, Map map, LineEdit valueEdit)
