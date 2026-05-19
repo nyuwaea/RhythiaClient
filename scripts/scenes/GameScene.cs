@@ -140,11 +140,6 @@ public partial class GameScene : BaseScene
             }
 
             Runner.Stop();
-
-            if (Rhythia.TempMode)
-            {
-                Rhythia.Quit();
-            }
         };
     }
 

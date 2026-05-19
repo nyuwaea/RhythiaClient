@@ -181,6 +181,15 @@ public partial class Results : BaseScene
 
     public void Stop()
     {
+        if (Rhythia.TempMode)
+        {
+            Rhythia.Quit();
+        }
+        else
+        {
+            SceneManager.Load("res://scenes/main_menu.tscn");
+        }
+
         //     if (!SettingsManager.Instance.Settings.AutoplayJukebox.Value)
         //     {
         //         SoundManager.StopScopedSession();
@@ -188,6 +197,5 @@ public partial class Results : BaseScene
 
         //     SoundManager.Song.PitchScale = (float)Lobby.Speed;
         //     SoundManager.UpdateVolume();
-        SceneManager.Load("res://scenes/main_menu.tscn");
     }
 }
