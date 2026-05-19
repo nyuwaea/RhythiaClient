@@ -128,12 +128,12 @@ public partial class GameScene : BaseScene
                 SoundManager.FailSound.Play();
             }
 
-            if (Rhythia.Instance.TextFilePath != null)
-            {
-                Discord.Client.Dispose();
-                Logger.Log("Quitting");
-                Instance.GetTree().Quit();
-            }
+            // if (Rhythia.Instance.TextFilePath != null)
+            // {
+            //     Discord.Client.Dispose();
+            //     Logger.Log("Quitting");
+            //     Instance.GetTree().Quit();
+            // }
 
             if (!Attempt.IsReplay)
             {
@@ -147,6 +147,13 @@ public partial class GameScene : BaseScene
             }
 
             Runner.Stop();
+
+            if (Rhythia.Instance.TextFilePath != null)
+            {
+                Discord.Client.Dispose();
+                Logger.Log("Quitting");
+                Instance.GetTree().Quit();
+            }
         };
     }
 
