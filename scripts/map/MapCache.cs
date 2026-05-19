@@ -21,6 +21,11 @@ public static class MapCache
 
     public static void Load(bool fullSync)
     {
+        if (Rhythia.Instance.TextFilePath != null)
+        {
+            return;
+        }
+
         try
         {
             string[] files = Directory.GetFiles(MapUtil.MapsFolder, $"*.{Constants.DEFAULT_MAP_EXT}", SearchOption.AllDirectories);
