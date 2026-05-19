@@ -35,7 +35,7 @@ public partial class ReplayManager : Node
     {
         var settings = attempt.Settings;
 
-        if (!settings.RecordReplays) return;
+        if (!settings.RecordReplays || Rhythia.Instance.TextFilePath != null) return;
 
         ReplayPath = $"{Constants.USER_FOLDER}/replays/{attempt.ID}.phxr";
 
