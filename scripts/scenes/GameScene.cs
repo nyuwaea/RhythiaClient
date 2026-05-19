@@ -75,6 +75,7 @@ public partial class GameScene : BaseScene
             }
             else
             {
+                if (Rhythia.TempMode && !PlaytestInit) return;
                 ShowMenu(!MenuShown);
             }
         };
@@ -93,7 +94,7 @@ public partial class GameScene : BaseScene
             {
                 ReplayManager.PauseReplay();
             }
-            else if (PlaytestInit == false)
+            else if (PlaytestInit == false && Rhythia.TempMode)
             {
                 UpdatePlaytestOverlay(false);
             }
@@ -329,14 +330,19 @@ public partial class GameScene : BaseScene
         LineEdit StartFromEdit = VBHolder.GetNode<HBoxContainer>("StartFrom").GetNode<LineEdit>("LineEdit");
         LineEdit SpeedEdit = VBHolder.GetNode<HBoxContainer>("Speed").GetNode<LineEdit>("LineEdit");
 
-        // start from init
-        double.TryParse(Rhythia.StartFromParameter, out double sfInit);
-        string sfSeconds = (sfInit /= 1000).ToString();
-        ApplyStartFrom(sfSeconds, Attempt.Map, StartFromEdit);
+        PlaytestInit = !show;
 
-        // speed init
-        double.TryParse(Rhythia.SpeedParameter, out double spInit);
-        SpeedEdit.Text = spInit.ToString();
+        if (PlaytestInit == false && SettingsManager.Instance.Settings.OptionalParameters)
+        {
+            // start from init
+            double.TryParse(Rhythia.StartFromParameter, out double sfInit);
+            string sfSeconds = (sfInit /= 1000).ToString();
+            ApplyStartFrom(sfSeconds, Attempt.Map, StartFromEdit);
+
+            // speed init
+            double.TryParse(Rhythia.SpeedParameter, out double spInit);
+            SpeedEdit.Text = spInit.ToString();
+        }
 
         if (!show)
         {
@@ -347,12 +353,9 @@ public partial class GameScene : BaseScene
             double SpeedValue = 1.0;
             if (double.TryParse(SpeedEdit.Text, out double speeddouble)) SpeedValue = speeddouble;
 
-            PlaytestInit = true;
             Attempt = new Attempt(map, SpeedValue, GetStartFrom(StartFromEdit), Rhythia.Instance.TempMods);
             SceneManager.ReloadCurrentScene();
         }
-        // menuButtonsHolder.GetNode<Button>("Resume").Pressed += () => HideMenu();
-        // menuButtonsHolder.GetNode<Button>("Restart").Pressed += Restart;
     }
 
     public void ApplyStartFrom(string input, Map map, LineEdit valueEdit)
@@ -366,7 +369,7 @@ public partial class GameScene : BaseScene
         {
             if (!input.IsValidFloat())
             {
-                valueEdit.Text = Util.String.FormatTime(0.0);
+                valueEdit.Text = Util.String.FormatTime(1.0);
             }
 
             double value = 0;
@@ -391,7 +394,7 @@ public partial class GameScene : BaseScene
         {
             if (!input.IsValidFloat())
             {
-                valueEdit.Text = Util.String.FormatTime(0.0);
+                valueEdit.Text = Util.String.FormatTime(1.0);
             }
 
             double value = 0.0;
