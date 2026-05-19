@@ -97,7 +97,7 @@ public partial class Rhythia : Node
         }
 
         TempMode = TextFilePath != null;
-        
+
         if (TempMode)
         {
             var tempMods = new Dictionary<string, bool>{

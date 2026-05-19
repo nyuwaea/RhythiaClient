@@ -122,10 +122,11 @@ public partial class Map : RefCounted
         ArtistPlatform = artistPlatform;
         Title = (title ?? "").StripEscapes();
         PrettyTitle = Artist != "" ? $"{Artist} - {Title}" : Title;
-        if (id == null) 
+        if (id == null)
         {
             PrettyTitle = "Temp Map";
-        };
+        }
+        ;
 
         Rating = rating;
         Mappers = mappers ?? ["N/A"];

@@ -388,7 +388,7 @@ public partial class Runner : Node3D
         {
             GameScene.Instance.ReplayManager.SaveReplay(Attempt);
         }
-        
+
         if (!Attempt.IsReplay && !Rhythia.TempMode)
         {
             Stats.Instance.GamePlaytime += (Time.GetTicksUsec() - Attempt.TimeStarted) / 1000000;
