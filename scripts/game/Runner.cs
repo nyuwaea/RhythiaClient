@@ -378,7 +378,7 @@ public partial class Runner : Node3D
         }
 
         Attempt.Stopped = true;
-        Attempt.HitsInfo = Attempt.HitsInfo[0..(int)Attempt.Sum];
+        Attempt.HitsInfo = Attempt.HitsInfo[(int)Attempt.FirstNote .. (int)(Attempt.FirstNote + Attempt.Sum)];
 
         HitResultChanged -= OnHitResultChanged;
 

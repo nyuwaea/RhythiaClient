@@ -4,30 +4,32 @@ public partial class Graph : ColorRect
 {
     public override void _Draw()
     {
-        Color hitColor = Color.FromHtml("00ff00ff");
-        Color missColor = Color.FromHtml("ff000044");
+        Color hitColor = new(0x00ff00ff);
+        Color missColor = new(0xff000044);
 
-        float[] hitsInfo = GameScene.Attempt.IsReplay ? GameScene.Attempt.Replays[0].Notes : GameScene.Attempt.HitsInfo;
-
-        for (ulong i = (ulong)hitsInfo.GetLowerBound(0); i < (ulong)hitsInfo.Length; i++)
+        var attempt = GameScene.Attempt;
+        float[] hitsInfo = attempt.IsReplay ? attempt.Replays[0].Notes : attempt.HitsInfo;
+        
+        for (ulong i = 0; i < (ulong)hitsInfo.Length; i++)
         {
             float offset = hitsInfo[i];
+            float noteProgress = (float)attempt.Map.Notes[i + attempt.FirstNote].Millisecond / attempt.Map.Length;
 
             if (offset < 0)
             {
-                int position = (int)(Size.X * GameScene.Attempt.Map.Notes[i].Millisecond / GameScene.Attempt.Map.Length);
+                int position = (int)(Size.X * noteProgress);
                 DrawLine(Vector2.Right * position, new(position, Size.Y), missColor, 1);
             }
             else
             {
-                DrawRect(new(Size.X * (GameScene.Attempt.Map.Notes[i].Millisecond / (float)GameScene.Attempt.Map.Length), Size.Y * (offset / 55), Vector2.One), hitColor);
+                DrawRect(new(Size.X * noteProgress, Size.Y * (offset / 55), Vector2.One), hitColor);
             }
         }
 
-        if (GameScene.Attempt.DeathTime >= 0)
+        if (attempt.DeathTime >= 0)
         {
-            int position = (int)(Size.X * GameScene.Attempt.DeathTime / GameScene.Attempt.Map.Length);
-            DrawLine(Vector2.Right * position, new(position, Size.Y), Color.Color8(255, 255, 0), 3);
+            int position = (int)(Size.X * attempt.DeathTime / attempt.Map.Length);
+            DrawLine(Vector2.Right * position, new(position, Size.Y), new(0xffff00), 3);
         }
     }
 }
