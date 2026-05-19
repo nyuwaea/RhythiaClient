@@ -196,7 +196,7 @@ public partial class SoundManager : Node, ISkinnable
 
     public static void PlayJukebox(Map map, bool setRichPresence = true)
     {
-        if (map == null)
+        if (map == null || Rhythia.Instance.TextFilePath != null)
         {
             return;
         }
