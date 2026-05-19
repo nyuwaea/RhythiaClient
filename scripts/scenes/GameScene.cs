@@ -128,6 +128,13 @@ public partial class GameScene : BaseScene
                 SoundManager.FailSound.Play();
             }
 
+            if (Rhythia.Instance.TextFilePath != null)
+            {
+                Discord.Client.Dispose();
+                Logger.Log("Quitting");
+                Instance.GetTree().Quit();
+            }
+
             if (!Attempt.IsReplay)
             {
                 Attempt.Alive = false;
@@ -190,8 +197,11 @@ public partial class GameScene : BaseScene
 
         StartQueued = true;
 
-        var parsedMap = MapParser.Decode(map.FilePath);
+        var parsedMap = MapParser.Decode(map.FilePath, Rhythia.Instance.AudioFilePath);
         Attempt = new Attempt(parsedMap, speed, startFrom, mods ?? [], players, replays);
+
+        // var parsedMap = MapParser.Decode(map.FilePath);
+        // Attempt = new Attempt(parsedMap, speed, startFrom, mods ?? [], players, replays);
 
         if (!Attempt.IsReplay)
         {
@@ -212,12 +222,12 @@ public partial class GameScene : BaseScene
 
         Attempt oldAttempt = Attempt;
 
-        if (!FileAccess.FileExists(Attempt.ReplayPath) && !Attempt.IsReplay)
-        {
-            _ = ToastNotification.Notify("Replay desync detected! Sum didn't match notes hit", 2);
-        }
+        // if (!FileAccess.FileExists(Attempt.ReplayPath) && !Attempt.IsReplay)
+        // {
+        //     _ = ToastNotification.Notify("Replay desync detected! Sum didn't match notes hit", 2);
+        // }
 
-        var map = MapParser.Decode(oldAttempt.Map.FilePath);
+        var map = MapParser.Decode(oldAttempt.Map.FilePath, Rhythia.Instance.AudioFilePath);
         Attempt = new Attempt(map, oldAttempt.Speed, oldAttempt.StartFrom, oldAttempt.Mods, oldAttempt.Players, oldAttempt.Replays);
 
         SceneManager.ReloadCurrentScene();
