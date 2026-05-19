@@ -77,7 +77,6 @@ public partial class Map : RefCounted
 
     [Ignore]
     public byte[] VideoBuffer { get; set; } = [];
-
     private Note[] notes;
 
     [Ignore]
@@ -123,6 +122,11 @@ public partial class Map : RefCounted
         ArtistPlatform = artistPlatform;
         Title = (title ?? "").StripEscapes();
         PrettyTitle = Artist != "" ? $"{Artist} - {Title}" : Title;
+        if (id == null) 
+        {
+            PrettyTitle = "Temp Map";
+        };
+
         Rating = rating;
         Mappers = mappers ?? ["N/A"];
         PrettyMappers = "N/A";
@@ -139,7 +143,12 @@ public partial class Map : RefCounted
         VideoBuffer = videoBuffer;
         Notes = data ?? Array.Empty<Note>();
         Length = length ?? Notes[^1].Millisecond;
-        Name = id.Replace(" ", "_") ?? new Regex("[^a-zA-Z0-9_-]").Replace($"{Mappers.Stringify()}_{PrettyTitle}".Replace(" ", "_"), "");
+        Name = "N/A";
+        if (id != null)
+        {
+            Name = id.Replace(" ", "_") ?? new Regex("[^a-zA-Z0-9_-]").Replace($"{Mappers.Stringify()}_{PrettyTitle}".Replace(" ", "_"), "");
+        }
+        // Name = id.Replace(" ", "_") ?? new Regex("[^a-zA-Z0-9_-]").Replace($"{Mappers.Stringify()}_{PrettyTitle}".Replace(" ", "_"), "");
         AudioExt = (AudioBuffer != null && Encoding.UTF8.GetString(AudioBuffer[0..4]) == "OggS") ? "ogg" : "mp3";
 
         MapManager.Sanitize(this);
