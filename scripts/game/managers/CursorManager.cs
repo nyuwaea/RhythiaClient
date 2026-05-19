@@ -34,7 +34,7 @@ public partial class CursorManager : Node
         settings = GameScene.Attempt.IsReplay ? GameScene.Attempt.Replays[0].Settings : GameScene.Attempt.Settings;
         cursorMesh.Position = Vector3.Zero;
         cursorMesh.Rotation = Vector3.Zero;
-        cursors = [ cursorMesh ];
+        cursors = [cursorMesh];
 
         var parent = cursorMesh.GetParent();
 
@@ -100,7 +100,7 @@ public partial class CursorManager : Node
 
         if (settings.AbsoluteInput || runner.Attempt.IsReplay)
             repositionAbsolute();
-        
+
         Vector3 cursorPos;
 
         if (runner.SpinCamera)

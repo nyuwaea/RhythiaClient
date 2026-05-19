@@ -202,7 +202,7 @@ public partial class ReplayManager : Node
         {
             var replay = Runner.Attempt.Replays[i];
 
-            if (replay.FrameIndex == replay.Frames.Length - 1) { continue; };
+            if (replay.FrameIndex == replay.Frames.Length - 1) continue;
 
             // advance frame forward deterministically making sure frames only advance when allowed
             while (replay.FrameIndex < replay.Frames.Length - 1 &&
