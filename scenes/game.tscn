@@ -273,10 +273,11 @@ Button/styles/hover = SubResource("StyleBoxFlat_6kbgk")
 Button/styles/normal = SubResource("StyleBoxEmpty_jlnvv")
 Button/styles/pressed = SubResource("StyleBoxFlat_y08lf")
 
-[node name="SceneGame" type="Node" unique_id=909809067 node_paths=PackedStringArray("Runner", "Menu", "ReplayManager", "PlayerInputController", "CursorManager")]
+[node name="SceneGame" type="Node" unique_id=909809067 node_paths=PackedStringArray("Runner", "Menu", "PlaytestOverlay", "ReplayManager", "PlayerInputController", "CursorManager")]
 script = ExtResource("1_bhx41")
 Runner = NodePath("Runner")
 Menu = NodePath("Menu")
+PlaytestOverlay = NodePath("PlaytestOverlay")
 ReplayManager = NodePath("ReplayManager")
 PlayerInputController = NodePath("PlayerInputController")
 CursorManager = NodePath("CursorManager")
@@ -1084,3 +1085,93 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
+
+[node name="PlaytestOverlay" type="Panel" parent="." unique_id=1181132228]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -228.5
+offset_top = -145.75
+offset_right = 228.5
+offset_bottom = 145.75
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="PlaytestOverlay" unique_id=946436302]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.8117647)
+
+[node name="VB" type="VBoxContainer" parent="PlaytestOverlay" unique_id=434700085]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -186.41068
+offset_top = -118.875
+offset_right = 186.41068
+offset_bottom = 118.875
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="PlaytestOverlay/VB" unique_id=1440480954]
+layout_mode = 2
+text = "Playtesting Menu"
+horizontal_alignment = 1
+
+[node name="SpinCheck" type="CheckButton" parent="PlaytestOverlay/VB" unique_id=1229643202]
+layout_mode = 2
+text = "Spin"
+
+[node name="StartFrom" type="HBoxContainer" parent="PlaytestOverlay/VB" unique_id=1642958239]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="PlaytestOverlay/VB/StartFrom" unique_id=1012996186]
+layout_mode = 2
+text = "Start From"
+
+[node name="VSeparator" type="VSeparator" parent="PlaytestOverlay/VB/StartFrom" unique_id=747816767]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="PlaytestOverlay/VB/StartFrom" unique_id=1472681876]
+layout_mode = 2
+text = "0:00"
+placeholder_text = "0:00"
+alignment = 1
+
+[node name="Speed" type="HBoxContainer" parent="PlaytestOverlay/VB" unique_id=1555509850]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="PlaytestOverlay/VB/Speed" unique_id=473992258]
+layout_mode = 2
+text = "Speed"
+
+[node name="VSeparator" type="VSeparator" parent="PlaytestOverlay/VB/Speed" unique_id=676367974]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="PlaytestOverlay/VB/Speed" unique_id=1063011881]
+layout_mode = 2
+text = "1.0"
+placeholder_text = "1.0"
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="PlaytestOverlay/VB" unique_id=1844474893]
+layout_mode = 2
+text = "Play (Space)"
