@@ -128,13 +128,6 @@ public partial class GameScene : BaseScene
                 SoundManager.FailSound.Play();
             }
 
-            // if (Rhythia.Instance.TextFilePath != null)
-            // {
-            //     Discord.Client.Dispose();
-            //     Logger.Log("Quitting");
-            //     Instance.GetTree().Quit();
-            // }
-
             if (!Attempt.IsReplay)
             {
                 Attempt.Alive = false;
@@ -148,11 +141,9 @@ public partial class GameScene : BaseScene
 
             Runner.Stop();
 
-            if (Rhythia.Instance.TextFilePath != null)
+            if (Rhythia.TempMode)
             {
-                Discord.Client.Dispose();
-                Logger.Log("Quitting");
-                Instance.GetTree().Quit();
+                Rhythia.Quit();
             }
         };
     }
@@ -204,7 +195,7 @@ public partial class GameScene : BaseScene
 
         StartQueued = true;
 
-        var parsedMap = MapParser.Decode(map.FilePath, Rhythia.Instance.AudioFilePath);
+        var parsedMap = MapParser.Decode(map.FilePath, Rhythia.AudioFilePath);
         Attempt = new Attempt(parsedMap, speed, startFrom, mods ?? [], players, replays);
 
         // var parsedMap = MapParser.Decode(map.FilePath);
@@ -234,7 +225,7 @@ public partial class GameScene : BaseScene
         //     _ = ToastNotification.Notify("Replay desync detected! Sum didn't match notes hit", 2);
         // }
 
-        var map = MapParser.Decode(oldAttempt.Map.FilePath, Rhythia.Instance.AudioFilePath);
+        var map = MapParser.Decode(oldAttempt.Map.FilePath, Rhythia.AudioFilePath);
         Attempt = new Attempt(map, oldAttempt.Speed, oldAttempt.StartFrom, oldAttempt.Mods, oldAttempt.Players, oldAttempt.Replays);
 
         SceneManager.ReloadCurrentScene();

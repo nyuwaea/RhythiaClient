@@ -389,7 +389,7 @@ public partial class Runner : Node3D
             GameScene.Instance.ReplayManager.SaveReplay(Attempt);
         }
         
-        if (!Attempt.IsReplay && Rhythia.Instance.TextFilePath == null)
+        if (!Attempt.IsReplay && !Rhythia.TempMode)
         {
             Stats.Instance.GamePlaytime += (Time.GetTicksUsec() - Attempt.TimeStarted) / 1000000;
             Stats.Instance.TotalDistance += (ulong)Attempt.DistanceMM;

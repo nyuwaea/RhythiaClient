@@ -15,9 +15,11 @@ public partial class Rhythia : Node
 
     public static Rhythia Instance;
     public static bool Quitting { get; private set; } = false;
-    public string TextFilePath = null;
-    public string AudioFilePath = null;
-    public bool SpinBool = false;
+
+    public static bool TempMode = false;
+    public static string TextFilePath = null;
+    public static string AudioFilePath = null;
+    public static bool SpinBool = false;
 
     public override async void _Ready()
     {
@@ -76,23 +78,29 @@ public partial class Rhythia : Node
 
         foreach (string command in cmdArgs)
         {
-            if (command.Contains("--t"))
+            string[] split = command.Split("=");
+
+            switch (split[0])
             {
-                TextFilePath = command.Split("=")[1];
-            }
-            else if (command.Contains("--a"))
-            {
-                AudioFilePath = command.Split("=")[1];
-            }
-            else if (command.Contains("--spin"))
-            {
-                SpinBool = command.Split("=")[1].ToLower() == "true";
+                case "--t":
+                    TextFilePath = split[1];
+                    break;
+                case "--a":
+                    AudioFilePath = split[1];
+                    break;
+                case "--spin":
+                    SpinBool = split[1].ToLower() == "true";
+                    break;
+                default:
+                    break;
             }
         }
 
-        if (TextFilePath != null)
+        TempMode = TextFilePath != null;
+        
+        if (TempMode)
         {
-            Dictionary<string, bool> TempMods = new Dictionary<string, bool>{
+            var tempMods = new Dictionary<string, bool>{
                 {"NoFail", true},
                 {"Ghost", false},
                 {"Spin", SpinBool},
@@ -101,20 +109,9 @@ public partial class Rhythia : Node
                 {"HardRock", false}
             };
 
-            Map TempMap = MapParser.Decode(TextFilePath, AudioFilePath);
+            var tempMap = MapParser.Decode(TextFilePath, AudioFilePath);
 
-            // GD.Print(TextFilePath);
-            // GD.Print(AudioFilePath);
-
-            // int index = 1;
-
-            // foreach (var note in TempMap.Notes)
-            // {
-            //     GD.Print($"[X: {note.X}, Y: {note.Y}, ms: {note.Millisecond}, i: {index}], ");
-            //     index++;
-            // }
-
-            GameScene.Play(TempMap, 1.0, 0.0, TempMods);
+            GameScene.Play(tempMap, 1.0, 0.0, tempMods);
         }
 
         GetViewport().Connect("files_dropped", Callable.From((string[] files) =>

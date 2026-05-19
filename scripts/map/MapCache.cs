@@ -21,7 +21,7 @@ public static class MapCache
 
     public static void Load(bool fullSync)
     {
-        if (Rhythia.Instance.TextFilePath != null)
+        if (Rhythia.TempMode)
         {
             return;
         }

@@ -33,7 +33,7 @@ public partial class SceneManager : Node
         backgroundContainer = GetNode<SubViewportContainer>("Background");
         backgroundViewport = backgroundContainer.GetNode<SubViewport>("SubViewport");
 
-        if (Rhythia.Instance.TextFilePath == null)
+        if (!Rhythia.TempMode)
         {
             Load("res://scenes/loading.tscn");
         }
