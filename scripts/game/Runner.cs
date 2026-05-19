@@ -138,7 +138,6 @@ public partial class Runner : Node3D
         ProcessNotes.Clear();
 
         // note process check
-        double at = Attempt.IsReplay ? Attempt.Replays[0].ApproachTime : settings.ApproachTime;
 
         for (uint i = Attempt.PassedNotes; i < Attempt.Map.Notes.Length; i++)
         {
@@ -168,7 +167,7 @@ public partial class Runner : Node3D
                 // }
 
             }
-            else if (note.Millisecond > Attempt.Progress + at * 1000 * Attempt.Speed)   // past approach distance
+            else if (note.Millisecond > Attempt.Progress + settings.ApproachTime * 1000 * Attempt.Speed)   // past approach distance
             {
                 break;
             }
@@ -296,10 +295,10 @@ public partial class Runner : Node3D
             EmitSignal(SignalName.AttemptStatsUpdated, Attempt);
         }
 
-        settings = SettingsManager.Instance.Settings;
+        settings = Attempt.IsReplay ? Attempt.Replays[0].Settings : SettingsManager.Instance.Settings;
         //SpinCamera = Attempt.Mods.Any(mod => mod.Key == "Spin");
         SpinCamera = Attempt.Mods["Spin"];
-        Camera.Fov = (float)(Attempt.IsReplay ? Attempt.Replays[0].FoV : settings.FoV.Value);
+        Camera.Fov = (float)settings.FoV.Value;
         Notes.Multimesh.Mesh = SkinManager.Instance.Skin.NoteMesh;
 
         SoundManager.BeginGameplayScope(Attempt.Map);

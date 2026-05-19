@@ -13,8 +13,8 @@ public struct Replay
     public ulong ReplayNoteCount;
     public string Player;
 
-    // \/ this bad VERY bad, need to use godot's binary functions later
     public FileParser FileBuffer;
+    public SettingsProfile Settings;
     public bool Valid;
     public float Length;
     public string Status;
@@ -100,6 +100,17 @@ public struct Replay
             FoV = FileBuffer.GetDouble();
             NoteSize = FileBuffer.GetDouble();
             Sensitivity = FileBuffer.GetDouble();
+
+            Settings = new();
+            Settings.ApproachRate.Value = ApproachRate;
+            Settings.ApproachDistance.Value = ApproachDistance;
+            Settings.ApproachTime.Value = ApproachTime;
+            Settings.FadeIn.Value = FadeIn;
+            Settings.FadeOut.Value = FadeOut ? 100 : 0;
+            Settings.Pushback.Value = Pushback;
+            Settings.FoV.Value = FoV;
+            Settings.NoteSize.Value = NoteSize;
+            Settings.Sensitivity.Value = Sensitivity;
 
             ushort status = FileBuffer.GetUInt8();
             Status = status == 0 ? "PASSED" : status == 1 ? "DISQUALIFIED" : "FAILED";

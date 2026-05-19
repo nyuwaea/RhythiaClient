@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 
 /// <summary>
@@ -12,7 +13,9 @@ public partial class CursorManager : Node
     [Export] private MeshInstance3D cursorMesh;
     [Export] private Camera3D camera;
 
+    private SettingsProfile settings;
     private float sensitivity;
+    private List<MeshInstance3D> cursors;
 
     [Signal]
     public delegate void OnCursorUpdatedEventHandler(
@@ -28,7 +31,34 @@ public partial class CursorManager : Node
 
     public override void _EnterTree()
     {
+        settings = GameScene.Attempt.IsReplay ? GameScene.Attempt.Replays[0].Settings : GameScene.Attempt.Settings;
         cursorMesh.Position = Vector3.Zero;
+        cursorMesh.Rotation = Vector3.Zero;
+        cursors = [ cursorMesh ];
+
+        var parent = cursorMesh.GetParent();
+
+        if (GameScene.Attempt.IsReplay)
+        {
+            for (int i = 1; i < GameScene.Attempt.Replays.Length; i++)
+            {
+                cursors.Add(cursorMesh.Duplicate() as MeshInstance3D);
+                parent.AddChild(cursors[i]);
+            }
+        }
+    }
+
+    public override void _ExitTree()
+    {
+        if (cursors.Count > 1)
+        {
+            for (int i = 1; i < cursors.Count; i++)
+            {
+                cursors[i].QueueFree();
+            }
+
+            cursors.RemoveRange(1, cursors.Count - 1);
+        }
     }
 
     public override void _Process(double delta)
@@ -38,31 +68,52 @@ public partial class CursorManager : Node
         updateCursorRotation(delta);
     }
 
-    public void UpdateCursor(Vector2 inputDelta)
+    public void ShowCursor(int cursorIndex = 0, bool instant = true)
+    {
+        if (instant)
+        {
+            cursors[cursorIndex].Transparency = 1 - (float)settings.CursorOpacity / 100;
+        }
+        else
+        {
+            CreateTween().TweenProperty(cursors[cursorIndex], "transparency", 1, 0.5);
+        }
+    }
+
+    public void HideCursor(int cursorIndex = 0, bool instant = true)
+    {
+        ShowCursor(cursorIndex, instant);
+    }
+
+    public void UpdateCursor(Vector2 inputDelta, int cursorIndex = 0)
     {
         EmitSignalOnCursorUpdated(inputDelta);
 
-        sensitivity = (float)(runner.Attempt.IsReplay ? runner.Attempt.Replays[0].Sensitivity : runner.Attempt.Settings.Sensitivity);
+        sensitivity = (float)settings.Sensitivity;
 
-        if (runner.Attempt.Settings.AbsoluteInput && !runner.Attempt.IsReplay)
+        if (settings.AbsoluteInput && !runner.Attempt.IsReplay)
         {
-            sensitivity = (float)runner.Attempt.Settings.AbsoluteSensitivity;
+            sensitivity = (float)settings.AbsoluteSensitivity;
         }
 
-        sensitivity *= (float)runner.Attempt.Settings.FoV.Value / 70f;
+        sensitivity *= (float)settings.FoV / 70f;
 
-        if (runner.Attempt.Settings.AbsoluteInput || runner.Attempt.IsReplay)
+        if (settings.AbsoluteInput || runner.Attempt.IsReplay)
             repositionAbsolute();
+        
+        Vector3 cursorPos;
 
         if (runner.SpinCamera)
-            updateSpinState(inputDelta);
+            cursorPos = updateSpinState(inputDelta);
         else
-            updateLockedState(inputDelta);
+            cursorPos = updateLockedState(inputDelta);
+
+        cursors[cursorIndex].Position = cursorPos;
     }
 
-    private void updateSpinState(Vector2 inputDelta)
+    private Vector3 updateSpinState(Vector2 inputDelta)
     {
-        Attempt attempt = runner.Attempt;
+        var attempt = runner.Attempt;
 
         if (!attempt.IsReplay)
         {
@@ -74,31 +125,31 @@ public partial class CursorManager : Node
         }
         camera.Rotation = new Vector3((float)Math.Clamp(camera.Rotation.X, Mathf.DegToRad(-90), Mathf.DegToRad(90)), camera.Rotation.Y, camera.Rotation.Z);
 
-        Vector3 origin = new Vector3(0, 0, 3.5f);
-        Vector3 cursorLock = new Vector3(attempt.CursorPosition.X, attempt.CursorPosition.Y, 0);
+        var origin = new Vector3(0, 0, 3.5f);
+        var cursorLock = new Vector3(attempt.CursorPosition.X, attempt.CursorPosition.Y, 0);
         // The pivot is to mimic ROBLOX's orbital camera
-        Vector3 pivot = camera.Basis.Z / 4f;
+        var pivot = camera.Basis.Z / 4f;
 
         // Proper Parallax Support
-        camera.Position = origin + cursorLock * (float)attempt.Settings.CameraParallax + pivot;
+        camera.Position = origin + cursorLock * (float)settings.CameraParallax + pivot;
 
-        Vector3 lookVector = camera.Basis.Z;
-        Vector2 cameraVector2 = new Vector2(camera.Position.X, camera.Position.Y);
-        Vector2 lookVector2 = new Vector2(lookVector.X, lookVector.Y);
+        var lookVector = camera.Basis.Z;
+        var cameraVector2 = new Vector2(camera.Position.X, camera.Position.Y);
+        var lookVector2 = new Vector2(lookVector.X, lookVector.Y);
 
         // Project Cursor from Camera's "ray cast"
         attempt.RawCursorPosition = cameraVector2 - lookVector2 * Mathf.Abs(camera.Position.Z / lookVector.Z);
         attempt.CursorPosition = attempt.RawCursorPosition.Clamp(-Constants.BOUNDS, Constants.BOUNDS);
 
-        cursorMesh.Position = new Vector3(attempt.CursorPosition.X, attempt.CursorPosition.Y, 0);
+        return new(attempt.CursorPosition.X, attempt.CursorPosition.Y, 0);
     }
 
-    private void updateLockedState(Vector2 inputDelta)
+    private Vector3 updateLockedState(Vector2 inputDelta)
     {
-        Attempt attempt = runner.Attempt;
-        Vector2 delta = new Vector2(1, -1) * (inputDelta * sensitivity / 120f);
+        var attempt = runner.Attempt;
+        var delta = new Vector2(1, -1) * (inputDelta * sensitivity / 120f);
 
-        if (runner.Attempt.Settings.CursorDrift)
+        if (settings.CursorDrift)
         {
             attempt.CursorPosition = attempt.IsReplay
                 ? replayManager.CursorPosition.Clamp(-Constants.BOUNDS, Constants.BOUNDS)
@@ -112,14 +163,16 @@ public partial class CursorManager : Node
             attempt.CursorPosition = attempt.RawCursorPosition.Clamp(-Constants.BOUNDS, Constants.BOUNDS);
         }
 
-        // Update visual cursor's position
-        cursorMesh.Position = new Vector3(attempt.CursorPosition.X, attempt.CursorPosition.Y, 0);
+        var origin = new Vector3(0, 0, 3.75f);
+        float parallax = (float)settings.CameraParallax;
 
-        Vector3 Origin = new Vector3(0, 0, 3.75f);
-        float Parallax = (float)(attempt.IsReplay ? attempt.Replays[0].Parallax : attempt.Settings.CameraParallax);
-
-        camera.Position = Origin + new Vector3(attempt.CursorPosition.X, attempt.CursorPosition.Y, 0) * Parallax;
+        // camera should manage parallax on its own
+        camera.Position = origin + (attempt.IsReplay && attempt.Replays.Length > 1
+            ? Vector3.Zero
+            : new Vector3(attempt.CursorPosition.X, attempt.CursorPosition.Y, 0) * parallax);
         camera.Rotation = Vector3.Zero;
+
+        return new(attempt.CursorPosition.X, attempt.CursorPosition.Y, 0);
     }
 
     // Reset everything to zero so it doesn't have infinite sensitivity
@@ -129,5 +182,5 @@ public partial class CursorManager : Node
         runner.Attempt.RawCursorPosition = Vector2.Zero;
         runner.Attempt.CursorPosition = Vector2.Zero;
     }
-    private void updateCursorRotation(double delta) => cursorMesh.RotationDegrees += Vector3.Back * (float)SettingsManager.Instance.Settings.CursorRotation * (float)delta;
+    private void updateCursorRotation(double delta) => cursorMesh.RotationDegrees += Vector3.Back * (float)settings.CursorRotation * (float)delta;
 }

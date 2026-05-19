@@ -146,7 +146,7 @@ public partial class ReplayManager : Node
     public void InitReplayLength()
     {
         if (Runner?.Attempt == null || !Runner.Attempt.IsReplay) return;
-        ReplayLength = Runner.Attempt.Replays[0].Length;
+        ReplayLength = Runner.Attempt.MaxReplayLength;
     }
 
     public override void _Ready()
@@ -190,7 +190,7 @@ public partial class ReplayManager : Node
 
         if (!seekerHovered)
         {
-            seekerTimeline.Value = Runner.Attempt.Progress / Runner.Attempt.Replays[0].Length;
+            seekerTimeline.Value = Runner.Attempt.Progress / Runner.Attempt.MaxReplayLength;
 
             if (Runner.Attempt.Progress > ReplayLength && Runner.Playing)
             {
@@ -202,11 +202,19 @@ public partial class ReplayManager : Node
         {
             var replay = Runner.Attempt.Replays[i];
 
+            if (replay.FrameIndex == replay.Frames.Length - 1) { continue; };
+
             // advance frame forward deterministically making sure frames only advance when allowed
             while (replay.FrameIndex < replay.Frames.Length - 1 &&
                    Runner.Attempt.Progress >= replay.Frames[replay.FrameIndex + 1].Progress)
             {
                 replay.FrameIndex++;
+
+                if (replay.FrameIndex == replay.Frames.Length - 1)
+                {
+                    CursorManager.HideCursor(i, false);
+                    continue;
+                }
             }
 
             int next = Math.Min(replay.FrameIndex + 1, replay.Frames.Length - 1);
@@ -226,9 +234,10 @@ public partial class ReplayManager : Node
             );
 
             CursorPosition = cursorPos;
-        }
 
-        CursorManager.UpdateCursor(CursorPosition);
+            CursorManager.UpdateCursor(CursorPosition, i);
+            CursorManager.ShowCursor(i);
+        }
     }
 
     public void ShowReplayViewer(Attempt attempt, bool? show = null)

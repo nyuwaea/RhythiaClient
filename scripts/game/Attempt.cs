@@ -57,6 +57,7 @@ public partial class Attempt : GodotObject
     public Replay[] Replays;
     public List<float[]> ReplayFrames = [];
     public List<float> ReplaySkips = [];
+    public float MaxReplayLength = 0;
     public ulong LastReplayFrame = 0;
     public uint ReplayFrameCountOffset = 0;
     public uint ReplayAttemptStatusOffset = 0;
@@ -75,6 +76,17 @@ public partial class Attempt : GodotObject
         ComboMultiplierIncrement = Math.Max(2, (uint)Map.Notes.Length / 200);
         Mods = mods;
         HitsInfo = IsReplay ? Replays[0].Notes : new float[Map.Notes.Length];
+
+        if (IsReplay)
+        {
+            foreach (var replay in Replays)
+            {
+                if (replay.Length > MaxReplayLength)
+                {
+                    MaxReplayLength = replay.Length;
+                }
+            }
+        }
 
         if (StartFrom > 0)
         {
