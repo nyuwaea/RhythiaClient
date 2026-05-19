@@ -85,6 +85,12 @@ public class Misc
             return img;
         }
 
+        Logger.Log($"""
+        Couldn't load image from buffer
+            Type: {(isPng ? "PNG" : isJpeg ? "JPG" : isBmp ? "BMP" : isWebp ? "WEBP" : "Unknown")};
+            Size: {buffer.Length}
+        """);
+
         return null;
     }
 
