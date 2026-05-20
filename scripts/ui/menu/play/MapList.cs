@@ -428,7 +428,8 @@ public partial class MapList : Panel, ISkinnable
                 break;
 
             case SortType.Mappers:
-                orderedMaps = Maps.OrderBy(map => {
+                orderedMaps = Maps.OrderBy(map =>
+                {
                     string[] mappers = map.Mappers?.Length == 0 ? map.PrettyMappers.Split(", ") : map.Mappers;
                     return mappers.Order().First();
                 }).ToList();
@@ -437,7 +438,8 @@ public partial class MapList : Panel, ISkinnable
             default:
                 orderedMaps = Maps.OrderBy(map => map.PrettyTitle).ToList();
                 break;
-        };
+        }
+        ;
 
         if (!Ascending.Value)
         {
