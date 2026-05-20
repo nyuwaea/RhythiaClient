@@ -40,6 +40,7 @@
 [ext_resource type="Shader" uid="uid://rngh60dyh10b" path="res://scripts/shaders/outline.gdshader" id="30_q13xq"]
 [ext_resource type="Texture2D" uid="uid://bfy3x7rqnts4i" path="res://user/skins/default/ui/buttons/filter.png" id="31_5053t"]
 [ext_resource type="Texture2D" uid="uid://bl6ten82nkjmd" path="res://user/skins/default/ui/buttons/sort.png" id="32_2wgix"]
+[ext_resource type="Script" uid="uid://b6mbjcjxklb81" path="res://scripts/ui/menu/play/SortMenuButton.cs" id="33_71lbq"]
 [ext_resource type="Texture2D" uid="uid://c6k1k4817che2" path="res://user/skins/default/ui/buttons/author.png" id="33_b56yx"]
 [ext_resource type="Script" uid="uid://b47jydbbjdh3i" path="res://scripts/ui/menu/SoundSpaceButton.cs" id="33_yxnar"]
 [ext_resource type="Script" uid="uid://dtnrcumiy038m" path="res://scripts/ui/menu/play/SearchPanel.cs" id="34_71lbq"]
@@ -199,6 +200,15 @@ shader = SubResource("Shader_1a85y")
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c6nra"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_18lcc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hjv1c"]
+bg_color = Color(0, 0, 0, 0.8784314)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="Theme" id="Theme_akqfu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_68b7m"]
 bg_color = Color(0, 0, 0, 1)
@@ -807,15 +817,114 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 disabled = true
 icon = ExtResource("31_5053t")
 
-[node name="Sort" type="Button" parent="Menus/Play/SubTopBar/HBoxContainer" unique_id=1032136468]
+[node name="Sort" type="Button" parent="Menus/Play/SubTopBar/HBoxContainer" unique_id=1032136468 node_paths=PackedStringArray("panel", "order", "orderLabel", "buttons")]
 custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme = ExtResource("6_engjn")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-disabled = true
+toggle_mode = true
 icon = ExtResource("32_2wgix")
+script = ExtResource("33_71lbq")
+panel = NodePath("Panel")
+order = NodePath("Panel/MarginContainer/VBoxContainer/HBoxContainer/Sort")
+orderLabel = NodePath("Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/SortOrder")
+buttons = NodePath("Panel/MarginContainer/VBoxContainer/SortTypeButtons")
+
+[node name="Panel" type="PanelContainer" parent="Menus/Play/SubTopBar/HBoxContainer/Sort" unique_id=1319633459]
+visible = false
+z_index = 1
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = 4.0
+grow_horizontal = 2
+theme = ExtResource("6_engjn")
+
+[node name="Background" type="Panel" parent="Menus/Play/SubTopBar/HBoxContainer/Sort/Panel" unique_id=1479500309]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hjv1c")
+
+[node name="MarginContainer" type="MarginContainer" parent="Menus/Play/SubTopBar/HBoxContainer/Sort/Panel" unique_id=1414498950]
+layout_mode = 2
+theme = ExtResource("6_engjn")
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menus/Play/SubTopBar/HBoxContainer/Sort/Panel/MarginContainer" unique_id=2071863039]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Menus/Play/SubTopBar/HBoxContainer/Sort/Panel/MarginContainer/VBoxContainer" unique_id=991582469]
+layout_mode = 2
+
+[node name="Sort" type="Button" parent="Menus/Play/SubTopBar/HBoxContainer/Sort/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1504277605]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme = ExtResource("6_engjn")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/icon_max_width = 24
+icon = ExtResource("32_2wgix")
+icon_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menus/Play/SubTopBar/HBoxContainer/Sort/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=578559987]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+theme = ExtResource("6_engjn")
+theme_override_constants/separation = 2
+
+[node name="SortOrder" type="Label" parent="Menus/Play/SubTopBar/HBoxContainer/Sort/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=643031713]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Ascending"
+
+[node name="SortTypeButtons" type="VBoxContainer" parent="Menus/Play/SubTopBar/HBoxContainer/Sort/Panel/MarginContainer/VBoxContainer" unique_id=712676656]
+layout_mode = 2
+theme = SubResource("Theme_akqfu")
+theme_override_constants/separation = 4
+
+[node name="Alphabetical" type="Button" parent="Menus/Play/SubTopBar/HBoxContainer/Sort/Panel/MarginContainer/VBoxContainer/SortTypeButtons" unique_id=1928126648]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme = ExtResource("6_engjn")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/icon_max_width = 24
+disabled = true
+text = "Alphabetical
+"
+icon_alignment = 1
+
+[node name="Difficulty" type="Button" parent="Menus/Play/SubTopBar/HBoxContainer/Sort/Panel/MarginContainer/VBoxContainer/SortTypeButtons" unique_id=2003836240]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme = ExtResource("6_engjn")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/icon_max_width = 24
+text = "Difficulty
+"
+icon_alignment = 1
+
+[node name="Mappers" type="Button" parent="Menus/Play/SubTopBar/HBoxContainer/Sort/Panel/MarginContainer/VBoxContainer/SortTypeButtons" unique_id=234550645]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme = ExtResource("6_engjn")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/icon_max_width = 24
+text = "Mappers"
+icon_alignment = 1
 
 [node name="SearchAuthor" type="Panel" parent="Menus/Play/SubTopBar/HBoxContainer" unique_id=1189820153]
 custom_minimum_size = Vector2(150, 36)

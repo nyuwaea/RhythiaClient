@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
@@ -11,6 +9,13 @@ public partial class MapList : Panel, ISkinnable
     public static MapList Instance;
 
     public enum ListLayout { List, Grid }
+
+    public enum SortType
+    {
+        Alphabetical,
+        Difficulty,
+        Mappers
+    }
 
     [ExportGroup("Layout")]
 
@@ -60,6 +65,8 @@ public partial class MapList : Panel, ISkinnable
     public bool DisplaySelectionCursor = false;
     public string SearchQuery = "";
     public string AuthorQuery = "";
+    public Bindable<bool> Ascending = new(true);
+    public Bindable<SortType> Sorting = new(SortType.Alphabetical);
 
     /// <summary>
     /// Queried and ordered maps to display in the list
@@ -110,6 +117,9 @@ public partial class MapList : Panel, ISkinnable
         scrollBarBackgroundTop = scrollBarBackground.GetNode<TextureRect>("Top");
         scrollBarBackgroundMiddle = scrollBarBackground.GetNode<TextureRect>("Middle");
         scrollBarBackgroundBottom = scrollBarBackground.GetNode<TextureRect>("Bottom");
+
+        Sorting.ValueChanged += (_, _) => Sort();
+        Ascending.ValueChanged += (_, _) => Sort();
 
         MouseExited += () => { toggleSelectionCursor(false); };
         Resized += clear;
@@ -405,6 +415,39 @@ public partial class MapList : Panel, ISkinnable
         {
             mainMenu.Transition(mainMenu.PlayMenu);
         }
+    }
+
+    public void Sort()
+    {
+        List<Map> orderedMaps;
+
+        switch (Sorting.Value)
+        {
+            case SortType.Difficulty:
+                orderedMaps = Maps.OrderBy(map => map.Difficulty).ToList();
+                break;
+
+            case SortType.Mappers:
+                orderedMaps = Maps.OrderBy(map => {
+                    string[] mappers = map.Mappers?.Length == 0 ? map.PrettyMappers.Split(", ") : map.Mappers;
+                    return mappers.Order().First();
+                }).ToList();
+                break;
+
+            default:
+                orderedMaps = Maps.OrderBy(map => map.PrettyTitle).ToList();
+                break;
+        };
+
+        if (!Ascending.Value)
+        {
+            orderedMaps.Reverse();
+        }
+
+        Maps = orderedMaps.Where(map => map.Favorite).ToList();
+        Maps.AddRange(orderedMaps.Where(map => !map.Favorite));
+
+        clear();
     }
 
     public void Search(string query = "", string author = "")
