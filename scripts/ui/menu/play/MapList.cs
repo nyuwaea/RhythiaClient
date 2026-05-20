@@ -439,7 +439,6 @@ public partial class MapList : Panel, ISkinnable
                 orderedMaps = Maps.OrderBy(map => map.PrettyTitle).ToList();
                 break;
         }
-        ;
 
         if (!Ascending.Value)
         {
