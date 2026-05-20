@@ -1,7 +1,7 @@
 using System;
 using Godot;
 
-public partial class SortMenuButton : Button
+public partial class SortMenuButton : Button, ISkinnable
 {
     [Export]
     private Control panel;
@@ -21,6 +21,7 @@ public partial class SortMenuButton : Button
     {
         Toggled += toggle;
         order.Pressed += toggleOrder;
+        SkinManager.Instance.Loaded += UpdateSkin;
 
         previousButton = buttons.GetNode<Button>("Alphabetical");
 
@@ -28,6 +29,8 @@ public partial class SortMenuButton : Button
         {
             button.Pressed += () => selectSort(button);
         }
+
+        UpdateSkin(SkinManager.Instance.Skin);
     }
 
     public override void _Input(InputEvent @event)
@@ -42,6 +45,12 @@ public partial class SortMenuButton : Button
                 ButtonPressed = false;
             }
         }
+    }
+
+    public void UpdateSkin(SkinProfile skin)
+    {
+        order.Icon = MapList.Instance.Ascending.Value ? skin.SortAscendButtonImage : skin.SortButtonImage;
+        Icon = order.Icon;
     }
 
     private void toggle(bool toggled)
@@ -63,7 +72,12 @@ public partial class SortMenuButton : Button
 
     private void toggleOrder()
     {
+        var skin = SkinManager.Instance.Skin;
+
         MapList.Instance.Ascending.Value = !MapList.Instance.Ascending.Value;
         orderLabel.Text = MapList.Instance.Ascending.Value ? "Ascending" : "Descending";
+        order.Icon = MapList.Instance.Ascending.Value ? skin.SortAscendButtonImage : skin.SortButtonImage;
+
+        Icon = order.Icon;
     }
 }

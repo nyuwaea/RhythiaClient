@@ -75,6 +75,7 @@ public partial class SkinManager : Node
         skin.RandomButtonImage = loadTexture("ui/buttons/random.png");
         skin.FilterButtonImage = loadTexture("ui/buttons/filter.png");
         skin.SortButtonImage = loadTexture("ui/buttons/sort.png");
+        skin.SortAscendButtonImage = loadTexture("ui/buttons/sort_ascend.png");
         skin.AuthorButtonImage = loadTexture("ui/buttons/author.png");
         skin.SearchButtonImage = loadTexture("ui/buttons/search.png");
         skin.LayoutListButtonImage = loadTexture("ui/buttons/layout_list.png");
