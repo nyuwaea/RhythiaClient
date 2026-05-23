@@ -7,8 +7,7 @@ public partial class GameScene : BaseScene
 {
     [Export] public Runner Runner;
     [Export] public Panel Menu;
-    [Export] public Panel PlaytestOverlay;
-    public bool PlaytestInit = false;
+    [Export] public PlaytestOverlay PlaytestOverlay;
     [Export] public ReplayManager ReplayManager { get; private set; }
     [Export] public PlayerInputController PlayerInputController { get; private set; }
     [Export] public CursorManager CursorManager { get; private set; }
@@ -75,7 +74,7 @@ public partial class GameScene : BaseScene
             }
             else
             {
-                if (Rhythia.TempMode && !PlaytestInit) return;
+                if (Rhythia.TempMode && !PlaytestOverlay.PlaytestInit) return;
                 ShowMenu(!MenuShown);
             }
         };
@@ -94,9 +93,9 @@ public partial class GameScene : BaseScene
             {
                 ReplayManager.PauseReplay();
             }
-            else if (PlaytestInit == false && Rhythia.TempMode)
+            else if (PlaytestOverlay.PlaytestInit == false && Rhythia.TempMode)
             {
-                UpdatePlaytestOverlay(false);
+                PlaytestOverlay.UpdatePlaytestOverlay(false);
             }
             else
             {
@@ -119,13 +118,6 @@ public partial class GameScene : BaseScene
         PlayerInputController.OnToggleFade += () => Attempt.Settings.FadeOut.Value = Attempt.Settings.FadeOut.Value > 0 ? 0 : 100;
         PlayerInputController.OnTogglePushback += () => Attempt.Settings.Pushback.Value = !Attempt.Settings.Pushback;
         PlayerInputController.OnRestartPressed += Restart;
-
-        // Playtest Overlay
-        VBoxContainer VBHolder = PlaytestOverlay.GetNode<VBoxContainer>("VB");
-        LineEdit StartFromEdit = VBHolder.GetNode<HBoxContainer>("StartFrom").GetNode<LineEdit>("LineEdit");
-        StartFromEdit.FocusExited += () => { ApplyStartFrom(StartFromEdit.Text, Attempt.Map, StartFromEdit); };
-        StartFromEdit.TextSubmitted += (_) => { ApplyStartFrom(StartFromEdit.Text, Attempt.Map, StartFromEdit); };
-        VBHolder.GetNode<Button>("PlayButton").Pressed += () => UpdatePlaytestOverlay(false);
 
         // Pause Menu
         Panel menuButtonsHolder = Menu.GetNode<Panel>("Holder");
@@ -199,9 +191,11 @@ public partial class GameScene : BaseScene
         Runner.Play();
         StartQueued = false;
 
-        if (Rhythia.TempMode && !PlaytestInit)
+        if (Rhythia.TempMode && !PlaytestOverlay.PlaytestInit)
         {
-            UpdatePlaytestOverlay(true);
+            PlaytestOverlay.Attempt = Attempt;
+            PlaytestOverlay.Runner = Runner;
+            PlaytestOverlay.UpdatePlaytestOverlay(true);
         }
     }
 
@@ -298,127 +292,5 @@ public partial class GameScene : BaseScene
     public void HideMenu(bool instant = false)
     {
         ShowMenu(false, instant);
-    }
-    
-    public void UpdatePlaytestOverlay(bool show)
-    {
-        Runner.Playing = !show;
-
-        SoundManager.Song.PitchScale = (float)Attempt.Speed;
-        SoundManager.Song.StreamPaused = !Runner.Playing;
-        Attempt oldAttempt = Attempt;
-
-        PlaytestOverlay.Visible = show;
-
-        MenuCursor.Instance.UpdateVisible(PlaytestOverlay.Visible && SettingsManager.Instance.Settings.UseCursorInMenus.Value);
-
-        if (PlaytestOverlay.Visible)
-        {
-            Input.WarpMouse(GetViewport().GetWindow().Size / 2);
-        }
-        else
-        {
-            Input.MouseMode = Attempt.IsReplay && ReplayManager.ViewerVisible ? Input.MouseModeEnum.Visible
-                : Attempt.Settings.AbsoluteInput ? Input.MouseModeEnum.ConfinedHidden
-                : Input.MouseModeEnum.Captured;
-        }
-
-        VBoxContainer VBHolder = PlaytestOverlay.GetNode<VBoxContainer>("VB");
-
-        Rhythia.Instance.TempMods["Spin"] = VBHolder.GetNode<CheckButton>("SpinCheck").ButtonPressed;
-
-        LineEdit StartFromEdit = VBHolder.GetNode<HBoxContainer>("StartFrom").GetNode<LineEdit>("LineEdit");
-        LineEdit SpeedEdit = VBHolder.GetNode<HBoxContainer>("Speed").GetNode<LineEdit>("LineEdit");
-
-        PlaytestInit = !show;
-
-        if (PlaytestInit == false && SettingsManager.Instance.Settings.OptionalParameters)
-        {
-            // start from init
-            double.TryParse(Rhythia.StartFromParameter, out double sfInit);
-            string sfSeconds = (sfInit /= 1000).ToString();
-            ApplyStartFrom(sfSeconds, Attempt.Map, StartFromEdit);
-
-            // speed init
-            double.TryParse(Rhythia.SpeedParameter, out double spInit);
-            SpeedEdit.Text = spInit.ToString();
-        }
-
-        if (!show)
-        {
-            Runner.Stop(false);
-
-            var map = MapParser.Decode(oldAttempt.Map.FilePath, Rhythia.AudioFilePath);
-
-            double SpeedValue = 1.0;
-            if (double.TryParse(SpeedEdit.Text, out double speeddouble)) SpeedValue = speeddouble;
-
-            Attempt = new Attempt(map, SpeedValue, GetStartFrom(StartFromEdit), Rhythia.Instance.TempMods);
-            SceneManager.ReloadCurrentScene();
-        }
-    }
-
-    public void ApplyStartFrom(string input, Map map, LineEdit valueEdit)
-    {
-        // Hello MapInfoContainer.cs! :) -fog
-
-        input ??= valueEdit.Text == "" ? valueEdit.PlaceholderText : valueEdit.Text;
-        
-
-        if (input.Contains(":")) // time conversion (ex. 1:25)
-        {
-            if (!input.IsValidFloat())
-            {
-                valueEdit.Text = Util.String.FormatTime(1.0);
-            }
-
-            double value = 0;
-            string[] split = input.Split(":");
-            split.Reverse();
-
-            if (split.Length > 1 && split[1].IsValidFloat())
-            {
-                value += 60 * split[1].ToFloat();
-            }
-            if (double.TryParse(split[0], System.Globalization.CultureInfo.InvariantCulture, out double inputValue))
-            {
-                if (inputValue < 1) inputValue *= map.Length / 1000;
-                value += inputValue;
-            }
-
-            value = Math.Clamp(value * 1000, 0, map.Length);
-
-            valueEdit.Text = Util.String.FormatTime(value / 1000);
-        }
-        else if (!input.Contains(":"))
-        {
-            if (!input.IsValidFloat())
-            {
-                valueEdit.Text = Util.String.FormatTime(1.0);
-            }
-
-            double value = 0.0;
-
-            if (double.TryParse(input, out double inputValue)) value = inputValue;
-            value = Math.Clamp(value, 0, map.Length);
-
-            valueEdit.Text = Util.String.FormatTime(value);
-        }
-    }
-
-    public double GetStartFrom(LineEdit valueEdit)
-    {
-        double value = 0;
-        string input = valueEdit.Text;
-
-        string[] split = input.Split(":");
-        split.Reverse();
-
-        if (split.Length > 1 && split[1].IsValidFloat())
-        {
-            value += 60 * split[1].ToFloat();
-        }
-
-        return value;
     }
 }
