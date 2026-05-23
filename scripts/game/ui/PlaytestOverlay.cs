@@ -72,7 +72,7 @@ public partial class PlaytestOverlay : Panel
             double SpeedValue = 1.0;
             if (double.TryParse(SpeedEdit.Text, out double speeddouble)) SpeedValue = speeddouble;
 
-            GameScene.Attempt = new Attempt(map, SpeedValue, GetStartFrom(StartFromEdit), Rhythia.Instance.TempMods);
+            GameScene.Attempt = new Attempt(map, SpeedValue, GetStartFrom(StartFromEdit) * 1000, Rhythia.Instance.TempMods);
             SceneManager.ReloadCurrentScene();
         }
     }
@@ -131,11 +131,23 @@ public partial class PlaytestOverlay : Panel
         string input = valueEdit.Text;
 
         string[] split = input.Split(":");
-        split.Reverse();
 
-        if (split.Length > 1 && split[1].IsValidFloat())
+        if (split.Length == 1)
         {
-            value += 60 * split[1].ToFloat();
+            if (split[0].IsValidFloat()) value = split[0].ToFloat();
+
+        }
+        else
+        {
+            if (split[0].IsValidFloat())
+            {
+                value += split[0].ToFloat() * 60; // minutes
+            }
+
+            if (split[1].IsValidFloat())
+            {
+                value += split[1].ToFloat(); // seconds
+            }
         }
 
         return value;
