@@ -351,7 +351,7 @@ public partial class SettingsProfile
     /// <summary>
     /// When using external editors (for example SSQE), "Start From" and "Speed" will be used from the editor
     /// </summary>
-    public SettingsItem<bool> OptionalParameters { get; private set; }
+    public SettingsItem<bool> OptionalPlaytestParameters { get; private set; }
 
     [Order]
     /// <summary>
@@ -1037,11 +1037,11 @@ public partial class SettingsProfile
             Section = SettingsSection.Other
         };
 
-        OptionalParameters = new(true)
+        OptionalPlaytestParameters = new(true)
         {
-            Id = "OptionalParameters",
-            Title = "Optional Editor Settings",
-            Description = "Takes \"Start From\" and \"Speed\" from external editors like SSQE when using the \"Playtest\" button",
+            Id = "OptionalPlaytestParameters",
+            Title = "Use Editor Playtest Settings",
+            Description = "Takes \"Start From\" and \"Speed\" from external editors like the SSQE when using the \"Playtest\" button",
             Section = SettingsSection.Other
         };
 
