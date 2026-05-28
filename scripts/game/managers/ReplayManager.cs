@@ -19,7 +19,7 @@ public partial class ReplayManager : Node
 
     public bool ViewerVisible;
 
-    // only public variable because of GameScene
+    // only public variable because of Game
     public static TextureButton SeekerPause;
     private static Label seekerTime;
     private static HSlider seekerTimeline;

@@ -29,19 +29,21 @@ public partial class Results : BaseScene
         Input.MouseMode = settings.UseCursorInMenus ? Input.MouseModeEnum.Hidden : Input.MouseModeEnum.Visible;
         MenuCursor.Instance.Visible = settings.UseCursorInMenus;
 
-        holder.GetNode<Label>("Title").Text = (GameScene.Attempt.IsReplay ? "[REPLAY] " : "") + GameScene.Attempt.Map.PrettyTitle;
-        holder.GetNode<Label>("Difficulty").Text = GameScene.Attempt.Map.DifficultyName;
-        holder.GetNode<Label>("Mappers").Text = $"by {GameScene.Attempt.Map.PrettyMappers}";
-        holder.GetNode<Label>("Accuracy").Text = $"{GameScene.Attempt.Accuracy:F2}%";
-        holder.GetNode<Label>("Score").Text = $"{Util.String.PadMagnitude(GameScene.Attempt.Score.ToString())}";
-        holder.GetNode<Label>("Hits").Text = $"{Util.String.PadMagnitude(GameScene.Attempt.Hits.ToString())} / {Util.String.PadMagnitude(GameScene.Attempt.Sum.ToString())}";
-        holder.GetNode<Label>("Status").Text = GameScene.Attempt.IsReplay ? GameScene.Attempt.Replays[0].Status : GameScene.Attempt.Alive ? (GameScene.Attempt.Qualifies ? "PASSED" : "DISQUALIFIED") : "FAILED";
-        holder.GetNode<Label>("Speed").Text = $"{GameScene.Attempt.Speed:F2}x";
+        var attempt = Game.Attempt;
+
+        holder.GetNode<Label>("Title").Text = (attempt.IsReplay ? "[REPLAY] " : "") + attempt.Map.PrettyTitle;
+        holder.GetNode<Label>("Difficulty").Text = attempt.Map.DifficultyName;
+        holder.GetNode<Label>("Mappers").Text = $"by {attempt.Map.PrettyMappers}";
+        holder.GetNode<Label>("Accuracy").Text = $"{attempt.Accuracy:F2}%";
+        holder.GetNode<Label>("Score").Text = $"{Util.String.PadMagnitude(attempt.Score.ToString())}";
+        holder.GetNode<Label>("Hits").Text = $"{Util.String.PadMagnitude(attempt.Hits.ToString())} / {Util.String.PadMagnitude(attempt.Sum.ToString())}";
+        holder.GetNode<Label>("Status").Text = attempt.IsReplay ? attempt.Replays[0].Status : attempt.Alive ? (attempt.Qualifies ? "PASSED" : "DISQUALIFIED") : "FAILED";
+        holder.GetNode<Label>("Speed").Text = $"{attempt.Speed:F2}x";
 
         HBoxContainer modifiersContainer = holder.GetNode("Modifiers").GetNode<HBoxContainer>("HBoxContainer");
         TextureRect modTemplate = modifiersContainer.GetNode<TextureRect>("ModifierTemplate");
 
-        foreach (KeyValuePair<string, bool> mod in GameScene.Attempt.Mods)
+        foreach (KeyValuePair<string, bool> mod in attempt.Mods)
         {
             if (mod.Value)
             {
@@ -54,9 +56,9 @@ public partial class Results : BaseScene
             }
         }
 
-        if (GameScene.Attempt.Map.CoverBuffer != null)
+        if (attempt.Map.CoverBuffer != null)
         {
-            Image img = Util.Misc.LoadImageFromBuffer(GameScene.Attempt.Map.CoverBuffer);
+            Image img = Util.Misc.LoadImageFromBuffer(attempt.Map.CoverBuffer);
             if (img != null)
             {
                 cover.Texture = ImageTexture.CreateFromImage(img);
@@ -66,7 +68,7 @@ public partial class Results : BaseScene
 
         // if (SettingsManager.Instance.Settings.AutoplayJukebox.Value && LegacyRunner.CurrentAttempt.Map.AudioBuffer != null)
 
-        if (GameScene.Attempt.Map.AudioBuffer != null)
+        if (attempt.Map.AudioBuffer != null)
         {
             if (!SoundManager.Song.Playing)
             {
@@ -74,20 +76,20 @@ public partial class Results : BaseScene
             }
         }
 
-        SoundManager.Song.PitchScale = (float)GameScene.Attempt.Speed;
+        SoundManager.Song.PitchScale = (float)attempt.Speed;
 
-        if (!GameScene.Attempt.Map.Ephemeral)
+        if (!attempt.Map.Ephemeral)
         {
-            // SoundManager.JukeboxIndex = SoundManager.JukeboxQueueInverse[GameScene.Attempt.Map.ID];
+            // SoundManager.JukeboxIndex = SoundManager.JukeboxQueueInverse[attempt.Map.ID];
         }
 
         Button replayButton = footer.GetNode<Button>("Replay");
 
         footer.GetNode<Button>("Back").Pressed += Stop;
         footer.GetNode<Button>("Play").Pressed += Replay;
-        replayButton.Visible = !GameScene.Attempt.Map.Ephemeral;
+        replayButton.Visible = !attempt.Map.Ephemeral;
 
-        if (!FileAccess.FileExists(GameScene.Attempt.ReplayPath) && !GameScene.Attempt.IsReplay)
+        if (!FileAccess.FileExists(attempt.ReplayPath) && !attempt.IsReplay)
         {
             // This can be multiple reasons, so I am just going to disable the notification
             // _ = ToastNotification.Notify("Replay desync detected! Sum didn't match notes hit", 2);
@@ -98,13 +100,13 @@ public partial class Results : BaseScene
         {
             string path;
 
-            if (GameScene.Attempt.IsReplay)
+            if (attempt.IsReplay)
             {
-                path = $"{Constants.USER_FOLDER}/replays/{GameScene.Attempt.Replays[0].ID}.phxr";
+                path = $"{Constants.USER_FOLDER}/replays/{attempt.Replays[0].ID}.phxr";
             }
             else
             {
-                path = GameScene.Attempt.ReplayPath;
+                path = attempt.ReplayPath;
             }
 
             if (FileAccess.FileExists(path))
@@ -112,7 +114,7 @@ public partial class Results : BaseScene
                 Replay replay = new(path);
                 SoundManager.Song.Stop();
 
-                GameScene.Play(MapParser.Decode(replay.MapFilePath), replay.Speed, replay.StartFrom, replay.Modifiers, null, [replay]);
+                Game.Play(MapParser.Decode(replay.MapFilePath), replay.Speed, replay.StartFrom, replay.Modifiers, null, [replay]);
             }
         };
     }
@@ -172,11 +174,13 @@ public partial class Results : BaseScene
 
     public void Replay()
     {
-        Map map = MapParser.Decode(GameScene.Attempt.Map.FilePath);
-        map.Ephemeral = GameScene.Attempt.Map.Ephemeral;
+        var attempt = Game.Attempt;
+
+        Map map = MapParser.Decode(attempt.Map.FilePath);
+        map.Ephemeral = attempt.Map.Ephemeral;
         SoundManager.Song.Stop();
 
-        GameScene.Play(map, GameScene.Attempt.Speed, GameScene.Attempt.StartFrom, GameScene.Attempt.Mods);
+        Game.Play(map, attempt.Speed, attempt.StartFrom, attempt.Mods);
     }
 
     public void Stop()

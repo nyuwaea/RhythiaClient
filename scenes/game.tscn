@@ -39,7 +39,7 @@
 [ext_resource type="Script" uid="uid://ddtnij8m4eipl" path="res://scripts/game/ui/Grid.cs" id="27_js0lu"]
 [ext_resource type="Script" uid="uid://b7jvxorkr4xfi" path="res://scripts/game/ui/Speed.cs" id="28_gxtfn"]
 [ext_resource type="Script" uid="uid://c8d872aoiqglo" path="res://scripts/PlayerInputController.cs" id="37_02fa5"]
-[ext_resource type="Script" path="res://scripts/game/ui/PlaytestOverlay.cs" id="40_m4url"]
+[ext_resource type="Script" uid="uid://c24b7vefbxvbh" path="res://scripts/game/ui/PlaytestOverlay.cs" id="40_m4url"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a6jk1"]
 resource_name = "Material"
@@ -258,8 +258,16 @@ Button/styles/hover = SubResource("StyleBoxFlat_6kbgk")
 Button/styles/normal = SubResource("StyleBoxEmpty_jlnvv")
 Button/styles/pressed = SubResource("StyleBoxFlat_y08lf")
 
-[node name="SceneGame" type="Node" unique_id=909809067]
+[node name="SceneGame" type="Node" unique_id=909809067 node_paths=PackedStringArray("Runner", "Menu", "PlaytestOverlay", "ReplayManager", "PlayerInputController", "CursorManager")]
 script = ExtResource("1_m4url")
+Runner = NodePath("Runner")
+Menu = NodePath("Menu")
+PlaytestOverlay = NodePath("PlaytestOverlay")
+ReplayManager = NodePath("ReplayManager")
+PlayerInputController = NodePath("PlayerInputController")
+CursorManager = NodePath("CursorManager")
+UseGameSpace = true
+AddSpaceAsChild = true
 
 [node name="CursorManager" type="Node" parent="." unique_id=862696440 node_paths=PackedStringArray("runner", "playerInputController", "replayManager", "cursorMesh", "camera")]
 script = ExtResource("2_nepv3")
@@ -677,11 +685,12 @@ current = true
 fov = 70.0
 size = 5.0
 
-[node name="Notes" type="MultiMeshInstance3D" parent="Runner" unique_id=77746100]
+[node name="Notes" type="MultiMeshInstance3D" parent="Runner" unique_id=77746100 node_paths=PackedStringArray("Runner")]
 material_override = SubResource("StandardMaterial3D_73q55")
 cast_shadow = 0
 multimesh = SubResource("MultiMesh_almyi")
 script = ExtResource("3_ew8wr")
+Runner = NodePath("..")
 
 [node name="Video" type="MeshInstance3D" parent="Runner" unique_id=1036410191]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.479675, -0.459572, -99.9929)
@@ -976,7 +985,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="PlaytestOverlay" type="Panel" parent="." unique_id=1181132228 node_paths=PackedStringArray("ReplayManager", "Runner")]
+[node name="PlaytestOverlay" type="Panel" parent="." unique_id=1181132228 node_paths=PackedStringArray("ReplayManager")]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
@@ -991,7 +1000,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("40_m4url")
 ReplayManager = NodePath("../ReplayManager")
-Runner = NodePath("../Runner")
 
 [node name="Background" type="ColorRect" parent="PlaytestOverlay" unique_id=946436302]
 layout_mode = 1

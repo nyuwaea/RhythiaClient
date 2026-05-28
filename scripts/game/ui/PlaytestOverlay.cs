@@ -72,7 +72,7 @@ public partial class PlaytestOverlay : Panel
             double SpeedValue = 1.0;
             if (double.TryParse(SpeedEdit.Text, out double speeddouble)) SpeedValue = speeddouble;
 
-            GameScene.Attempt = new Attempt(map, SpeedValue, GetStartFrom(StartFromEdit) * 1000, Rhythia.Instance.TempMods);
+            Game.Attempt = new Attempt(map, SpeedValue, GetStartFrom(StartFromEdit) * 1000, Rhythia.Instance.TempMods);
             SceneManager.ReloadCurrentScene();
         }
     }
@@ -82,7 +82,7 @@ public partial class PlaytestOverlay : Panel
         // Hello MapInfoContainer.cs! :) -fog
 
         input ??= valueEdit.Text == "" ? valueEdit.PlaceholderText : valueEdit.Text;
-        
+
 
         if (input.Contains(":")) // time conversion (ex. 1:25)
         {

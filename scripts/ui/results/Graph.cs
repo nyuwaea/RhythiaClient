@@ -7,9 +7,9 @@ public partial class Graph : ColorRect
         Color hitColor = new(0x00ff00ff);
         Color missColor = new(0xff000044);
 
-        var attempt = GameScene.Attempt;
+        var attempt = Game.Attempt;
         float[] hitsInfo = attempt.IsReplay ? attempt.Replays[0].Notes : attempt.HitsInfo;
-        
+
         for (ulong i = 0; i < (ulong)hitsInfo.Length; i++)
         {
             float offset = hitsInfo[i];

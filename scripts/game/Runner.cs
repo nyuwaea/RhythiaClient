@@ -383,9 +383,9 @@ public partial class Runner : Node3D
         HitResultChanged -= OnHitResultChanged;
 
         // dont want an infinite dependency loop so im just going to do this -fog
-        if (!Attempt.IsReplay && GameScene.Instance.ReplayManager.CurrentMode == ReplayManager.Mode.RECORD)
+        if (!Attempt.IsReplay && Game.Instance.ReplayManager.CurrentMode == ReplayManager.Mode.RECORD)
         {
-            GameScene.Instance.ReplayManager.SaveReplay(Attempt);
+            Game.Instance.ReplayManager.SaveReplay(Attempt);
         }
 
         if (!Attempt.IsReplay && !Rhythia.TempMode)

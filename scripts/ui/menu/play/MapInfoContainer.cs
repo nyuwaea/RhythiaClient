@@ -290,7 +290,7 @@ public partial class MapInfoContainer : Panel, ISkinnable
 
         startButton.Pressed += () =>
         {
-            GameScene.Play(Map, Lobby.Speed, Lobby.StartFrom, Lobby.Modifiers);
+            Game.Play(Map, Lobby.Speed, Lobby.StartFrom, Lobby.Modifiers);
         };
 
         // Leaderboard

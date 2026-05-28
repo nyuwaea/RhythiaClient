@@ -116,7 +116,7 @@ public partial class Rhythia : Node
         {
             var tempMap = MapParser.Decode(TextFilePath, AudioFilePath);
 
-            GameScene.Play(tempMap, 1.0, 0.0, TempMods);
+            Game.Play(tempMap, 1.0, 0.0, TempMods);
         }
 
         GetViewport().Connect("files_dropped", Callable.From((string[] files) =>
@@ -175,7 +175,7 @@ public partial class Rhythia : Node
                     }
                 }
 
-                GameScene.Play(MapParser.Decode(matching[0].MapFilePath), matching[0].Speed, matching[0].StartFrom, matching[0].Modifiers, null, [.. matching]);
+                Game.Play(MapParser.Decode(matching[0].MapFilePath), matching[0].Speed, matching[0].StartFrom, matching[0].Modifiers, null, [.. matching]);
             }
         }));
 
@@ -193,11 +193,11 @@ public partial class Rhythia : Node
 
         Logger.Log("Attempting to quit...");
 
-        bool playing = (GameScene.Instance?.Runner?.Playing ?? false) && (!GameScene.Attempt?.IsReplay ?? false);
+        bool playing = (Game.Instance?.Runner?.Playing ?? false) && (!Game.Attempt?.IsReplay ?? false);
 
         if (playing)
         {
-            GameScene.Instance.Runner.Stop(false);
+            Game.Instance.Runner.Stop(false);
         }
 
         Stats.Instance.TotalPlaytime += (Time.GetTicksUsec() - Constants.STARTED) / 1000000;
@@ -222,7 +222,7 @@ public partial class Rhythia : Node
     {
         if (what == NotificationWMCloseRequest)
         {
-            if (SceneManager.Scene != null && SceneManager.Scene is GameScene)
+            if (SceneManager.Scene != null && SceneManager.Scene is Game)
                 Stats.Instance.RageQuits++;
             Quit();
         }

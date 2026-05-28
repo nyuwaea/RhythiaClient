@@ -31,16 +31,16 @@ public partial class CursorManager : Node
 
     public override void _EnterTree()
     {
-        settings = GameScene.Attempt.IsReplay ? GameScene.Attempt.Replays[0].Settings : GameScene.Attempt.Settings;
+        settings = Game.Attempt.IsReplay ? Game.Attempt.Replays[0].Settings : Game.Attempt.Settings;
         cursorMesh.Position = Vector3.Zero;
         cursorMesh.Rotation = Vector3.Zero;
         cursors = [cursorMesh];
 
         var parent = cursorMesh.GetParent();
 
-        if (GameScene.Attempt.IsReplay)
+        if (Game.Attempt.IsReplay)
         {
-            for (int i = 1; i < GameScene.Attempt.Replays.Length; i++)
+            for (int i = 1; i < Game.Attempt.Replays.Length; i++)
             {
                 cursors.Add(cursorMesh.Duplicate() as MeshInstance3D);
                 parent.AddChild(cursors[i]);
