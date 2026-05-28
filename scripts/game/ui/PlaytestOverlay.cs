@@ -1,10 +1,10 @@
-using Godot;
 using System;
+using Godot;
 
 public partial class PlaytestOverlay : Panel
 {
     public bool PlaytestInit = false;
-    [Export] public ReplayManager ReplayManager {get; set;}
+    [Export] public ReplayManager ReplayManager { get; set; }
     public Runner Runner;
     public Attempt Attempt;
 
