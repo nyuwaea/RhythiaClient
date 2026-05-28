@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://vp1nmsiqt5yv"]
 
-[ext_resource type="Script" uid="uid://dly10tvxguvhb" path="res://scripts/scenes/GameScene.cs" id="1_bhx41"]
+[ext_resource type="Script" uid="uid://dly10tvxguvhb" path="res://scripts/scenes/Game.cs" id="1_m4url"]
 [ext_resource type="Script" uid="uid://bxncinhblsjgg" path="res://scripts/game/managers/CursorManager.cs" id="2_nepv3"]
 [ext_resource type="Texture2D" uid="uid://b3g4aw54n6bow" path="res://user/skins/default/game/grid.png" id="2_q78ea"]
 [ext_resource type="Script" uid="uid://dp8nga2aot1n2" path="res://scripts/game/Runner.cs" id="2_qnb83"]
@@ -39,7 +39,7 @@
 [ext_resource type="Script" uid="uid://ddtnij8m4eipl" path="res://scripts/game/ui/Grid.cs" id="27_js0lu"]
 [ext_resource type="Script" uid="uid://b7jvxorkr4xfi" path="res://scripts/game/ui/Speed.cs" id="28_gxtfn"]
 [ext_resource type="Script" uid="uid://c8d872aoiqglo" path="res://scripts/PlayerInputController.cs" id="37_02fa5"]
-[ext_resource type="Script" uid="uid://c24b7vefbxvbh" path="res://scripts/game/ui/PlaytestOverlay.cs" id="40_m4url"]
+[ext_resource type="Script" path="res://scripts/game/ui/PlaytestOverlay.cs" id="40_m4url"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a6jk1"]
 resource_name = "Material"
@@ -183,22 +183,6 @@ resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_p1h21")
 size = Vector2(10.88, 0.8)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_pausehud"]
-viewport_path = NodePath("Runner/HUD/PauseHud/PauseVP")
-
-[sub_resource type="LabelSettings" id="LabelSettings_pause_base"]
-font = ExtResource("23_wf21h")
-font_size = 84
-font_color = Color(0.5, 0.5, 0.5, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_pause_fill"]
-font = ExtResource("23_wf21h")
-font_size = 84
-
-[sub_resource type="LabelSettings" id="LabelSettings_pause_hint"]
-font = ExtResource("12_axsek")
-font_size = 24
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_73q55"]
 transparency = 1
 shading_mode = 0
@@ -274,16 +258,8 @@ Button/styles/hover = SubResource("StyleBoxFlat_6kbgk")
 Button/styles/normal = SubResource("StyleBoxEmpty_jlnvv")
 Button/styles/pressed = SubResource("StyleBoxFlat_y08lf")
 
-[node name="SceneGame" type="Node" unique_id=909809067 node_paths=PackedStringArray("Runner", "Menu", "PlaytestOverlay", "ReplayManager", "PlayerInputController", "CursorManager")]
-script = ExtResource("1_bhx41")
-Runner = NodePath("Runner")
-Menu = NodePath("Menu")
-PlaytestOverlay = NodePath("PlaytestOverlay")
-ReplayManager = NodePath("ReplayManager")
-PlayerInputController = NodePath("PlayerInputController")
-CursorManager = NodePath("CursorManager")
-UseGameSpace = true
-AddSpaceAsChild = true
+[node name="SceneGame" type="Node" unique_id=909809067]
+script = ExtResource("1_m4url")
 
 [node name="CursorManager" type="Node" parent="." unique_id=862696440 node_paths=PackedStringArray("runner", "playerInputController", "replayManager", "cursorMesh", "camera")]
 script = ExtResource("2_nepv3")
@@ -694,93 +670,6 @@ modulate = Color(1, 1, 1, 0)
 outline_modulate = Color(0, 0, 0, 0)
 text = "Press Space to skip"
 font = ExtResource("12_axsek")
-
-[node name="PauseHud" type="Sprite3D" parent="Runner/HUD" unique_id=1594331476]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -6)
-visible = false
-pixel_size = 0.012
-no_depth_test = true
-render_priority = 104
-texture = SubResource("ViewportTexture_pausehud")
-
-[node name="PauseVP" type="SubViewport" parent="Runner/HUD/PauseHud" unique_id=1841571202]
-disable_3d = true
-transparent_bg = true
-canvas_item_default_texture_filter = 2
-size = Vector2i(600, 600)
-render_target_update_mode = 4
-
-[node name="Control" type="Control" parent="Runner/HUD/PauseHud/PauseVP" unique_id=1700063552]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 600.0
-offset_bottom = 600.0
-
-[node name="Paused" type="Label" parent="Runner/HUD/PauseHud/PauseVP/Control" unique_id=1511102743]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -300.0
-offset_right = 300.0
-offset_bottom = 300.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "PAUSED"
-label_settings = SubResource("LabelSettings_pause_base")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ProgressMask" type="Control" parent="Runner/HUD/PauseHud/PauseVP/Control" unique_id=1572831027]
-clip_contents = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_top = -300.0
-offset_bottom = 300.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="FillPaused" type="Label" parent="Runner/HUD/PauseHud/PauseVP/Control/ProgressMask" unique_id=2138730588]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -300.0
-offset_right = 300.0
-offset_bottom = 300.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "PAUSED"
-label_settings = SubResource("LabelSettings_pause_fill")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="HoldR" type="Label" parent="Runner/HUD/PauseHud/PauseVP/Control" unique_id=1786763793]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = 40.0
-offset_right = 300.0
-offset_bottom = 300.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "HOLD R TO EXIT"
-label_settings = SubResource("LabelSettings_pause_hint")
-horizontal_alignment = 1
 
 [node name="Camera3D" type="Camera3D" parent="Runner" unique_id=112686709]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.75)
