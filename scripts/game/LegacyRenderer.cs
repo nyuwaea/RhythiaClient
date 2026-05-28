@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Godot;
 
 public partial class LegacyRenderer : MultiMeshInstance3D
@@ -15,7 +14,6 @@ public partial class LegacyRenderer : MultiMeshInstance3D
 
     public override void _Process(double delta)
     {
-        //         if (!LegacyRunner.Playing || LegacyRunner.CurrentAttempt.Stopped)
         if (!Runner.Playing)
         {
             return;
@@ -27,7 +25,6 @@ public partial class LegacyRenderer : MultiMeshInstance3D
         float ad = (float)(Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].ApproachDistance : settings.ApproachDistance.Value);
         float at = ad / ar;
         float fadeIn = (float)(Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].FadeIn : settings.FadeIn.Value) / 100;
-        // bool fadeOut = Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].FadeOut : settings.FadeOut.Value;
         float fadeOut = (float)(Runner.Attempt.IsReplay ? (Runner.Attempt.Replays[0].FadeOut ? 100 : 0) : settings.FadeOut.Value) / 100;
         bool pushback = Runner.Attempt.IsReplay ? Runner.Attempt.Replays[0].Pushback : settings.Pushback.Value;
         float hitWindowDepth = pushback ? (float)Constants.HIT_WINDOW * ar / 1000 : 0;
@@ -66,13 +63,6 @@ public partial class LegacyRenderer : MultiMeshInstance3D
             }
             else if (fadeOut > 0)
             {
-                // unused
-                // alpha -= (ad - depth) / (ad + (float)Constants.HIT_WINDOW * ar / 1000);
-
-                // runner rewrite fork
-                // alpha *= Math.Min(1, (depth + hitWindowDepth) / (ad + hitWindowDepth));
-
-                // indev \/ 
                 alpha -= 1 - Math.Min(1, (1 - progress) / fadeOut);
             }
 
