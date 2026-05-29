@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using Godot;
 
 public partial class Game : BaseScene
 {
     [Export] public Runner Runner;
-    [Export] public Panel Menu;
+    [Export] public PauseMenu Menu;
     [Export] public PlaytestOverlay PlaytestOverlay;
     [Export] public ReplayManager ReplayManager { get; private set; }
     [Export] public PlayerInputController PlayerInputController { get; private set; }
@@ -13,12 +12,9 @@ public partial class Game : BaseScene
 
     [Signal] public delegate void StartTempPauseEventHandler(Attempt attempt);
 
+    public static Game Instance;
     public static Attempt Attempt;
     public static bool StartQueued = false;
-
-    public bool MenuShown = false;
-
-    public static Game Instance;
 
     public override void _Ready()
     {
@@ -74,7 +70,7 @@ public partial class Game : BaseScene
             else
             {
                 if (Rhythia.TempMode && !PlaytestOverlay.PlaytestInit) return;
-                ShowMenu(!MenuShown);
+                Menu.ShowMenu(!Menu.Shown);
             }
         };
 
@@ -117,37 +113,6 @@ public partial class Game : BaseScene
         PlayerInputController.OnToggleFade += () => Attempt.Settings.FadeOut.Value = Attempt.Settings.FadeOut.Value > 0 ? 0 : 100;
         PlayerInputController.OnTogglePushback += () => Attempt.Settings.Pushback.Value = !Attempt.Settings.Pushback;
         PlayerInputController.OnRestartPressed += Restart;
-
-        // Pause Menu
-        var menuButtonsHolder = Menu.GetNode("Holder");
-
-        Menu.GetNode<Button>("Button").Pressed += () => HideMenu();
-        menuButtonsHolder.GetNode<Button>("Resume").Pressed += () => HideMenu();
-        menuButtonsHolder.GetNode<Button>("Restart").Pressed += Restart;
-        menuButtonsHolder.GetNode<Button>("Settings").Pressed += () =>
-        {
-            SettingsMenu.Instance.ShowMenu();
-        };
-        menuButtonsHolder.GetNode<Button>("Quit").Pressed += () =>
-        {
-            if (Attempt.Alive)
-            {
-                SoundManager.FailSound.Play();
-            }
-
-            if (!Attempt.IsReplay)
-            {
-                Attempt.Alive = false;
-                Attempt.Qualifies = false;
-
-                if (Attempt.DeathTime == -1)
-                {
-                    Attempt.DeathTime = Math.Max(0, Attempt.Progress);
-                }
-            }
-
-            Runner.Stop();
-        };
     }
 
     public override void Load()
@@ -165,11 +130,11 @@ public partial class Game : BaseScene
         Input.MouseMode = Attempt.Settings.AbsoluteInput.Value || Attempt.IsReplay ? Input.MouseModeEnum.Visible : Input.MouseModeEnum.Captured;
         Input.UseAccumulatedInput = false;
 
-        HideMenu(true);
-
         Runner.Attempt = Attempt;
         ReplayManager.InitReplayLength();
         ReplayManager.ShowReplayViewer(Runner.Attempt, Runner.Attempt.IsReplay);
+
+        Menu.HideMenu(true);
 
         if (Runner.Attempt.IsReplay)
         {
@@ -238,58 +203,5 @@ public partial class Game : BaseScene
         Attempt = new Attempt(map, oldAttempt.Speed, oldAttempt.StartFrom, oldAttempt.Mods, oldAttempt.Players, oldAttempt.Replays);
 
         SceneManager.ReloadCurrentScene();
-    }
-
-    public void ShowMenu(bool show = true, bool instant = false)
-    {
-        MenuShown = show;
-        Runner.Playing = !MenuShown;
-
-        // rest in peace 0.000000000000000001f pitch scale -fog
-        SoundManager.Song.PitchScale = (float)Attempt.Speed;
-        SoundManager.Song.StreamPaused = !Runner.Playing;
-
-        MenuCursor.Instance.UpdateVisible(MenuShown && SettingsManager.Instance.Settings.UseCursorInMenus.Value);
-
-        if (MenuShown)
-        {
-            Menu.Visible = true;
-            Input.WarpMouse(GetViewport().GetWindow().Size / 2);
-        }
-        else
-        {
-            // Re-sync the audio just in case
-            // Already done when the map is running
-
-            // double currentTime = Math.Max(0, (Attempt.Progress - Attempt.Settings.LocalOffset) / 1000.0f);
-
-            // if (Attempt.Map.AudioBuffer != null && SoundManager.Song.Playing)
-            // {
-            // 	double desyncOffsetTime = Math.Abs(currentTime - SoundManager.Song.GetPlaybackPosition());
-
-            // 	if (desyncOffsetTime > 0.05f)
-            // 	{
-            // 		Logger.Log($"[color=yellow]Desync detected! Offset by [b]{desyncOffsetTime:F5} seconds![/b][/color]");
-            // 		SoundManager.Song.Seek((float)currentTime);
-            // 	}
-            // }
-
-            Input.MouseMode = Attempt.IsReplay && ReplayManager.ViewerVisible ? Input.MouseModeEnum.Visible
-                : Attempt.Settings.AbsoluteInput ? Input.MouseModeEnum.ConfinedHidden
-                : Input.MouseModeEnum.Captured;
-        }
-
-        Tween tween = Menu.CreateTween();
-        tween.TweenProperty(Menu, "modulate", Color.Color8(255, 255, 255, (byte)(MenuShown ? 255 : 0)), instant ? 0 : 0.25).SetTrans(Tween.TransitionType.Quad);
-        tween.TweenCallback(Callable.From(() =>
-        {
-            Menu.Visible = MenuShown;
-        }));
-        tween.Play();
-    }
-
-    public void HideMenu(bool instant = false)
-    {
-        ShowMenu(false, instant);
     }
 }

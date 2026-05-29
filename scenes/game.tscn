@@ -39,6 +39,7 @@
 [ext_resource type="Script" uid="uid://ddtnij8m4eipl" path="res://scripts/game/ui/Grid.cs" id="27_js0lu"]
 [ext_resource type="Script" uid="uid://b7jvxorkr4xfi" path="res://scripts/game/ui/Speed.cs" id="28_gxtfn"]
 [ext_resource type="Script" uid="uid://c8d872aoiqglo" path="res://scripts/PlayerInputController.cs" id="37_02fa5"]
+[ext_resource type="Script" uid="uid://dlxxg2h4cl5hj" path="res://scripts/game/ui/PauseMenu.cs" id="38_8ool0"]
 [ext_resource type="Script" uid="uid://c24b7vefbxvbh" path="res://scripts/game/ui/PlaytestOverlay.cs" id="40_m4url"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a6jk1"]
@@ -856,7 +857,7 @@ grow_vertical = 0
 mouse_filter = 2
 alignment = 2
 
-[node name="Menu" type="Panel" parent="." unique_id=856970091]
+[node name="Menu" type="Panel" parent="." unique_id=856970091 node_paths=PackedStringArray("game", "runner", "hide", "resume", "restart", "settings", "quit")]
 visible = false
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
@@ -866,6 +867,14 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_d5aou")
+script = ExtResource("38_8ool0")
+game = NodePath("..")
+runner = NodePath("../Runner")
+hide = NodePath("Hide")
+resume = NodePath("Holder/Resume")
+restart = NodePath("Holder/Restart")
+settings = NodePath("Holder/Settings")
+quit = NodePath("Holder/Quit")
 
 [node name="Background" type="ColorRect" parent="Menu" unique_id=2094618318]
 layout_mode = 1
@@ -877,7 +886,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.25098)
 
-[node name="Button" type="Button" parent="Menu" unique_id=1826268412]
+[node name="Hide" type="Button" parent="Menu" unique_id=1826268412]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
