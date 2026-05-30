@@ -96,18 +96,10 @@ public partial class Runner : Node3D
 
         if (Attempt.Map.AudioBuffer != null)
         {
-            if (Attempt.Progress >= Attempt.MapLength - Constants.HIT_WINDOW)
+            if (SoundManager.Song.Playing && Attempt.Progress >= Attempt.MapLength - Constants.HIT_WINDOW)
             {
-                if (SoundManager.Song.Playing)
-                {
-                    SoundManager.Song.Stop();
-                }
+                SoundManager.Song.Stop();
             }
-            // else if (!SoundManager.Song.Playing && Attempt.Progress >= 0)
-            // {
-            // 	SoundManager.Song.Play();
-            // 	SoundManager.Song.Seek((float)Attempt.Progress / 1000);
-            // }
             else if (!SoundManager.Song.Playing && Attempt.Progress - Attempt.Settings.LocalOffset.Value >= 0)
             {
                 SoundManager.Song.Play((float)(Attempt.Progress - Attempt.Settings.LocalOffset.Value) / 1000f);
@@ -115,6 +107,7 @@ public partial class Runner : Node3D
         }
 
         int nextNoteMillisecond = Attempt.PassedNotes >= Attempt.Map.Notes.Length ? int.MaxValue : Attempt.Map.Notes[Attempt.PassedNotes].Millisecond;
+
         if (nextNoteMillisecond - Attempt.Progress >= Constants.BREAK_TIME * Attempt.Speed)
         {
             int lastNoteMillisecond = Attempt.PassedNotes > 0 ? Attempt.Map.Notes[Attempt.PassedNotes - 1].Millisecond : 0;
@@ -160,12 +153,6 @@ public partial class Runner : Node3D
                 }
 
                 continue;
-
-                // if (!Attempt.IsReplay)
-                // {
-                // 	continue;
-                // }
-
             }
             else if (note.Millisecond > Attempt.Progress + settings.ApproachTime * 1000 * Attempt.Speed)   // past approach distance
             {
@@ -188,9 +175,11 @@ public partial class Runner : Node3D
         }
 
         // hitreg check
+
         for (int i = 0; i < ToProcess; i++)
         {
-            Note note = ProcessNotes[i];
+            var note = ProcessNotes[i];
+
             if (note.LastResult == HitResult.Hit) continue;
 
             if (!Attempt.IsReplay)
@@ -198,13 +187,15 @@ public partial class Runner : Node3D
                 if (note.Millisecond - Attempt.Progress > 0) continue;
 
                 var result = note.CheckHitResult(Attempt);
+
                 if (result == HitResult.Hit)
                 {
                     note.Hit(this);
                 }
-
             }
-            else if (Attempt.Replays.Length > 1 && note.Millisecond - Attempt.Progress <= 0 || Attempt.Replays[0].Notes[note.Index] != -1 && note.Millisecond - Attempt.Progress + Attempt.Replays[0].Notes[note.Index] * Attempt.Speed <= 0)
+            else if (Attempt.Replays.Length > 1
+                && note.Millisecond - Attempt.Progress <= 0 || Attempt.Replays[0].Notes[note.Index] != -1
+                && note.Millisecond - Attempt.Progress + Attempt.Replays[0].Notes[note.Index] * Attempt.Speed <= 0)
             {
                 note.Hit(this);
             }
@@ -236,12 +227,14 @@ public partial class Runner : Node3D
                 Attempt.Score += hitScore;
                 Attempt.HealthStep = Math.Max(Attempt.HealthStep / 1.45, 15);
                 Attempt.Health = Math.Min(100, Attempt.Health + Attempt.HealthStep / 1.75);
+
                 if (!Attempt.IsReplay)
                 {
                     Stats.Instance.NotesHit++;
                     if (Attempt.Combo > Stats.Instance.HighestCombo) Stats.Instance.HighestCombo = Attempt.Combo;
                     Attempt.HitsInfo[noteIndex] = lateness;
                 }
+
                 if (Attempt.ComboMultiplierProgress == Attempt.ComboMultiplierIncrement)
                 {
                     if (Attempt.ComboMultiplier < 8)
@@ -250,6 +243,7 @@ public partial class Runner : Node3D
                         Attempt.ComboMultiplier++;
                     }
                 }
+
                 break;
             case HitResult.Miss:
                 Attempt.Misses++;
@@ -260,11 +254,13 @@ public partial class Runner : Node3D
                 Attempt.ComboMultiplier = Math.Max(1, Attempt.ComboMultiplier - 1);
                 Attempt.Health = Math.Max(0, Attempt.Health - Attempt.HealthStep);
                 Attempt.HealthStep = Math.Min(Attempt.HealthStep * 1.2, 100);
+
                 if (!Attempt.IsReplay)
                 {
                     Stats.Instance.NotesMissed++;
                     Attempt.HitsInfo[noteIndex] = -1;
                 }
+
                 if (!Attempt.IsReplay && Attempt.Health <= 0 && Attempt.Alive)
                 {
                     Attempt.Alive = false;
@@ -274,6 +270,7 @@ public partial class Runner : Node3D
 
                     if (!Attempt.Mods["NoFail"]) QueueStop();
                 }
+
                 break;
             default:
                 break;
@@ -296,7 +293,6 @@ public partial class Runner : Node3D
         }
 
         settings = Attempt.IsReplay ? Attempt.Replays[0].Settings : SettingsManager.Instance.Settings;
-        //SpinCamera = Attempt.Mods.Any(mod => mod.Key == "Spin");
         SpinCamera = Attempt.Mods["Spin"];
         Camera.Fov = (float)settings.FoV.Value;
         Notes.Multimesh.Mesh = SkinManager.Instance.Skin.NoteMesh;
@@ -324,10 +320,10 @@ public partial class Runner : Node3D
         SoundManager.UpdateVolume();
     }
 
-    public void Pause()
-    {
+    // public void Pause()
+    // {
 
-    }
+    // }
 
     public void Skip()
     {
@@ -423,7 +419,6 @@ public partial class Runner : Node3D
                     }
 
                     Stats.Instance.AverageAccuracy = (Stats.Instance.AverageAccuracy + Attempt.Accuracy) / Stats.Instance.Passes;
-                    // Stats.Instance.PassAccuracies.Add(Attempt.Accuracy);
                 }
             }
 
