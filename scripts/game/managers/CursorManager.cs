@@ -16,6 +16,7 @@ public partial class CursorManager : Node
     private SettingsProfile settings;
     private float sensitivity;
     private List<MeshInstance3D> cursors;
+    private Transform3D defaultCameraTransform = Transform3D.Identity;
 
     [Signal]
     public delegate void OnCursorUpdatedEventHandler(
@@ -24,6 +25,8 @@ public partial class CursorManager : Node
 
     public override void _Ready()
     {
+        defaultCameraTransform = camera.Transform;
+
         cursorMesh ??= GetNode<MeshInstance3D>("Cursor");
         playerInputController ??= GetNode<PlayerInputController>("/PlayerInputController");
         replayManager ??= GetNode<ReplayManager>("ReplayManager");
@@ -32,9 +35,13 @@ public partial class CursorManager : Node
     public override void _EnterTree()
     {
         settings = Game.Attempt.IsReplay ? Game.Attempt.Replays[0].Settings : Game.Attempt.Settings;
-        cursorMesh.Position = Vector3.Zero;
-        cursorMesh.Rotation = Vector3.Zero;
+        cursorMesh.Transform = Transform3D.Identity;
         cursors = [cursorMesh];
+
+        if (defaultCameraTransform != Transform3D.Identity)
+        {
+            camera.Transform = defaultCameraTransform;
+        }
 
         var parent = cursorMesh.GetParent();
 
