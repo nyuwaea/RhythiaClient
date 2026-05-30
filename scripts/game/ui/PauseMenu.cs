@@ -14,8 +14,8 @@ public partial class PauseMenu : Panel
     [Export] private Button settings;
     [Export] private Button quit;
 
-	public override void _Ready()
-	{
+    public override void _Ready()
+    {
         hide.Pressed += () => HideMenu();
         resume.Pressed += () => HideMenu();
         restart.Pressed += game.Restart;
@@ -45,7 +45,7 @@ public partial class PauseMenu : Panel
 
             runner.Stop();
         };
-	}
+    }
 
     public void ShowMenu(bool show = true, bool instant = false)
     {

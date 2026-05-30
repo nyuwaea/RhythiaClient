@@ -125,8 +125,9 @@ public partial class Game : BaseScene
         SceneManager.Space.UpdateState(true);
         SceneManager.Space.UpdateMap(Attempt.Map);
 
-        Control focused = SceneManager.Root.GetViewport().GuiGetFocusOwner();
+        var focused = SceneManager.Root.GetViewport().GuiGetFocusOwner();
         focused?.ReleaseFocus();
+
         Input.MouseMode = Attempt.Settings.AbsoluteInput.Value || Attempt.IsReplay ? Input.MouseModeEnum.Visible : Input.MouseModeEnum.Captured;
         Input.UseAccumulatedInput = false;
 
@@ -170,10 +171,7 @@ public partial class Game : BaseScene
         StartQueued = true;
 
         var parsedMap = MapParser.Decode(map.FilePath, Rhythia.AudioFilePath);
-        Attempt = new Attempt(parsedMap, speed, startFrom, mods ?? [], players, replays);
-
-        // var parsedMap = MapParser.Decode(map.FilePath);
-        // Attempt = new Attempt(parsedMap, speed, startFrom, mods ?? [], players, replays);
+        Attempt = new(parsedMap, speed, startFrom, mods ?? [], players, replays);
 
         if (!Attempt.IsReplay)
         {
@@ -192,15 +190,10 @@ public partial class Game : BaseScene
 
         Runner.Stop(false);
 
-        Attempt oldAttempt = Attempt;
-
-        // if (!FileAccess.FileExists(Attempt.ReplayPath) && !Attempt.IsReplay)
-        // {
-        //     _ = ToastNotification.Notify("Replay desync detected! Sum didn't match notes hit", 2);
-        // }
-
+        var oldAttempt = Attempt;
         var map = MapParser.Decode(oldAttempt.Map.FilePath, Rhythia.AudioFilePath);
-        Attempt = new Attempt(map, oldAttempt.Speed, oldAttempt.StartFrom, oldAttempt.Mods, oldAttempt.Players, oldAttempt.Replays);
+
+        Attempt = new(map, oldAttempt.Speed, oldAttempt.StartFrom, oldAttempt.Mods, oldAttempt.Players, oldAttempt.Replays);
 
         SceneManager.ReloadCurrentScene();
     }
